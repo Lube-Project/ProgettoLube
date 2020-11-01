@@ -1,32 +1,48 @@
 import os
 import urllib
+import logging
 from os.path import basename
 
 import requests
 from bs4 import BeautifulSoup
 
-#TODO: controllare anche i tag picture o altri(boh) perche le immagini non stanno solo dentro i tag img
-def avvia(url):
-    lista = findhref(url)
-    for element in lista:
-        print("ANALIZZO : "+element)
 
+# TODO: controllare anche i tag picture o altri(boh) perche le immagini non stanno solo dentro i tag img
+def avvia(url):
+    logging.basicConfig(
+        format='%(asctime)s %(levelname)-8s %(message)s',
+        level=logging.INFO,
+        datefmt='%Y-%m-%d %H:%M:%S')
+    logger = logging.getLogger('Crawler')
+    lista = findhref(url)
+    counter = 0
+    for element in lista:
+        logger.info("-------------------------------------------------------------------------------------------------")
+        logger.info("ANALIZZO : " + element)
+        logger.info("-------------------------------------------------------------------------------------------------")
         page = requests.get(element)
         soup = BeautifulSoup(page.content, 'html.parser')
         body = soup.find('body')
         images = body.findAll('img')
         for image in images:
-            # print image source
-            print(image['src'])
+            #counter = counter + 1
             urlimg = image['src']
             if urlimg[0:4] != "http":
-                urlimg = element + urlimg
-            print("Salvo immagine")
-            path = os.path.join(r"C:\Users\matti\PycharmProjects\WebInspector\images" + "\\" + basename(urlimg))
-            print(path)
-            #TODO: fare un if dove si controlla requests.get(urlimg).content se restituisce qualcosa che è minore di 10k
-            with open(path, "wb") as f:
-                f.write(requests.get(urlimg).content)
+                urlimg = url + urlimg
+            urlimg=eliminaParametriImgUrl(urlimg)
+            logger.info("Salvo immagine")
+            path = os.path.join(
+                r"C:\Users\matti\git\ProgettoLube\ProgettoLube\WebInspector\images" + "\\" + basename(
+                    urlimg))
+            logger.info(urlimg)
+            logger.info(path)
+            # TODO: fare un if dove si controlla requests.get(urlimg).content se restituisce qualcosa che è minore di 10k
+            if urlimg != "":
+                imgsize = requests.get(urlimg).content
+                size = 0  # FILTRO modifica per regolare la grandezza desiderata dell'immagine da scaricare es:10*1024=10k
+                if len(imgsize) > size:
+                    with open(path, "wb") as f:
+                        f.write(requests.get(urlimg).content)
 
 
 
@@ -36,12 +52,43 @@ def avvia(url):
 def findhref(root):
     page = requests.get(root)
     soup = BeautifulSoup(page.content, 'html.parser')
-    lista=[]
-    lista.append(root)
-    for link in soup.find_all('a'):
-        if (link.get('href'))[0:4] != 'http':
-            # print("TREE "+root + '/' + (link.get('href')))
-            href = root + "/" +(link.get('href'))
+    lista = [root]
+    for a in soup.find_all('a', href=True):
+        if a['href'][0:4] != 'http':
+            if a['href'][0:1] != "/":
+                href = root + "/" + a['href']
+            if a['href'][0:1] == "/":
+                href = root + a['href']
             lista.append(href)
-    #print(href_tags)
-    return lista
+        if a['href'][0:4] == 'http':
+            lista.append(a['href'])
+    cleaned = [x for x in lista if root in x]
+    return cleaned
+
+
+# Per pulire i parametri dagli url delle immagini
+def eliminaParametriImgUrl(src):
+    stripped = ''
+    if ".jpg" in src:
+        stripped = src.split(".jpg", 1)[0] + ".jpg"
+    if ".bmp" in src:
+        stripped = src.split(".bmp", 1)[0] + ".bmp"
+    if ".gif" in src:
+        stripped = src.split(".gif", 1)[0] + ".gif"
+    if ".jpeg" in src:
+        stripped = src.split(".jpeg", 1)[0] + ".jpeg"
+    if ".png" in src:
+        stripped = src.split(".png", 1)[0] + ".png"
+    if ".tiff" in src:
+        stripped = src.split(".tiff", 1)[0] + ".tiff"
+    return stripped
+
+def test(src):
+    page = requests.get(src)
+    soup = BeautifulSoup(page.content, 'html.parser')
+    body = soup.find('body')
+    images = body.findAll('img')
+    for img in images:
+        print(img)
+    for a in soup.find_all('a', href=True):
+        print(a['href'])
