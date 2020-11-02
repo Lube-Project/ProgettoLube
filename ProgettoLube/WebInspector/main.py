@@ -1,6 +1,7 @@
-from Crawler import avvia,test
+from Crawler import Crawler
 
-avvia("https://www.lubecreostorepratolapeligna.it")
+crawler = Crawler("https://www.lubecreostorepratolapeligna.it")
+crawler.avvia()
 #TODO: risolvere problema lentezza , 15 minuti ci mette
 
 
