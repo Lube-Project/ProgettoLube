@@ -9,7 +9,7 @@ from os.path import basename
 from urllib.error import HTTPError, URLError
 from socket import timeout
 
-from fake_useragent import UserAgent
+#from fake_useragent import UserAgent
 
 import requests
 from bs4 import BeautifulSoup
@@ -51,7 +51,7 @@ class Crawler:
                 urlimg = "http://" + urlimg
             urlimg = Crawler.eliminaParametriImgUrl(urlimg)
             path = os.path.join(
-                r"C:\Users\matti\git\ProgettoLube\ProgettoLube\WebInspector\images" + "\\" + basename(
+                r"C:\Users\matti\PycharmProjects\WebInspector\images" + "\\" + basename(
                     urlimg))
             logger.info("THREAD " + str(index) + " SALVO " + urlimg)
             # logger.info(path)
@@ -132,11 +132,11 @@ class Crawler:
         return stripped
 
     def test2(self, link):
-        ua = UserAgent();
+        #ua = UserAgent();
         headers = {
             'User-Agent': 'Mozilla/5.0 (Linux; Android 5.1.1; SM-G928X Build/LMY47X) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.83 Mobile Safari/537.36'}
         path = os.path.join(
-            r"C:\Users\matti\git\ProgettoLube\ProgettoLube\WebInspector\images" + "\\" + basename(
+            r"C:\Users\matti\PycharmProjects\WebInspector\images" + "\\" + basename(
                 link))
         with open(path, "wb") as f:
             try:

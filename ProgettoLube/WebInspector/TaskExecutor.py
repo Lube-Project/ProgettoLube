@@ -1,1 +1,0 @@
-#TODO: class for execute daily thread in order to generate a report
