@@ -2,6 +2,7 @@ from skimage.metrics import structural_similarity as ssim
 import argparse
 import imutils
 import cv2
+from PIL import Image
 
 
 # construct the argument parse and parse the arguments
@@ -17,10 +18,23 @@ class ImageWorker:
         # load the two input images
         imageA = cv2.imread(pathimg1)
         imageB = cv2.imread(pathimg2)
+        print('Original Dimensions Image A : ', imageA.shape)
+        print('Original Dimensions Image B : ', imageB.shape)
+        w, h, _ = imageA.shape
+        print("Larghezza Image A : ", w)
+        print("Altezza Image A : ", h)
+        imageB = cv2.resize(imageB, (h, w))
+        #imageB = image_resize(imageB, height=h, width=w)
+        #imageB = imutils.resize(imageB, width=h,height=w)
+        print('Modified Dimensions Image B : ', imageB.shape)
+        # img = Image.open(pathimg1)
+        # img2 = Image.open(pathimg2)
+        # w, h, _ = imageA.shape
+        # imageB = img2.resize((w, h))  # image resizing
 
         # converto l'immagine 2 con la stessa misura della 1
-        #w, h, _ = imageA.shape
-        #imageB = cv2.resize(imageB, (w, h))
+        # w, h, _ = imageA.shape
+        # imageB = cv2.resize(imageB, (w, h))
         # convert the images to grayscale
         grayA = cv2.cvtColor(imageA, cv2.COLOR_BGR2GRAY)
         grayB = cv2.cvtColor(imageB, cv2.COLOR_BGR2GRAY)
@@ -53,3 +67,35 @@ class ImageWorker:
         cv2.imshow("Diff", diff)
         cv2.imshow("Thresh", thresh)
         cv2.waitKey(0)
+
+
+def image_resize(image, width=None, height=None, inter=cv2.INTER_AREA):
+    # initialize the dimensions of the image to be resized and
+    # grab the image size
+    dim = None
+    (h, w) = image.shape[:2]
+
+    # if both the width and height are None, then return the
+    # original image
+    if width is None and height is None:
+        return image
+
+    # check to see if the width is None
+    if width is None:
+        # calculate the ratio of the height and construct the
+        # dimensions
+        r = height / float(h)
+        dim = (int(w * r), height)
+
+    # otherwise, the height is None
+    else:
+        # calculate the ratio of the width and construct the
+        # dimensions
+        r = width / float(w)
+        dim = (width, int(h * r))
+
+    # resize the image
+    resized = cv2.resize(image, dim, interpolation=inter)
+
+    # return the resized image
+    return resized
