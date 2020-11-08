@@ -14,7 +14,7 @@ class MyTestCase(unittest.TestCase):
     def test_imageworker(self):
         worker = ImageWorker()
         path1 = r"C:\Users\matti\PycharmProjects\WebInspector\images\logo.png"
-        path2 = r"C:\Users\matti\PycharmProjects\WebInspector\images\logo.png"
+        path2 = r"C:\Users\matti\PycharmProjects\WebInspector\images\logoc.png"
         worker.processImage(path1, path2)
         #TODO: prima di tutto si deve regolare le due immagini per avere la stessa dimensione
 
