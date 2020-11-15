@@ -1,10 +1,8 @@
-from Crawler import Crawler
+from TaskExecutor import TaskExecutor
 
-lista = ["https://www.lubecreostorepratolapeligna.it"]
-crawler = Crawler()
-crawler.start(lista)
-# TODO: forse dovrebbe creare una cartella per ogni sito e metterci dentro le foto, poi alla seconda esecuzione deve prima pulire la cartella
-# TODO: risolvere problema errori di timeout su alcuni siti tipo store caldarola
+executor = TaskExecutor()
+executor.run_process()
+
 
 
 
