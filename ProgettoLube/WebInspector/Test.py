@@ -1,12 +1,13 @@
+import os
 import unittest
 import urllib
 from urllib.error import HTTPError
 from bs4 import BeautifulSoup
 import time
 
-
 from ImageClassificator import ImageClassificator
 from ImageWorker import ImageWorker
+from OpenCV import OpenCV
 from Report import Report
 from ReportFoto import ReportFoto
 from ReportPagine import ReportPagine
@@ -16,13 +17,16 @@ class MyTestCase(unittest.TestCase):
 
     def test_imageclassificator(self):
         ic = ImageClassificator()
-        flag_stampa_trend_training = False  # modificare se si vuole vedere il grafico del trend
+        flag_stampa_trend_training = True  # modificare se si vuole vedere il grafico del trend
         ic.create_model(flag_stampa_trend_training)
         start_time = time.time()
         ic.predict('C:\\Users\\matti\\git\\ProgettoLube\\ProgettoLube\\WebInspector\\images\\promo.png')
         ic.predict('C:\\Users\\matti\\git\\ProgettoLube\\ProgettoLube\\WebInspector\\images\\capra.jpg')
         ic.predict('C:\\Users\\matti\\git\\ProgettoLube\\ProgettoLube\\WebInspector\\images\\logo.png')
         ic.predict('C:\\Users\\matti\\git\\ProgettoLube\\ProgettoLube\\WebInspector\\images\\logo2.png')
+        ic.predict('C:\\Users\\matti\\git\\ProgettoLube\\ProgettoLube\\WebInspector\\images\\scavolini.png')
+        ic.predict('C:\\Users\\matti\\git\\ProgettoLube\\ProgettoLube\\WebInspector\\images\\cane.jpg')
+        ic.predict('C:\\Users\\matti\\git\\ProgettoLube\\ProgettoLube\\WebInspector\\images\\car.jpg')
         print("TEMPO PREDIZIONI :  %s seconds " % (time.time() - start_time))
 
     def test_report_structure(self):
@@ -59,15 +63,35 @@ class MyTestCase(unittest.TestCase):
         worker.processImage(path1, path2)
 
     def testino(self):
-        url = "https://www.lubecreostorepratolapeligna.it/"
+        url = "https://www.coop.se/butiker-erbjudanden/coop/coop-ladugardsangen-/"
         try:
             page = urllib.request.urlopen(url, timeout=20)
         except HTTPError as e:
             page = e.read()
-            # soup = BeautifulSoup(page.content, 'html.parser')
         soup = BeautifulSoup(page, 'html.parser')
+        lst = ['C', 'B', 'A', 'B']
+        lst = list(dict.fromkeys(lst))
+        print(lst)
 
-        print(soup)
+    def test_list_dir(self):
+        from os import listdir
+        mypath = "photo_downloaded\\"
+        mypath2 = "C:\\Users\\matti\\git\\ProgettoLube\\ProgettoLube\\WebInspector"
+        import os
+        # files_path = [os.path.abspath(x) for x in os.listdir(mypath)]
+        # print(files_path)
+        paths = [os.path.join(mypath, fn) for fn in next(os.walk(mypath))[2]]
+        temp = []
+        for x in paths:
+            temp.append(mypath2 + x)
+        print(temp)
+
+    def test_OCR(self):
+        path = 'C:\\Users\\matti\\git\\ProgettoLube\\ProgettoLube\\WebInspector\\images\\logoc.png'
+        ocr = OpenCV()
+        ocr.read_text_two(path)
+
+
 
 
 if __name__ == '__main__':

@@ -233,10 +233,10 @@ class Crawler:
             body = soup.find('body')
             text = body.prettify()
             for key in key_set:
+                # TODO: mettere dopo la parola anche . :
                 count = len(re.findall(r'(?<!\S)' + key + r'(?![^!;\r\n\s])', text, re.IGNORECASE))
                 self.logger.info('\nUrl: {}\ncontains {} occurrences of word: {}'.format(url, count, key))
                 string = 'key ' + key + ' found :' + str(count) + ' times'
                 temp.append(string)
             Dict[url] = temp
-
         return Dict

@@ -71,7 +71,7 @@ class ImageClassificator:
         )
 
         # MODIFICARE IN BASE A QUANTE CLASSI SI HANNO
-        num_classes = 10
+        num_classes = 11
 
         self.model = Sequential([
             data_augmentation,
@@ -94,7 +94,7 @@ class ImageClassificator:
 
         self.model.summary()
 
-        epochs = 50
+        epochs = 40
         history = self.model.fit(
             train_ds,
             validation_data=val_ds,
