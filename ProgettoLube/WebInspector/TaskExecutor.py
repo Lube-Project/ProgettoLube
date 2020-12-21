@@ -3,6 +3,7 @@ import schedule
 import time
 from DBmanager import DBmanager
 from Service import Service
+import pymongo
 
 
 class TaskExecutor:
@@ -14,13 +15,18 @@ class TaskExecutor:
 
     db_manager = DBmanager()
 
+    client = pymongo.MongoClient(
+        "mongodb+srv://molciprom:molciprom@clusterlube.auwyr.mongodb.net/lube_reports?retryWrites=true&w=majority")
+    db = client["lube_reports"]
+    cl = db["web_reports"]
+
     def run_process(self):
         service = Service()
         # Load siti from excel (LoadResources class)
         lista_siti = ["https://www.lubecreostorepratolapeligna.it", ]
         for sito in lista_siti:
             report = service.valuta(sito)
-            self.db_manager.insert(report)
+            self.db_manager.insert(self.cl,report)
 
         self.logger.info("FINISH")
 

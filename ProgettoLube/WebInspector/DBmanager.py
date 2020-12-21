@@ -1,18 +1,23 @@
 #TODO: connessione con vero database forse mongodb e per testing mongocloud
-#import pymongo
+import pymongo
 
 class DBmanager:
 
-    def insert(self, report):
+    def insert(self, collection, report):
         print(report.toJSON())
-        #myclient = pymongo.MongoClient("mongodb://localhost:27017/")
-        #mydb = myclient["webinspector"]
-        #mycol = mydb["web_report"]
-        #mydict = {"date": "data_report", "obj": "report"}
-        #mycol.insert_one(mydict)
+        x = collection.insert_one(report.toJSON())
 
     def delete(self):
         pass
 
     def update(self):
         pass
+
+    def retrieve_all(self,collection):
+        lista = []
+        for x in collection.find({}, {"_id": 0, "date": 1, "obj": 1}):
+            lista.append(x)
+        return lista
+
+
+

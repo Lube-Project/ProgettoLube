@@ -1,13 +1,15 @@
 import os
-import unittest
-import urllib
-from urllib.error import HTTPError
-from bs4 import BeautifulSoup
-import time
+#import unittest
+#import urllib
+#from urllib.error import HTTPError
+#from bs4 import BeautifulSoup
+#import time
+import pymongo
 
 from ImageClassificator import ImageClassificator
 from ImageWorker import ImageWorker
 from OpenCV import OpenCV
+from ProgettoLube.WebInspector.DBmanager import DBmanager
 from Report import Report
 from ReportFoto import ReportFoto
 from ReportPagine import ReportPagine
@@ -91,8 +93,17 @@ class MyTestCase(unittest.TestCase):
         ocr = OpenCV()
         ocr.read_text_two(path)
 
+    def test_db(self):
+        db_manager = DBmanager()
 
+        client = pymongo.MongoClient(
+            "mongodb+srv://molciprom:molciprom@clusterlube.auwyr.mongodb.net/lube_reports?retryWrites=true&w=majority")
+        db = client["lube_reports"]
+        cl = db["web_reports"]
 
+        lista = db_manager.retrieve_all(cl)
+        for x in lista:
+            print(x)
 
 if __name__ == '__main__':
     unittest.main()
