@@ -9,11 +9,11 @@ app.config["DEBUG"] = True
 
 @app.route('/', methods=['GET'])
 def home():
-    return ""
+    return "CIAOOOO"
 
 
 @app.route('/reports', methods=['GET'])
-def home():
+def report():
     return "ALL REPORTS"
 
 
