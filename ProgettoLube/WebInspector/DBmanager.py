@@ -61,6 +61,7 @@ class DBmanager:
             {
                 "$project": {
                     "year": {"$year": "$date"},
+                    "average": "$obj.year",
                     "date": 1
                 }
             },
@@ -84,6 +85,7 @@ class DBmanager:
                 "$project": {
                     "month": {"$month": "$date"},
                     "year": {"$year": "$date"},
+                    "average": "$obj.year",
                     "date": 1
                 }
             },
