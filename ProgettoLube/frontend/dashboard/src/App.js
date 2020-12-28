@@ -17,7 +17,8 @@ function App() {
           <Route exact path='/mappa' component={Mappa} />
           <Route exact path='/contact' component={Contact} />
           <Route exact path='/:id' component={Post} />
-        </Switch>
+
+  </Switch>
       </div>
     </Router>
   );
