@@ -1,0 +1,55 @@
+.App {
+  text-align: center;
+  font-family: 'Raleway', sans-serif;
+
+}
+/*
+ 
+.Navbar {
+  height: 10vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: indianred;
+  color: #fff;
+}
+.NavbarLogo {
+  display: flex;
+  align-items: center;
+  width: 60%;
+  justify-content: flex-start;
+  height: 100%;
+}
+
+.Links {
+  display: flex;
+  justify-content: space-between;
+  list-style: none;
+  width: 20%;
+} 
+*/
+
+/*    LINK DEL MENU
+.Link {
+  color: '#fff';
+  text-decoration: none;
+}
+a.Link:hover {
+  color: black; 
+}
+a.Link:active {
+    color: red; 
+}
+a.Link::after {
+  color: #fff;
+}
+*/
+
+.Tabella {
+  height: 60vh; 
+  width: 80%; 
+}
+.ContainerTabella {
+  display: flex;
+  justify-content: center;
+}
