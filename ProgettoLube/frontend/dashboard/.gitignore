@@ -20,3 +20,10 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+
+/ProgettoLube/WebInspector/venv/
+/.idea/
+/ProgettoLube/.dist/
+/ProgettoLube/.ionide/
+/ProgettoLube/ProgettoLube/frontend/dashboard/node_modules/.cache/
