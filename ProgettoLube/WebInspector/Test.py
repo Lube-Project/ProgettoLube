@@ -95,14 +95,8 @@ class MyTestCase(unittest.TestCase):
 
     def test_db(self):
         db_manager = DBmanager()
-        client = pymongo.MongoClient(
-            "mongodb+srv://molciprom:molciprom@clusterlube.auwyr.mongodb.net/lube_reports?retryWrites=true&w=majority")
-        db = client["lube_reports"]
-        cl = db["web_reports"]
-        #lista = db_manager.retrieve_all(cl)
-        #for x in lista:
-            #print(x)
-        lista1 = db_manager.retrieve_last(cl)
+        db_manager.start_connection()
+        lista1 = db_manager.retrieve_day_month_year_name(2020,12,28,"Pratola Peligna")
 
         for x in lista1:
             print(x)
