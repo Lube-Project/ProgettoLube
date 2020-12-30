@@ -103,7 +103,8 @@ class MyTestCase(unittest.TestCase):
 
     def test_time(self):
         import datetime
-        x = datetime.date(2020,5,13)
+        x = datetime.datetime.now()
+        x = x.date()
         print(x)
 
 
