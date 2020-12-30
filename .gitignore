@@ -27,5 +27,5 @@ yarn-error.log*
 /.idea/
 /ProgettoLube/.dist/
 /ProgettoLube/.ionide/
-/ProgettoLube/ProgettoLube/frontend/dashboard/node_modules/.cache/
+ProgettoLube/frontend/dashboard/node_modules/.cache/
 ProgettoLube/frontend/dashboard/.eslintcache
