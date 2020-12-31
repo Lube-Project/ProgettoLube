@@ -8,6 +8,7 @@ import pymongo
 
 from ImageClassificator import ImageClassificator
 from ImageWorker import ImageWorker
+from LoadResources import LoadResources
 from OpenCV import OpenCV
 from DBmanager import DBmanager
 from Report import Report
@@ -96,7 +97,7 @@ class MyTestCase(unittest.TestCase):
     def test_db(self):
         db_manager = DBmanager()
         db_manager.start_connection()
-        lista1 = db_manager.retrieve_day_month_year_name(2020,12,28,"Pratola Peligna")
+        lista1 = db_manager.retrieve_day_month_year_name(2020, 12, 28, "Pratola Peligna")
 
         for x in lista1:
             print(x)
@@ -107,6 +108,14 @@ class MyTestCase(unittest.TestCase):
         x = x.date()
         print(x)
 
+    def test_excel(self):
+        pino = LoadResources()
+        dict = pino.load_name_resellers()
+        lista = list(dict['INSEGNA/NOME NEGOZIO'].values())
+        lista = [x for x in lista if str(x) != 'nan']
+        lista = sorted(lista)
+        print(lista)
+        print(len(lista))
 
 
 if __name__ == '__main__':

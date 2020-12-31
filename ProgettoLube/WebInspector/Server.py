@@ -5,8 +5,9 @@ import pymongo
 import flask
 from flask import request
 from flask_restplus import Api, Resource, fields
-
+from flask_cors import CORS
 from DBmanager import DBmanager
+from LoadResources import LoadResources
 
 flask_app = flask.Flask(__name__)
 app = Api(app=flask_app,
@@ -14,8 +15,9 @@ app = Api(app=flask_app,
           title="Lube reseller websites reports",
           description="Provide some useful api in order to have reports of resellers websites",
           doc='/api-doc/', )
-
+CORS(flask_app)
 name_space = app.namespace('reports', description='Provide reports')
+name_space_resources = app.namespace('resellers', description='Provide resellers info')
 db_manager = DBmanager()
 db_manager.start_connection()
 resource_fields = app.model('Report', {
@@ -24,6 +26,19 @@ resource_fields = app.model('Report', {
     'range2': fields.Float,
 })
 
+
+######################################### LOAD RESOURCES ##############################################################
+@name_space_resources.route('/retrieveResellersNames')
+class retrieveResellersNames(Resource):
+
+    @app.doc(responses={200: 'OK', }, description='Provide resellers names')
+    def get(self):
+        load = LoadResources()
+        lista = load.load_name_resellers()
+        return {"lista": lista}
+
+
+######################################################################################################################à
 
 # app.config["DEBUG"] = True
 @name_space.route('/retrieveLastReports')
