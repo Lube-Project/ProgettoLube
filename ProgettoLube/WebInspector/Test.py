@@ -101,6 +101,9 @@ class MyTestCase(unittest.TestCase):
 
         for x in lista1:
             print(x)
+        lista2 = db_manager.find_one(6)
+        for x in lista2:
+            print(x)
 
     def test_time(self):
         import datetime

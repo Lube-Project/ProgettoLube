@@ -27,6 +27,24 @@ class DBmanager:
     def update(self):
         pass
 
+    def find_one(self, id):
+        lista = []
+        for z in self.collection.aggregate([
+            {
+                "$project": {
+                    "_id": 0,
+                    "id": "$_id",
+                    "date": 1,
+                    "report": 1,
+                    "name": 1,
+                    "valutazione": 1
+                }
+            },
+            {"$match": {"id":id}},
+        ]):
+            lista.append(z)
+        return lista
+
     def retrieve_all(self, collection, name):
         lista = []
         for x in collection.find({"name": name}, {"_id": 0, "date": 1, "report": 1, "name": 1, "valutazione": 1}):
@@ -47,7 +65,7 @@ class DBmanager:
             {
                 "$project": {
                     "_id": 0,
-                    "id":"$_id",
+                    "id": "$_id",
                     "date": 1,
                     "report": 1,
                     "name": 1,

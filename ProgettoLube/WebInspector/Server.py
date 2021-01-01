@@ -53,6 +53,20 @@ class retrieveLastReports(Resource):
         return {"lista": lista}
 
 
+@name_space.route('/findOne')
+class findOne(Resource):
+    @app.doc(responses={200: 'OK', },
+             params={'id': {'description': 'Specify the id of the report', 'type': 'int', 'required': True}, }
+        , description='find specific report by id')
+    def get(self):
+        id = request.args.get('id', type=int)
+        lista = db_manager.find_one(id)
+        for x in lista:
+            x['date'] = x['date'].date()
+            x['date'] = x['date'].isoformat()
+        return {"lista": lista}
+
+
 # @app.route('/retrieveYearAverage', methods=['GET'])
 @name_space.route('/retrieveYearAverage')
 class retrieveYearAverage(Resource):
