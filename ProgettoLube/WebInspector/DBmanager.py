@@ -7,7 +7,6 @@ import datetime
 
 
 class DBmanager:
-
     client = None
     db = None
     collection = None
@@ -42,8 +41,22 @@ class DBmanager:
         for x in self.collection.find({}).sort([("date", -1)]).limit(1):
             sup.append(x)
         date = x['date']
-        for x in self.collection.find({"date": date}, {"_id": 0, "date": 1, "report": 1, "name": 1, "valutazione": 1}):
-            lista.append(x)
+        # for x in self.collection.find({"date": date}, {"_id": 0, "date": 1, "report": 1, "name": 1, "valutazione": 1}):
+        # lista.append(x)
+        for z in self.collection.aggregate([
+            {
+                "$project": {
+                    "_id": 0,
+                    "id":"$_id",
+                    "date": 1,
+                    "report": 1,
+                    "name": 1,
+                    "valutazione": 1
+                }
+            },
+            {"$match": {"date": date}},
+        ]):
+            lista.append(z)
         return lista
 
     ######################### DETTAGLI SITO ###########################################
@@ -158,7 +171,7 @@ class DBmanager:
 
         # return year(x) average reports
 
-    def retrieve_year_average_name(self,year, name, range):
+    def retrieve_year_average_name(self, year, name, range):
         # TODO: ritornare tutti i report medi dell'anno x ogni sito
         # Attualmente: Nel db ho inserito tutte macchine, la media è sull'anno all'interno dell'oggetto obj
         lista = []

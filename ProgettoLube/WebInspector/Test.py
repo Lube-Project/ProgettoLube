@@ -97,7 +97,7 @@ class MyTestCase(unittest.TestCase):
     def test_db(self):
         db_manager = DBmanager()
         db_manager.start_connection()
-        lista1 = db_manager.retrieve_day_month_year_name(2020, 12, 28, "Pratola Peligna")
+        lista1 = db_manager.retrieve_last()
 
         for x in lista1:
             print(x)
