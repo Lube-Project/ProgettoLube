@@ -27,7 +27,7 @@ function Navbar() {
 
   const Logo = () => {
     return <div className={button ? 'NavbarLogo' : 'NavbarLogoHidden'} >
-      <img src={logoLube} style={{ height: '100%', width: '10%' }} />
+      <img src={logoLube} style={{ height: '100%', width: '20%' }} />
      
     </div>
   }
