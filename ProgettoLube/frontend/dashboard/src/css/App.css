@@ -6,10 +6,17 @@
   flex-direction: column;
   justify-content: space-between;
   background-color: ghostwhite;
+
+  
 }
 
+body{
+  position: unset;
+}
+
+/* 
 .Navbar {
-  height: 10vh;
+  height: 500px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -22,7 +29,7 @@
   width: 60%;
   justify-content: flex-start;
   height: 100%;
-}
+} */
 
 .Links {
   display: flex;
@@ -94,9 +101,34 @@ a.Link::after {
 }
 
 .Ricerca {
-  border: 1px solid black;
-  display: flex;
-  justify-content: space-around;
-  align-items: flex-end;
+  /* border: 1px solid rgb(255, 0, 0); */
   background-color: #fff;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  position:static;
+    height: auto;
+
+  /* padding-top: 2%; */
+}
+.RicercaAnnuale {
+  /* border: 1px solid black;
+  background-color: #fff; */
+  display: inline-flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  width: 70%;
+}
+
+.RicercaHidden{
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position:relative;
+  margin-top: 20%;
+
+}
+.InputGroup{
+  padding: 10px 0;
 }

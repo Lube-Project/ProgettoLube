@@ -1,4 +1,4 @@
-.navbar {
+/* .navbar {
     background: linear-gradient(90deg, rgb(28, 27, 27) 0%, rgb(26, 23, 23) 100%);
     height: 80px;
     display: flex;
@@ -8,8 +8,10 @@
     position: sticky;
     top: 0;
     z-index: 999;
+      position: sticky;
+
   }
-  
+   */
   .navbar-container {
     display: flex;
     justify-content: center;
@@ -134,8 +136,8 @@
   
     .menu-icon {
       display: block;
-      position: absolute;
-      top: 0;
+      position: relative;
+      top: -30px;
       right: 0;
       transform: translate(-100%, 60%);
       font-size: 1.8rem;
@@ -183,13 +185,16 @@
   /**/
   
 .Navbar {
-  height: 100px;
+  height: auto;
   display: inline-flex;
   justify-content: center;
   align-items: center;
   background-color: indianred;
   color: #fff;
   text-align: center;
+  position: relative;
+  margin-bottom: 1%;
+
 }
 .NavbarLogo {
   display: flex;
