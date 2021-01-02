@@ -40,15 +40,9 @@ class DBmanager:
                     "valutazione": 1
                 }
             },
-            {"$match": {"id":id}},
+            {"$match": {"id": id}},
         ]):
             lista.append(z)
-        return lista
-
-    def retrieve_all(self, collection, name):
-        lista = []
-        for x in collection.find({"name": name}, {"_id": 0, "date": 1, "report": 1, "name": 1, "valutazione": 1}):
-            lista.append(x)
         return lista
 
     # return last document
@@ -79,26 +73,83 @@ class DBmanager:
 
     ######################### DETTAGLI SITO ###########################################
     # return year(x) documents
-    def retrieve_year(self, collection, year):
+    def retrieve_yearly_historic_of_store(self, name, year, range):
         # TODO: fare report medio su 365 usando il campo valutazione o se si riesce anche gli altri campi e tornare anche tutti i relativi report
-        pass
+        lista = self.retrieve_year_average_name(year, name, range)
+        for z in self.collection.aggregate([
+            {
+                "$project": {
+                    "_id": 0,
+                    "id": "$_id",
+                    "year": {"$year": "$date"},
+                    "report": 1,
+                    "name": 1,
+                    "valutazione": 1
+                }
+            },
+            {"$match": {"name": name,
+                        "year": year,
+                        "valutazione": {"$gte": range[0], "$lte": range[1]}}},
+        ]):
+            lista.append(z)
+        return lista
 
     # return month(x) of the year(x) documents
-    def retrieve_month(self, collection, month, year):
+    def retrieve_monthly_historic_of_store(self, name, month, year, range):
         # TODO: fare report medio su numero report usando il campo valutazione o se si riesce anche gli altri campi e tornare anche tutti i relativi report
-        pass
+        lista = self.retrieve_month_year_average_name(year, month, name, range)
+        for z in self.collection.aggregate([
+            {
+                "$project": {
+                    "_id": 0,
+                    "id": "$_id",
+                    "year": {"$year": "$date"},
+                    "month": {"$month": "$date"},
+                    "report": 1,
+                    "name": 1,
+                    "valutazione": 1
+                }
+            },
+            {"$match": {"name": name,
+                        "year": year,
+                        "month": month,
+                        "valutazione": {"$gte": range[0], "$lte": range[1]}}},
+        ]):
+            lista.append(z)
+        return lista
 
     # return day-month-year(x) documents
-    def retrieve_dayMonthYear(self, collection, year, month, day):
+    def retrieve_daily_historic_of_store(self, name, year, month, day):
         # TODO: stuff
-        pass
+        lista = self.retrieve_day_month_year_name(year, month, day, name)
+        for z in self.collection.aggregate([
+            {
+                "$project": {
+                    "_id": 0,
+                    "id": "$_id",
+                    "year": {"$year": "$date"},
+                    "month": {"$month": "$date"},
+                    "day": {"$dayOfMonth": "$date"},
+                    "report": 1,
+                    "name": 1,
+                    "valutazione": 1
+                }
+            },
+            {"$match": {"name": name,
+                        "year": year,
+                        "month": month,
+                        "day": day, }}
+        ]):
+            lista.append(z)
+        return lista
 
     ################################## HOME #################################################
 
     # return year(x) average reports
     def retrieve_year_average(self, year, range):
         # TODO: ritornare tutti i report medi dell'anno x ogni sito
-        # Attualmente: Nel db ho inserito tutte macchine, la media è sull'anno all'interno dell'oggetto obj
+        # Attualmente: Nel db ho inserito tutte macchine, la media è sul
+        # l'anno all'interno dell'oggetto obj
         lista = []
         for z in self.collection.aggregate([
             {
@@ -111,6 +162,7 @@ class DBmanager:
             {"$match": {"year": year}},
             {
                 "$group": {
+                    "id": {"$first": "$name"},
                     "_id": "$name",
                     "valutazione": {"$avg": "$average"},
                     "year": {"$first": year},
@@ -141,6 +193,7 @@ class DBmanager:
             {"$match": {"year": year, "month": month}},
             {
                 "$group": {
+                    "id": {"$first": "$name"},
                     "_id": "$name",
                     "valutazione": {"$avg": "$average"},
                     "year": {"$first": year},
@@ -173,6 +226,7 @@ class DBmanager:
             {"$match": {"year": year, "month": month, "day": day, "valutazione": {"$gte": range[0], "$lte": range[1]}}},
             {
                 "$group": {
+                    "id": {"$first": "$name"},
                     "_id": "$name",
                     "valutazione": {"$first": "$valutazione"},
                     "year": {"$first": year},
@@ -204,6 +258,7 @@ class DBmanager:
             {"$match": {"year": year, "name": name}},
             {
                 "$group": {
+                    "id": {"$first": "$name"},
                     "_id": "$name",
                     "valutazione": {"$avg": "$average"},
                     "year": {"$first": year},
@@ -235,6 +290,7 @@ class DBmanager:
             {"$match": {"year": year, "month": month, "name": name}},
             {
                 "$group": {
+                    "id": {"$first": "$name"},
                     "_id": "$name",
                     "valutazione": {"$avg": "$average"},
                     "year": {"$first": year},
@@ -269,6 +325,7 @@ class DBmanager:
                         "name": name}},
             {
                 "$group": {
+                    "id": {"$first": "$name"},
                     "_id": "$name",
                     "valutazione": {"$first": "$valutazione"},
                     "year": {"$first": year},

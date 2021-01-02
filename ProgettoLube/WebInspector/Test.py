@@ -97,13 +97,14 @@ class MyTestCase(unittest.TestCase):
     def test_db(self):
         db_manager = DBmanager()
         db_manager.start_connection()
-        lista1 = db_manager.retrieve_last()
+        range = [1, 3]
+        lista1 = db_manager.retrieve_year_average(2020, range)
 
         for x in lista1:
             print(x)
-        lista2 = db_manager.find_one(6)
-        for x in lista2:
-            print(x)
+        # lista2 = db_manager.find_one(6)
+        # for x in lista2:
+        # print(x)
 
     def test_time(self):
         import datetime
