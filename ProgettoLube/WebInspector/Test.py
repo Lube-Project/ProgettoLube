@@ -122,5 +122,10 @@ class MyTestCase(unittest.TestCase):
         print(len(lista))
 
 
+    def test_pandas(self):
+        pino = LoadResources()
+        pino.test()
+
+
 if __name__ == '__main__':
     unittest.main()

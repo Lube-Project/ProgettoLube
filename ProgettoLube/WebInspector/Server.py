@@ -1,9 +1,9 @@
 # TODO: DJANGO ENVIRONMENT OR FLASK
 # per eseguire flask server : python Server.py nel terminale
 import pymongo
-
+import json
 import flask
-from flask import request
+from flask import request,jsonify
 from flask_restplus import Api, Resource, fields
 from flask_cors import CORS
 from DBmanager import DBmanager
@@ -36,6 +36,16 @@ class retrieveResellersNames(Resource):
         load = LoadResources()
         lista = load.load_name_resellers()
         return {"lista": lista}
+
+
+@name_space_resources.route('/retrieveResellersPositions')
+class retrieveResellersPositions(Resource):
+
+    @app.doc(responses={200: 'OK', }, description='Provide resellers positions')
+    def get(self):
+        load = LoadResources()
+        dictionary = load.load_store_positions()
+        return dictionary
 
 
 ######################################################################################################################à

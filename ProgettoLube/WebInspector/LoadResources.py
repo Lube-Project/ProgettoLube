@@ -5,11 +5,23 @@ class LoadResources:
 
     # METODO per ottenere la lista dei siti da analizzare
     def load_name_resellers(self):
-        df = pd.read_excel('ELENCO 500 STORE (sit+social).xlsx', sheet_name='Foglio1')  # can also index sheet by name or fetch all sheets
+        df = pd.read_excel('ELENCO 500 STORE (sit+social).xlsx',
+                           sheet_name='Foglio1')  # can also index sheet by name or fetch all sheets
         mydict = df.to_dict()
         lista = list(mydict['INSEGNA/NOME NEGOZIO'].values())
         lista = [x for x in lista if str(x) != 'nan']
         lista = sorted(lista)
         return lista
 
-#TODO: al fronty nei dettagli di un sito gli si passa il dict ricqvato sopra cosi ha tutto di quel sito
+
+############################# MAPPA ##########################################################à
+    def load_store_positions(self):
+        columns = ['INSEGNA/NOME NEGOZIO', 'LATITUDINE', 'LONGITUDINE']
+        df = pd.read_excel('ELENCO 500 STORE (sit+social).xlsx', sheet_name='Foglio1', usecols=columns)
+        dictionary = {}
+        for index, row in df.iterrows():
+            dictionary[row[0]] = {"Latitudine": row[1], "Longitudine": row[2]}
+        return dictionary
+
+############################# MAPPA ##########################################################à
+# TODO: al fronty nei dettagli di un sito gli si passa il dict ricqvato sopra cosi ha tutto di quel sito
