@@ -121,10 +121,9 @@ class MyTestCase(unittest.TestCase):
         print(lista)
         print(len(lista))
 
-
     def test_pandas(self):
         pino = LoadResources()
-        pino.test()
+        pino.load_store_positions()
 
 
 if __name__ == '__main__':

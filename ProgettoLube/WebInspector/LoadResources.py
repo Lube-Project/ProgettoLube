@@ -1,4 +1,5 @@
 import pandas as pd
+import json
 
 
 class LoadResources:
@@ -13,14 +14,25 @@ class LoadResources:
         lista = sorted(lista)
         return lista
 
-
-############################# MAPPA ##########################################################à
+    ############################# MAPPA ##########################################################à
     def load_store_positions(self):
         columns = ['INSEGNA/NOME NEGOZIO', 'LATITUDINE', 'LONGITUDINE']
         df = pd.read_excel('ELENCO 500 STORE (sit+social).xlsx', sheet_name='Foglio1', usecols=columns)
         dictionary = {}
+        #lista = []
         for index, row in df.iterrows():
             dictionary[row[0]] = {"Latitudine": row[1], "Longitudine": row[2]}
+        pino = []
+        # pulizia chiavi nan
+        for key, value in dictionary.items():
+            if str(key) == 'nan':
+                pino.append(key)
+            for x,y in value.items():
+                if str(y) == 'nan':
+                    pino.append(key)
+        pino = list(dict.fromkeys(pino))
+        for x in pino:
+            dictionary.pop(x)
         return dictionary
 
 ############################# MAPPA ##########################################################à
