@@ -49,5 +49,15 @@ class LoadResources:
         #print(dictionary)
         return lista
 
+    def load_store_details_name(self,name):
+        col = "INSEGNA/NOME NEGOZIO"
+        df = pd.read_excel('ELENCO 500 STORE (sit+social).xlsx',
+                           sheet_name='Foglio1')  # can also index sheet by name or fetch all sheets
+        obj = df.loc[df[col] == name]
+        dict = obj.dropna(axis=1).to_dict()
+
+        return dict
+
+
 ############################# MAPPA ##########################################################à
 # TODO: al fronty nei dettagli di un sito gli si passa il dict ricqvato sopra cosi ha tutto di quel sito

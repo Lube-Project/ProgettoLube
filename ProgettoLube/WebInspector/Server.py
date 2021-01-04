@@ -47,6 +47,17 @@ class retrieveResellersPositions(Resource):
         lista = load.load_store_positions()
         return {"lista": lista}
 
+@name_space_resources.route('/retrieveResellerDetails')
+class retrieveResellerDetails(Resource):
+
+    @app.doc(responses={200: 'OK', }, description='Provide reseller details',
+             params={'name': {'description': "Specify the reseller's name", 'type': 'string', 'required': True}})
+    def get(self):
+        name = request.args.get('name', type=str)
+        load = LoadResources()
+        obj = load.load_store_details_name(name)
+        return obj
+
 
 ######################################################################################################################à
 
