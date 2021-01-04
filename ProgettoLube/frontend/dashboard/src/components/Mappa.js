@@ -65,7 +65,7 @@ function Mappa() {
           }}
           id="controllable-states-demo"
           options={storeName}
-          style={{ width: '100%' }}
+          style={{ width: '150%' }}
           renderInput={(params) => <TextField {...params} label="Seleziona sito" variant="outlined" />}
         />
               pippa
