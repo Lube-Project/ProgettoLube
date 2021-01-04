@@ -19,21 +19,35 @@ class LoadResources:
         columns = ['INSEGNA/NOME NEGOZIO', 'LATITUDINE', 'LONGITUDINE']
         df = pd.read_excel('ELENCO 500 STORE (sit+social).xlsx', sheet_name='Foglio1', usecols=columns)
         dictionary = {}
-        #lista = []
+        supporto = {}
+        lista = []
         for index, row in df.iterrows():
-            dictionary[row[0]] = {"Latitudine": row[1], "Longitudine": row[2]}
+            paolo = {"nome": row[0], "latitudine": row[1], "longitudine": row[2]}
+            lista.append(paolo)
+            # dictionary[row[0]] = {"Latitudine": row[1], "Longitudine": row[2]}
+            # dictionary.update({"nome": row[0], "latitudine": row[1], "longitudine": row[2]})
+        # print(lista)
         pino = []
-        # pulizia chiavi nan
-        for key, value in dictionary.items():
-            if str(key) == 'nan':
-                pino.append(key)
-            for x,y in value.items():
-                if str(y) == 'nan':
-                    pino.append(key)
-        pino = list(dict.fromkeys(pino))
+        for x in lista:
+            if str(x['nome']) == 'nan' or str(x['latitudine']) == 'nan' or str(x['longitudine']) == 'nan':
+                pino.append(x)
+        print(pino)
         for x in pino:
-            dictionary.pop(x)
-        return dictionary
+            lista.remove(x)
+        print(lista)
+        # pulizia chiavi nan
+        # for key, value in dictionary.items():
+        # if str(key) == 'nan':
+        # pino.append(key)
+        # for x, y in value.items():
+        # if str(y) == 'nan':
+        # pino.append(key)
+        # pino = list(dict.fromkeys(pino))
+        # for x in pino:
+        # dictionary.pop(x)
+
+        #print(dictionary)
+        return lista
 
 ############################# MAPPA ##########################################################à
 # TODO: al fronty nei dettagli di un sito gli si passa il dict ricqvato sopra cosi ha tutto di quel sito

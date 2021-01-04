@@ -44,8 +44,8 @@ class retrieveResellersPositions(Resource):
     @app.doc(responses={200: 'OK', }, description='Provide resellers positions')
     def get(self):
         load = LoadResources()
-        dictionary = load.load_store_positions()
-        return dictionary
+        lista = load.load_store_positions()
+        return {"lista": lista}
 
 
 ######################################################################################################################à
