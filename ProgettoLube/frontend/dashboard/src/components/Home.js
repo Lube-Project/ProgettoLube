@@ -264,7 +264,7 @@ function Home() {
           }}
           id="controllable-states-demo"
           options={storeName}
-          style={{ width: '150%' }}
+          style={{ width: '20%' }}
           renderInput={(params) => <TextField {...params} label="Seleziona sito" variant="outlined" />}
         />
        
@@ -290,7 +290,7 @@ function Home() {
           </Col>
           <Col md={8}>
             <InputGroup
-              style={{ width: 300 }}
+              style={{ width: 200 }}
             >
               <InputNumber
                 min={1}
@@ -366,7 +366,7 @@ function Home() {
           }}
           id="controllable-states-demo"
           options={storeName}
-          style={{ width: '150%' }}
+          style={{ width: '20%' }}
           renderInput={(params) => <TextField {...params} label="Seleziona sito" variant="outlined" />}
         />
           <div className="InputGroup">
@@ -390,7 +390,7 @@ function Home() {
           </Col>
           <Col md={8}>
             <InputGroup
-              style={{ width: 300 }}
+              style={{ width: 200 }}
             >
               <InputNumber
                 min={1}
@@ -486,7 +486,7 @@ function Home() {
         }}
         id="controllable-states-demo"
         options={storeName}
-        style={{ width: '150%' }}
+        style={{ width: '20%'}}
         renderInput={(params) => <TextField {...params} label="Seleziona sito" variant="outlined" />}
       />
                 <div className="InputGroup">
@@ -511,7 +511,7 @@ function Home() {
           </Col>
           <Col md={8}>
             <InputGroup
-              style={{ width: 300 }}
+              style={{ width: 200 }}
             >
               <InputNumber
                 min={1}
