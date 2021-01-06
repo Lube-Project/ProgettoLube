@@ -4,8 +4,11 @@ from os.path import basename
 from urllib.request import Request, urlopen
 from urllib.error import HTTPError
 from bs4 import BeautifulSoup
+from bson.objectid import ObjectId
 import time
 import pymongo
+import datetime
+import random
 from selenium import webdriver
 
 from selenium.webdriver.chrome.options import Options
@@ -72,9 +75,10 @@ class MyTestCase(unittest.TestCase):
 
     def testino(self):
         url = "https://www.lubebrescia.it/media/widgetkit/cucina-classica-5b0210bc2cc2ff588457b4ce462a3522.jpg"
-        #content = urllib.request.urlopen(url, timeout=10)
-        path = r"C:\Users\matti\git\ProgettoLube\ProgettoLube\WebInspector\photo_downloaded"+"\\"+\
-               basename('https://www.lubebrescia.it/media/widgetkit/cucina-classica-5b0210bc2cc2ff588457b4ce462a3522.jpg')
+        # content = urllib.request.urlopen(url, timeout=10)
+        path = r"C:\Users\matti\git\ProgettoLube\ProgettoLube\WebInspector\photo_downloaded" + "\\" + \
+               basename(
+                   'https://www.lubebrescia.it/media/widgetkit/cucina-classica-5b0210bc2cc2ff588457b4ce462a3522.jpg')
         req = Request(
             'https://www.lubebrescia.it/media/widgetkit/cucina-classica-5b0210bc2cc2ff588457b4ce462a3522.jpg',
             headers={'User-Agent': 'Mozilla/5.0'})
@@ -84,8 +88,8 @@ class MyTestCase(unittest.TestCase):
                 f.write(content)
             except IOError as e:
                 print("I/O error: ".format(e.errno, e.strerror))
-        #webpage = urlopen(req).read()
-        #print(webpage)
+        # webpage = urlopen(req).read()
+        # print(webpage)
         # soup = BeautifulSoup(browser.page_source, "html.parser")
         # browser.close()
         # for x in soup.find_all('iframe'):
@@ -104,7 +108,6 @@ class MyTestCase(unittest.TestCase):
         # lista = ["https://www.lubebrescia.it/news-cucine/53-ultime-cucine-a-meta-prezzo-brescia.html",
         #          "https://www.lubebrescia.it/#","https://www.lubebrescia.it/news-cucine/54-interiordesign.html"]
         # crawler.scrape_photos("https://www.lubebrescia.it",lista)
-
 
     def test_list_dir(self):
         from os import listdir
@@ -137,10 +140,11 @@ class MyTestCase(unittest.TestCase):
         # print(x)
 
     def test_time(self):
-        import datetime
-        x = datetime.datetime.now()
-        x = x.date()
-        print(x)
+        # x = datetime.datetime.now().replace(hour=00,minute=00,second=00,microsecond=00)
+        print(datetime.datetime(random.randint(2020,2021),random.randint(1,12),random.randint(1,27),
+                                 ))
+
+    # print(x)
 
     def test_excel(self):
         pino = LoadResources()
@@ -163,6 +167,37 @@ class MyTestCase(unittest.TestCase):
         for x in paths:
             temp.append(mypath2 + x)
         print(temp)
+
+    def testttt(self):
+        db_manager = DBmanager()
+        db_manager.start_connection()
+        ciccio = {"name": 'pinoo', "report": 'reportttt'}
+        db_manager.insert(ciccio)
+
+    def test_insert(self):
+        thisdict2 = {
+            "brand": "Ferrari",
+            "model": "408",
+            "year": 1997
+        }
+        db = DBmanager()
+        db.start_connection()
+        load = LoadResources()
+        nomi = load.load_name_resellers()
+        #range = [1,3]
+        lista = []
+        for i in range(0, 9, 1):
+            for x in nomi:
+                date = datetime.datetime(random.randint(2020, 2021), random.randint(1, 12), random.randint(1, 27),
+                                         )
+                pino = {
+                    "date":date,
+                    "name":x,
+                    "report":thisdict2,
+                    "valutazione":random.randint(1,3)
+                }
+                db.insert(pino)
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -17,9 +17,16 @@ class DBmanager:
         self.db = self.client["lube_reports"]
         self.collection = self.db["web_reports"]
 
-    def insert(self, collection, report):
-        print(report.toJSON())
-        x = collection.insert_one(report.toJSON())
+    def insert(self, report):
+        #print(report.toJSON())
+        #x = self.collection.insert_one(report.toJSON())
+        x = self.collection.insert_one(report)
+
+    def find_all(self):
+        lista = []
+        for x in self.collection.find():
+            lista.append(x)
+        return lista
 
     def delete(self):
         pass

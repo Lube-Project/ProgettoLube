@@ -121,12 +121,6 @@ function Home() {
   }
 
 
-
-  function getLastReports() {
-    fetchLastReports();
-    return null;
-  }
-
   function fetchReportAnnuali() {
     //non ha selezionato il nome dello store
     const pino = [
@@ -151,9 +145,59 @@ function Home() {
       setColumns(pino);
       return null;
     }
+  }
+  function fetchReportMensili() {
+    //non ha selezionato il nome dello store
 
-
-
+    const pino = [
+      { field: 'id', headerName: 'Name', width: 400, },
+      { field: 'year', headerName: 'Anno', width: 400 },
+      { field: 'month', headerName: 'Mese', width: 400 },
+      { field: 'valutazione', headerName: 'Valutazione', width: '100%' },
+    ];
+    if (!value) {
+      axios.get(`http://localhost:5000/reports/retrieveMonthYearAverage?year=${year}&month=${month}&range1=${range[0]}&range2=${range[1]}`)
+        .then(res => {
+          const reports = res.data.lista;
+          console.log(reports);
+          setReports(reports)
+        });
+      setColumns(pino);
+      return null;
+    } else {
+      axios.get(`http://localhost:5000/reports/retrieveMonthYearAverageName?year=${year}&month=${month}&name=${value}&range1=${range[0]}&range2=${range[1]}`)
+        .then(res => {
+          const reports = res.data.lista;
+          setReports(reports);
+        });
+      setColumns(pino);
+      return null;
+    }
+  }
+  function fetchReportDate() {
+    /**TODO: bisogna ottenere dal form con data completa l'anno,mese e giorno da dare alla chiamata qua sotto */
+    const pino = [
+      { field: 'id', headerName: 'Name', width: 400, },
+      { field: 'year', headerName: 'Anno', width: 400 },
+      { field: 'valutazione', headerName: 'Valutazione', width: '100%' },
+    ];
+    if (!value) {
+      axios.get(`http://localhost:5000/reports/retrieveDayMonthYearAverage?year=${year}&month=${month}&day=${null}&range1=${range[0]}&range2=${range[1]}`)
+        .then(res => {
+          const reports = res.data.lista;
+          setReports(reports)
+        });
+      setColumns(pino);
+      return null;
+    } else {
+      axios.get(`http://localhost:5000/reports/retrieveDayMonthYearAverageName?year=${year}&month=${month}&day=${null}&name=${value}&range1=${range[0]}&range2=${range[1]}`)
+        .then(res => {
+          const reports = res.data.lista;
+          setReports(reports);
+        });
+      setColumns(pino);
+      return null;
+    }
   }
 
 
@@ -251,6 +295,23 @@ function Home() {
   const handleSelect = (selectedIndex, e) => {
     setIndex(selectedIndex);
   };
+
+  function FormLastReports() {
+    return (
+      <div>
+        <Button
+          // onClick={fetchReportAnnuali()}
+          onClick={() => { fetchLastReports() }}
+          variant="contained"
+          color="primary"
+          className={classes.button}
+          endIcon={<SearchIcon />}
+        >
+          Cerca
+      </Button>
+      </div>
+    );
+  }
 
   function FormAnnuale() {
     return (
@@ -460,6 +521,7 @@ function Home() {
           optionClasses={'option classes'}
         />
         <Button
+          onClick={() => { fetchReportMensili() }}
           variant="contained"
           color="primary"
           className={classes.button}
@@ -587,7 +649,7 @@ function Home() {
           {choice == 'Report annuali' ?
             <FormAnnuale /> : choice == 'Report mensili' ?
               <FormMensile /> : choice == 'Report giornalieri' ?
-                <FormGiornaliero /> : getLastReports()}
+                <FormGiornaliero /> : choice == 'Last reports' ? <FormLastReports/> : null }
 
           <FormControl className={classes.formControl}   >
            

@@ -7,6 +7,7 @@ from flask import request, jsonify
 from flask_restplus import Api, Resource, fields
 from flask_cors import CORS
 from DBmanager import DBmanager
+from bson.objectid import ObjectId
 from LoadResources import LoadResources
 
 flask_app = flask.Flask(__name__)
@@ -72,6 +73,8 @@ class retrieveLastReports(Resource):
         for x in lista:
             x['date'] = x['date'].date()
             x['date'] = x['date'].isoformat()
+        for y in lista:
+            y['id'] = str(y['id'])
         return {"lista": lista}
 
 
@@ -81,11 +84,13 @@ class findOne(Resource):
              params={'id': {'description': 'Specify the id of the report', 'type': 'int', 'required': True}, }
         , description='find specific report by id')
     def get(self):
-        id = request.args.get('id', type=int)
-        lista = db_manager.find_one(id)
+        id = request.args.get('id', type=str)
+        lista = db_manager.find_one(ObjectId(id))
         for x in lista:
             x['date'] = x['date'].date()
             x['date'] = x['date'].isoformat()
+        for y in lista:
+            y['id'] = str(y['id'])
         return {"lista": lista}
 
 
@@ -151,6 +156,7 @@ class retrieveDayMonthYear(Resource):
         range2 = request.args.get('range2', type=float)
         range = [range1, range2]
         lista = db_manager.retrieve_day_month_year(year, month, day, range)
+
         return {"lista": lista}
 
 

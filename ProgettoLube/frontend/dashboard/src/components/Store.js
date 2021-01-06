@@ -80,40 +80,20 @@ function Store(props) {
 
 
     useEffect(() => {
-       
-
-        axios.get(` http://127.0.0.1:5000/resellers/retrieveResellerDetails?name=${props.match.params.name}`)
-            .then(res => {
-                const reports = res.data;
-                console.log(reports);
-                setStoreDetails(reports);
-
-
-            })
-        fetchLastReports();
-
-
-
+        fetchResellerDetails();
     }, []);
 
-    function feedRow() {
-        return reports;
-        //reports;
-    }
-
-
-
-    function getLastReports() {
-        fetchLastReports();
-        return null;
-    }
+    /* carosello */
+    const handleSelect = (selectedIndex, e) => {
+        setIndex(selectedIndex);
+    };
 
     /*
     Hooks
     */
     const [storeDetails, setStoreDetails] = useState([]);
     const [reports, setReports] = useState([]);
-    const [grid,setGrid]=useState(false);
+    const [grid, setGrid] = useState(false);
 
     const [posts, setPosts] = useState([]);
     const [storeName, setStoreName] = useState([]);
@@ -122,7 +102,7 @@ function Store(props) {
     const [value, setValue] = React.useState();
     const [siti, setSiti] = useState([]);
     const [datatable, setDatatable] = useState({});
-    
+
 
     //const [reports, setReports] = useState([]);
     const [choice, setChoice] = React.useState('');
@@ -142,59 +122,60 @@ function Store(props) {
     const [viewmonth, setViewmonth] = useState(0);
 
 
-    const fetchLastReports = async () => {
-        axios.get(` http://127.0.0.1:5000/resellers/retrieveResellerDetails?name=${props.match.params.name}`)
+    const fetchResellerDetails = async () => {
+        axios.get(` http://127.0.0.1:5000/resellers/retrieveResellerDetails?name=${data}`)
             .then(res => {
-                const reports = res.data;
+                const response = res.data;
 
                 //comune = report.COMUNE["70"];
-                setReports(reports);
+                setStoreDetails(response);
 
 
             })
 
     }
-    
+
     const handleChange = (event) => {
         setChoice(event.target.value);
     };
 
-    function getReportAnnuali(){
-        var ciccio="Pratola Peligna";
+    function getReportAnnuali() {
+        var ciccio = "Pratola Peligna";
         const pino = [
             { field: 'id', headerName: 'Name', width: 400, },
             { field: 'year', headerName: 'Anno', width: 400 },
             { field: 'valutazione', headerName: 'Valutazione', width: '100%' },
-          ];
-          //waiting for backy
-            axios.get(`http://localhost:5000/reports/retrieveYearAverageName?year=${year}&name=${value}&range1=${range[0]}&range2=${range[1]}`)
-              .then(res => {
-                const reports = res.data.lista;
-                setReports(reports);
-              });
-            setColumns(pino);
-            setGrid(true);
-            return null;
-          
+        ];
+        //waiting for backy
+        axios.get(`http://localhost:5000/reports/retrieveYearAverageName?year=${year}&name=${data}&range1=${range[0]}&range2=${range[1]}`)
+            .then(res => {
+                const response = res.data.lista;
+                console.log(response);
+                setReports(response);
+            });
+        setColumns(pino);
+        setGrid(true);
+        return null;
+
     }
 
-    function getReportMensile(){
-        
+    function getReportMensile() {
+
     }
-    
-    function getReportDate(){
-        
+
+    function getReportDate() {
+
     }
     function FormAnnuale() {
         return (
             <div className="RicercaAnnuale">
 
-                
+
 
                 <div className="InputGroup">
 
                     <Row>
-                         <Col md={10}>
+                        <Col md={10}>
                             <RangeSlider
 
                                 step={0.1}
@@ -281,7 +262,7 @@ function Store(props) {
         return (
             <div className="RicercaAnnuale">
 
-                
+
                 <div className="InputGroup">
                     <Row>
                         <Col md={10}>
@@ -391,7 +372,7 @@ function Store(props) {
         return (
             <div className="RicercaAnnuale">
 
-                
+
                 <div className="InputGroup">
 
                     <Row>
@@ -467,7 +448,9 @@ function Store(props) {
             <div className="Titolo">
                 <h2>DETTAGLI {data}</h2>
             </div>
-            {choice == 'Report annuali' ?
+            <Carousel activeIndex={index} onSelect={handleSelect} interval={null}>
+                <Carousel.Item>
+                    {choice == 'Report annuali' ?
                         <FormAnnuale /> : choice == 'Report mensili' ?
                             <FormMensile /> : choice == 'Report giornalieri' ?
                                 <FormGiornaliero /> : null}
@@ -489,86 +472,93 @@ function Store(props) {
                             <MenuItem value={'Report giornalieri'}>Report giornalieri</MenuItem>
                         </Select>
                     </FormControl>
-                    {grid == true ? <DataGrid rows={feedRow()} columns={columns}/> : null}
-            {/* <div className="Container"> */}
-            <div className="cardsContainer">
+                    <div className="ContainerTabella">
+                        <div className="Tabella">
+                            {grid ? <DataGrid rows={reports} columns={columns} /> : null}
+                        </div>
+                    </div>
+                    
+                    {/* <div className="Container"> */}
+                </Carousel.Item>
+                <Carousel.Item>
+                    <div className="cardsContainer">
 
-                <Card className={classes.root} variant="outlined" style={{ position: "relative", width: 'auto', height: "auto", marginTop: 5, marginBottom: 5, marginLeft: 5, marginRight: 5, }}>
-                    <CardContent>
-                        <Typography variant="h5" component="h2">
-                            DESAGE: <br />{storeDetails.DESAGE}
-                        </Typography>
-                        <Typography className={classes.title} color="textSecondary" gutterBottom>
-                            ID NEGOZIO: {storeDetails.IDNEGOZIO}
-                        </Typography>
-                        {/* <Typography className={classes.pos} color="textSecondary">
+                        <Card className={classes.root} variant="outlined" style={{ position: "relative", width: 'auto', height: "auto", marginTop: 5, marginBottom: 5, marginLeft: 5, marginRight: 5, }}>
+                            <CardContent>
+                                <Typography variant="h5" component="h2">
+                                    DESAGE: <br />{storeDetails.DESAGE}
+                                </Typography>
+                                <Typography className={classes.title} color="textSecondary" gutterBottom>
+                                    ID NEGOZIO: {storeDetails.IDNEGOZIO}
+                                </Typography>
+                                {/* <Typography className={classes.pos} color="textSecondary">
                                 adjective
         </Typography> */}
-                        <Typography variant="body2" component="p">
-                            <br /> RAGIONE SOCIALE:   {storeDetails["RAGIONE SOCIALE"]}
-                            <br />  TIPOLOGIA: {storeDetails.TIPOLOGIA}
-                            <br />  BRAND LUBE: {storeDetails["BRAND LUBE"]}
-                            <br />  BRAND CREO: {storeDetails["BRAND CREO"]}
-                        </Typography>
-                    </CardContent>
+                                <Typography variant="body2" component="p">
+                                    <br /> RAGIONE SOCIALE:   {storeDetails["RAGIONE SOCIALE"]}
+                                    <br />  TIPOLOGIA: {storeDetails.TIPOLOGIA}
+                                    <br />  BRAND LUBE: {storeDetails["BRAND LUBE"]}
+                                    <br />  BRAND CREO: {storeDetails["BRAND CREO"]}
+                                </Typography>
+                            </CardContent>
 
-                </Card>
-                <Card className={classes.root} variant="outlined" style={{ position: "relative", width: 'auto', height: "auto", marginTop: 5, marginBottom: 5, marginLeft: 5, marginRight: 5, }}>
-                    <CardContent>
+                        </Card>
+                        <Card className={classes.root} variant="outlined" style={{ position: "relative", width: 'auto', height: "auto", marginTop: 5, marginBottom: 5, marginLeft: 5, marginRight: 5, }}>
+                            <CardContent>
 
-                        <Typography variant="h5" component="h2">
-                            LOCAZIONE: <br /> {storeDetails.COMUNE}
-                        </Typography>
-                        <Typography className={classes.pos} color="textSecondary">
-                            {storeDetails.INDIRIZZO}
-                        </Typography>
-                        <Typography variant="body2" component="p">
-                            PROVINCIA: ({storeDetails.PROV})
+                                <Typography variant="h5" component="h2">
+                                    LOCAZIONE: <br /> {storeDetails.COMUNE}
+                                </Typography>
+                                <Typography className={classes.pos} color="textSecondary">
+                                    {storeDetails.INDIRIZZO}
+                                </Typography>
+                                <Typography variant="body2" component="p">
+                                    PROVINCIA: ({storeDetails.PROV})
                             <br />
-                            {storeDetails.CAP}
+                                    {storeDetails.CAP}
 
 
-                        </Typography>
-                    </CardContent>
+                                </Typography>
+                            </CardContent>
 
-                </Card>
-                <Card className={classes.root} variant="outlined" style={{ position: "relative", width: 'auto', height: "auto", marginTop: 5, marginBottom: 5, marginLeft: 5, marginRight: 5, }}>
-                    <CardContent>
-                        <Typography variant="h5" component="h2">
-                            SOCIAL
+                        </Card>
+                        <Card className={classes.root} variant="outlined" style={{ position: "relative", width: 'auto', height: "auto", marginTop: 5, marginBottom: 5, marginLeft: 5, marginRight: 5, }}>
+                            <CardContent>
+                                <Typography variant="h5" component="h2">
+                                    SOCIAL
         </Typography>
 
-                        <Typography variant="body2" component="p">
-                            <br />   <SocialIcon url={storeDetails.FB} /> <br />
-                            <br />   <SocialIcon url={storeDetails.ISTAGRAM} /> <br />
-                            <br /> <a href={storeDetails.SITO}><LanguageIcon style={{ fontSize: 53 }}></LanguageIcon></a>
+                                <Typography variant="body2" component="p">
+                                    <br />   <SocialIcon url={storeDetails.FB} /> <br />
+                                    <br />   <SocialIcon url={storeDetails.ISTAGRAM} /> <br />
+                                    <br /> <a href={storeDetails.SITO}><LanguageIcon style={{ fontSize: 53 }}></LanguageIcon></a>
 
-                        </Typography>
-                    </CardContent>
+                                </Typography>
+                            </CardContent>
 
-                </Card>
-                <Card className={classes.root} variant="outlined" style={{ position: "relative", width: 'auto', height: "auto", marginTop: 5, marginBottom: 5, marginLeft: 5, marginRight: 5, }}>
-                    <CardContent>
+                        </Card>
+                        <Card className={classes.root} variant="outlined" style={{ position: "relative", width: 'auto', height: "auto", marginTop: 5, marginBottom: 5, marginLeft: 5, marginRight: 5, }}>
+                            <CardContent>
 
-                        <Typography variant="h5" component="h2">
-                            CONTATTI
+                                <Typography variant="h5" component="h2">
+                                    CONTATTI
         </Typography>
-                        <Typography className={classes.pos} color="textSecondary">
-                            <br />  <SocialIcon url="http://whatsapp.com" /> <br />{storeDetails.Whatsapp}
-                        </Typography>
-                        <Typography variant="body2" component="p">
-                            <br />   <SocialIcon url="mailto:" /> <br />{storeDetails["Mail 1"]}
-                            <br /><br />  <SocialIcon url="mailto:" /> <br />{storeDetails["MAIL 2"]}
+                                <Typography className={classes.pos} color="textSecondary">
+                                    <br />  <SocialIcon url="http://whatsapp.com" /> <br />{storeDetails.Whatsapp}
+                                </Typography>
+                                <Typography variant="body2" component="p">
+                                    <br />   <SocialIcon url="mailto:" /> <br />{storeDetails["Mail 1"]}
+                                    <br /><br />  <SocialIcon url="mailto:" /> <br />{storeDetails["MAIL 2"]}
 
 
 
-                        </Typography>
-                    </CardContent>
+                                </Typography>
+                            </CardContent>
 
-                </Card>
+                        </Card>
 
 
-                {/* <Card style={{ width: '20vh', maxHeight: "auto", marginTop: 5, marginBottom: 5, marginLeft: 5, marginRight: 5, }}>
+                        {/* <Card style={{ width: '20vh', maxHeight: "auto", marginTop: 5, marginBottom: 5, marginLeft: 5, marginRight: 5, }}>
                         <Card.Body>
                             <Card.Title>INDIRIZZO</Card.Title>
                             <Card.Text>
@@ -631,8 +621,9 @@ function Store(props) {
                            
                         </Card.Body>
                     </Card> */}
-            </div>
-
+                    </div>
+                </Carousel.Item>
+            </Carousel>
             {/* </div> */}
         </div>
     );

@@ -102,7 +102,7 @@ function Mappa() {
           {
             storePositions && storePositions.map(store => (
              
-              <Link to={`/store/${store.nome}`}>
+              <Link key={store.nome} to={`/store/${store.nome}`}>
                 <Marker key={store.nome} latitude={store.latitudine} longitude={store.longitudine}><img style={{ width: 50, height: 50 }} src={logoLube}></img></Marker>
               </Link>
 
