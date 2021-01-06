@@ -16,7 +16,7 @@ function App() {
     <Router>
       <div className="App">
         <Navbar />
-        <body>
+        
           <Switch>
             <Route exact path='/' component={Home} />
             <Route exact path='/mappa' component={Mappa} />
@@ -24,7 +24,7 @@ function App() {
             <Route exact path='/:id' component={Dettagli} />
             <Route exact path='/store/:name' component={Store} />
           </Switch>
-        </body>
+        
         <Footer />
       </div>
     </Router>

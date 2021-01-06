@@ -1,10 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import '../css/App.css';
+import axios from 'axios';
+import { Card } from 'react-bootstrap';
+
+import { makeStyles } from '@material-ui/core/styles';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import { SocialIcon } from 'react-social-icons';
+import LanguageIcon from '@material-ui/icons/Language';
+
+
+
 import TextField from "@material-ui/core/TextField";
 import DatePicker from 'react-date-picker';
-import Button from '@material-ui/core/Button';
-import { makeStyles } from '@material-ui/core/styles';
 import {
     DataGrid,
     ColDef,
@@ -15,8 +26,8 @@ import {
 
 import { Carousel } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import axios from 'axios';
 //import { MDBDataTableV5 } from 'mdbreact';
 //import DatePicker from 'react-datepicker';
 //import "react-datepicker/dist/react-datepicker.css";
@@ -31,108 +42,79 @@ import 'rsuite/dist/styles/rsuite-default.css';
 
 
 const useStyles = makeStyles((theme) => ({
+    root: {
+        minWidth: 275,
+    },
+    bullet: {
+        display: 'inline-block',
+        margin: '0 2px',
+        transform: 'scale(0.8)',
+    },
+    title: {
+        fontSize: 14,
+    },
+    pos: {
+        marginBottom: 12,
+    },
     formControl: {
-      margin: theme.spacing(1),
-      minWidth: 120,
+        margin: theme.spacing(1),
+        minWidth: 120,
     },
     root: {
-      width: 300,
+        width: 300,
     },
     button: {
-      margin: theme.spacing(1),
+        margin: theme.spacing(1),
     },
-  }));
+
+}));
 
 function Store(props) {
 
-    const classes = useStyles();
+    const data = props.match.params.name;
 
-    
+
+    const classes = useStyles();
+    const bull = <span className={classes.bullet}>•</span>;
+
+
 
     useEffect(() => {
-        // fetchData();
-        //fetchPino();
-        //fetchLastReports();
-        
-      }, []);
+       
+
+        axios.get(` http://127.0.0.1:5000/resellers/retrieveResellerDetails?name=${props.match.params.name}`)
+            .then(res => {
+                const reports = res.data;
+                console.log(reports);
+                setStoreDetails(reports);
 
 
-     /* chiamata VERA per richiedere i dati al server */
-  const fetchLastReports = async () => {
-    axios.get(`http://localhost:5000/reports/retrieveLastReports`)
-      .then(res => {
-        const reports = res.data.lista;
-        //console.log(reports);
-        const pino = [
-          {
-            field: "",
-            headerName: "Button",
-            sortable: false,
-            width: 100,
-            disableClickEventBubbling: true,
-            renderCell: (params: CellParams) => {
-              const onClick = () => {
-                const api: GridApi = params.api;
-                const fields = api
-                  .getAllColumns()
-                  .map((c) => c.field)
-                  .filter((c) => c !== "__check__" && !!c);
-                const thisRow = {};
+            })
+        fetchLastReports();
 
-                fields.forEach((f) => {
-                  thisRow[f] = params.getValue(f);
-                });
 
-                let path = `/${thisRow.id}`;
-                return history.push(path);
-              };
 
-              return <Button onClick={onClick}>Dettagli</Button>;
-            }
-          },
-          { field: 'id', headerName: 'id', width: 200, hide: true },
-          { field: 'date', headerName: 'Data', width: 200 },
-          { field: 'name', headerName: 'Nome', width: 200 },
-          { field: 'valutazione', headerName: 'Valutazione', width: '100%' },
-        ];
-        setColumns(pino);
-        setReports(reports);
-
-      })
-
-  }
+    }, []);
 
     function feedRow() {
         return reports;
-      }
-    
-    
-    
-      function getLastReports() {
+        //reports;
+    }
+
+
+
+    function getLastReports() {
         fetchLastReports();
         return null;
-      }
+    }
 
-    function fetchReportAnnuali() {
-        //non ha selezionato il nome dello store
-        const pino = [
-          { field: 'id', headerName: 'Name', width: 200, },
-          { field: 'year', headerName: 'Anno', width: 200 },
-          { field: 'valutazione', headerName: 'Valutazione', width: '100%' },
-        ];
-       
-          axios.get(`http://localhost:5000/reports/retrieveYearAverageName?year=${year}&name=${data}&range1=${range[0]}&range2=${range[1]}`)
-            .then(res => {
-              const reports = res.data.lista;
-              setReports(reports)
-            });
-          setColumns(pino);
-          return null;
-      }
+    /*
+    Hooks
+    */
+    const [storeDetails, setStoreDetails] = useState([]);
+    const [reports, setReports] = useState([]);
+    const [grid,setGrid]=useState(false);
 
-    const data = props.match.params.name;
-
-    /* Hooks */
     const [posts, setPosts] = useState([]);
     const [storeName, setStoreName] = useState([]);
     const [index, setIndex] = useState(0);
@@ -140,7 +122,9 @@ function Store(props) {
     const [value, setValue] = React.useState();
     const [siti, setSiti] = useState([]);
     const [datatable, setDatatable] = useState({});
-    const [reports, setReports] = useState([]);
+    
+
+    //const [reports, setReports] = useState([]);
     const [choice, setChoice] = React.useState('');
     const [date, setDate] = useState(new Date());
     const [range, setRange] = useState([1, 3]);
@@ -151,18 +135,56 @@ function Store(props) {
 
 
 
+    const [name, setName] = useState(0);
 
     const [year, setYear] = useState(0);
     const [month, setMonth] = useState(0);
     const [viewmonth, setViewmonth] = useState(0);
 
-    /* Variabili */
-    const history = useHistory();
 
+    const fetchLastReports = async () => {
+        axios.get(` http://127.0.0.1:5000/resellers/retrieveResellerDetails?name=${props.match.params.name}`)
+            .then(res => {
+                const reports = res.data;
+
+                //comune = report.COMUNE["70"];
+                setReports(reports);
+
+
+            })
+
+    }
+    
     const handleChange = (event) => {
         setChoice(event.target.value);
     };
 
+    function getReportAnnuali(){
+        var ciccio="Pratola Peligna";
+        const pino = [
+            { field: 'id', headerName: 'Name', width: 400, },
+            { field: 'year', headerName: 'Anno', width: 400 },
+            { field: 'valutazione', headerName: 'Valutazione', width: '100%' },
+          ];
+          //waiting for backy
+            axios.get(`http://localhost:5000/reports/retrieveYearAverageName?year=${year}&name=${value}&range1=${range[0]}&range2=${range[1]}`)
+              .then(res => {
+                const reports = res.data.lista;
+                setReports(reports);
+              });
+            setColumns(pino);
+            setGrid(true);
+            return null;
+          
+    }
+
+    function getReportMensile(){
+        
+    }
+    
+    function getReportDate(){
+        
+    }
     function FormAnnuale() {
         return (
             <div className="RicercaAnnuale">
@@ -172,7 +194,7 @@ function Store(props) {
                 <div className="InputGroup">
 
                     <Row>
-                        <Col md={10}>
+                         <Col md={10}>
                             <RangeSlider
 
                                 step={0.1}
@@ -241,7 +263,7 @@ function Store(props) {
 
                 <Button
                     // onClick={fetchReportAnnuali()}
-                    onClick={() => { fetchReportAnnuali() }}
+                    onClick={() => { getReportAnnuali() }}
                     variant="contained"
                     color="primary"
                     className={classes.button}
@@ -439,36 +461,16 @@ function Store(props) {
             </div>)
     }
 
+
     return (
         <div className="App">
-            <h1>DETTAGLI {data}</h1>
-
-            {/* <div className="Titolo">
-        <h3>HOME</h3>
-      </div> */}
-
-            {/* VECCHIO
-      posts.map(post => (
-        <Link key={post.id} to={`/${post.id}`}>
-          <h4 key={post.id} >{post.title}</h4>
-        </Link>
-      )) */}
-
-            {/*  , giorno , anno, mese , range valutazione(tra 1 e 3) */}
-
-            <div className="Container">
-
-                {/* <Carousel activeIndex={index} onSelect={handleSelect} interval={null}>
-
-  <Carousel.Item> */}
-
-                <div className={button ? 'Ricerca' : 'RicercaHidden'} >
-                    {/* <h4 style={{ letterSpacing: 5 }}>SITI WEB</h4> */}
-
-                    {choice == 'Report annuali' ?
+            <div className="Titolo">
+                <h2>DETTAGLI {data}</h2>
+            </div>
+            {choice == 'Report annuali' ?
                         <FormAnnuale /> : choice == 'Report mensili' ?
                             <FormMensile /> : choice == 'Report giornalieri' ?
-                                <FormGiornaliero /> : getLastReports()}
+                                <FormGiornaliero /> : null}
 
                     <FormControl className={classes.formControl}   >
 
@@ -485,36 +487,154 @@ function Store(props) {
                             <MenuItem value={'Report annuali'}>Report annuali</MenuItem>
                             <MenuItem value={'Report mensili'}>Report mensili</MenuItem>
                             <MenuItem value={'Report giornalieri'}>Report giornalieri</MenuItem>
-                            <MenuItem value={'Last reports'}>Ultimi Report</MenuItem>
                         </Select>
                     </FormControl>
-                </div>
+                    {grid == true ? <DataGrid rows={feedRow()} columns={columns}/> : null}
+            {/* <div className="Container"> */}
+            <div className="cardsContainer">
 
-                <br />
-                <div className="ContainerTabella">
-                    <div className="Tabella">
-                        {/*console.log('datatable', datatable)*/}
-                        {/*  <MDBDataTableV5 hover entriesOptions={[5, 20, 25]}
-          entries={5} pagesAmount={4} data={datatable} />*/}
-                        <DataGrid rows={feedRow()} columns={columns} />
-                    </div>
-                </div>
-                {/* </Carousel.Item> */}
+                <Card className={classes.root} variant="outlined" style={{ position: "relative", width: 'auto', height: "auto", marginTop: 5, marginBottom: 5, marginLeft: 5, marginRight: 5, }}>
+                    <CardContent>
+                        <Typography variant="h5" component="h2">
+                            DESAGE: <br />{storeDetails.DESAGE}
+                        </Typography>
+                        <Typography className={classes.title} color="textSecondary" gutterBottom>
+                            ID NEGOZIO: {storeDetails.IDNEGOZIO}
+                        </Typography>
+                        {/* <Typography className={classes.pos} color="textSecondary">
+                                adjective
+        </Typography> */}
+                        <Typography variant="body2" component="p">
+                            <br /> RAGIONE SOCIALE:   {storeDetails["RAGIONE SOCIALE"]}
+                            <br />  TIPOLOGIA: {storeDetails.TIPOLOGIA}
+                            <br />  BRAND LUBE: {storeDetails["BRAND LUBE"]}
+                            <br />  BRAND CREO: {storeDetails["BRAND CREO"]}
+                        </Typography>
+                    </CardContent>
 
-                {/* <Carousel.Item>*/}
-                {/* <h4 style={{ letterSpacing: 5 }}>PROFILI SOCIAL</h4> */}
-                {/* <br />
-    <div className="ContainerTabella">
-      <div className="Tabella"> */}
-                {/* <DataGrid rows={siti} columns={columns} /> */}
-                {/* </div>
-    </div> */}
+                </Card>
+                <Card className={classes.root} variant="outlined" style={{ position: "relative", width: 'auto', height: "auto", marginTop: 5, marginBottom: 5, marginLeft: 5, marginRight: 5, }}>
+                    <CardContent>
 
-                {/* </Carousel.Item>
-</Carousel>   */}
+                        <Typography variant="h5" component="h2">
+                            LOCAZIONE: <br /> {storeDetails.COMUNE}
+                        </Typography>
+                        <Typography className={classes.pos} color="textSecondary">
+                            {storeDetails.INDIRIZZO}
+                        </Typography>
+                        <Typography variant="body2" component="p">
+                            PROVINCIA: ({storeDetails.PROV})
+                            <br />
+                            {storeDetails.CAP}
+
+
+                        </Typography>
+                    </CardContent>
+
+                </Card>
+                <Card className={classes.root} variant="outlined" style={{ position: "relative", width: 'auto', height: "auto", marginTop: 5, marginBottom: 5, marginLeft: 5, marginRight: 5, }}>
+                    <CardContent>
+                        <Typography variant="h5" component="h2">
+                            SOCIAL
+        </Typography>
+
+                        <Typography variant="body2" component="p">
+                            <br />   <SocialIcon url={storeDetails.FB} /> <br />
+                            <br />   <SocialIcon url={storeDetails.ISTAGRAM} /> <br />
+                            <br /> <a href={storeDetails.SITO}><LanguageIcon style={{ fontSize: 53 }}></LanguageIcon></a>
+
+                        </Typography>
+                    </CardContent>
+
+                </Card>
+                <Card className={classes.root} variant="outlined" style={{ position: "relative", width: 'auto', height: "auto", marginTop: 5, marginBottom: 5, marginLeft: 5, marginRight: 5, }}>
+                    <CardContent>
+
+                        <Typography variant="h5" component="h2">
+                            CONTATTI
+        </Typography>
+                        <Typography className={classes.pos} color="textSecondary">
+                            <br />  <SocialIcon url="http://whatsapp.com" /> <br />{storeDetails.Whatsapp}
+                        </Typography>
+                        <Typography variant="body2" component="p">
+                            <br />   <SocialIcon url="mailto:" /> <br />{storeDetails["Mail 1"]}
+                            <br /><br />  <SocialIcon url="mailto:" /> <br />{storeDetails["MAIL 2"]}
+
+
+
+                        </Typography>
+                    </CardContent>
+
+                </Card>
+
+
+                {/* <Card style={{ width: '20vh', maxHeight: "auto", marginTop: 5, marginBottom: 5, marginLeft: 5, marginRight: 5, }}>
+                        <Card.Body>
+                            <Card.Title>INDIRIZZO</Card.Title>
+                            <Card.Text>
+                            FALCONARA MARITTIMA , VIA N. BIXIO, 112, "AN", 60015
+                            FALCONARA MARITTIMA , VIA N. BIXIO, 112, "AN", 60015
+                          
+                            
+                            </Card.Text>
+                           
+                        </Card.Body>
+                    </Card>
+                    <Card style={{ width: '20vh', maxHeight: "auto", marginTop: 5, marginBottom: 5, marginLeft: 5, marginRight: 5, }}>
+                        <Card.Body>
+                            <Card.Title>INDIRIZZO</Card.Title>
+                            <Card.Text>
+                            FALCONARA MARITTIMA , VIA N. BIXIO, 112, "AN", 60015
+                            FALCONARA MARITTIMA , VIA N. BIXIO, 112, "AN", 60015
+                          
+                            
+                            </Card.Text>
+                           
+                        </Card.Body>
+                    </Card>
+                    <Card style={{ width: '20vh', maxHeight: "auto", marginTop: 5, marginBottom: 5, marginLeft: 5, marginRight: 5, }}>
+                        <Card.Body>
+                            <Card.Title>INDIRIZZO</Card.Title>
+                            <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle>
+                            <Card.Text>
+                            FALCONARA MARITTIMA , VIA N. BIXIO, 112, "AN", 60015
+                            FALCONARA MARITTIMA , VIA N. BIXIO, 112, "AN", 60015
+                          
+                            
+                            </Card.Text>
+                           
+                        </Card.Body>
+                    </Card>
+                    <Card style={{ width: '20vh', maxHeight: "auto", marginTop: 5, marginBottom: 5, marginLeft: 5, marginRight: 5, }}>
+                        <Card.Body>
+                            <Card.Title>INDIRIZZO</Card.Title>
+                            <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle>
+                            <Card.Text>
+                            FALCONARA MARITTIMA , VIA N. BIXIO, 112, "AN", 60015
+                            FALCONARA MARITTIMA , VIA N. BIXIO, 112, "AN", 60015
+                          
+                            
+                            </Card.Text>
+                           
+                        </Card.Body>
+                    </Card>
+                    <Card style={{ width: '20vh', maxHeight: "auto", marginTop: 5, marginBottom: 5, marginLeft: 5, marginRight: 5, }}>
+                        <Card.Body>
+                            <Card.Title>INDIRIZZO</Card.Title>
+                            <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle>
+                            <Card.Text>
+                            FALCONARA MARITTIMA , VIA N. BIXIO, 112, "AN", 60015
+                            FALCONARA MARITTIMA , VIA N. BIXIO, 112, "AN", 60015
+                          
+                            
+                            </Card.Text>
+                           
+                        </Card.Body>
+                    </Card> */}
             </div>
+
+            {/* </div> */}
         </div>
     );
 }
-
 export default Store;

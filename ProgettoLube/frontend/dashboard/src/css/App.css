@@ -1,7 +1,7 @@
 .App {
   text-align: center;
 
-  height: 100vh;
+  height: 90vh;
   display: flex;
   flex-direction: column;
   /* justify-content: space-between; */
@@ -56,9 +56,10 @@ a.Link::after {
 
 .Tabella {
   height: 60vh; 
-  width: 70%; 
+  width: 90%; 
   background-color: #fff;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  
 }
 .ContainerTabella {
   height: 65vh; 
@@ -92,7 +93,7 @@ a.Link::after {
   display: flex;
   flex-direction: column;
   align-items: center; 
-  width: 15%;
+  width: auto;
   align-self: center;
   border-radius: 25px;
   margin-top: 1vh;
@@ -132,3 +133,21 @@ a.Link::after {
 .InputGroup{
   padding: 10px 0;
 }
+
+
+.MuiDataGrid-root .MuiDataGrid-colCellWrapper{
+  display: inline-table;
+}
+
+
+.cardsContainer{
+  margin-top:3%;
+  margin-bottom:12%;
+overflow-y:scroll;
+  height: 75vh;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+ /* border: 1px solid black;  */
+}
+

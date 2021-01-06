@@ -95,8 +95,8 @@ function Home() {
             }
           },
           { field: 'id', headerName: 'id', width: 200, hide: true },
-          { field: 'date', headerName: 'Data', width: 200 },
-          { field: 'name', headerName: 'Nome', width: 200 },
+          { field: 'date', headerName: 'Data', width: 400 },
+          { field: 'name', headerName: 'Nome', width: 400 },
           { field: 'valutazione', headerName: 'Valutazione', width: '100%' },
         ];
         setColumns(pino);
@@ -130,8 +130,8 @@ function Home() {
   function fetchReportAnnuali() {
     //non ha selezionato il nome dello store
     const pino = [
-      { field: 'id', headerName: 'Name', width: 200, },
-      { field: 'year', headerName: 'Anno', width: 200 },
+      { field: 'id', headerName: 'Name', width: 400, },
+      { field: 'year', headerName: 'Anno', width: 400 },
       { field: 'valutazione', headerName: 'Valutazione', width: '100%' },
     ];
     if (!value) {

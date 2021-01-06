@@ -54,6 +54,7 @@
   .nav-item {
     height: 25px;
     color: #fff;
+    margin-top: 3%;
   }
   .nav-item:hover {
     /* color: rgb(255, 255, 255); */
@@ -93,25 +94,24 @@
     .nav-menu {
       display: flex;
       flex-direction: column;
-      width: 110%;
-      height: 89.6%;
+      width: 100%;
+      height: 100.6%;
       position: absolute;
-      top: 84px;
-      left: -500px;
+      top: 62px;
+      left:-1000px;
       opacity: 1;
       transition: all 0.8s ease;
       z-index: 1;
-      
     }
-  
     .nav-menu.active {
-      background: #242222;
-      left: 50px;
+      background: indianred;
+      left: 90px;
+      height: auto;
+      padding-bottom: 5%;
       opacity: 1;
       transition: all 0.3s ease;
       z-index: 1;
-
-    }
+   }
   
     .nav-links {
       text-align: center;

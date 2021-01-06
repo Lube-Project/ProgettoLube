@@ -67,3 +67,25 @@ function Navbar() {
 }
 
 export default Navbar;
+
+//  .nav-menu {
+//    display: flex;
+//    flex-direction: column;
+//    width: 100%;
+//    height: 100.6%;
+//    position: absolute;
+//    top: 63px;
+//    left: 0;
+//    opacity: 1;
+//    transition: all 0.8s ease;
+//    z-index: 1;
+//  }
+//  .nav-menu.active {
+//    background: indianred;
+//    left: 90px;
+//    height: auto;
+//    padding-bottom: 5%;
+//    opacity: 1;
+//    transition: all 0.3s ease;
+//    z-index: 1;
+// }
