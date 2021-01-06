@@ -3,7 +3,7 @@
 import pymongo
 import json
 import flask
-from flask import request,jsonify
+from flask import request, jsonify
 from flask_restplus import Api, Resource, fields
 from flask_cors import CORS
 from DBmanager import DBmanager
@@ -47,6 +47,7 @@ class retrieveResellersPositions(Resource):
         lista = load.load_store_positions()
         return {"lista": lista}
 
+
 @name_space_resources.route('/retrieveResellerDetails')
 class retrieveResellerDetails(Resource):
 
@@ -55,8 +56,8 @@ class retrieveResellerDetails(Resource):
     def get(self):
         name = request.args.get('name', type=str)
         load = LoadResources()
-        obj = load.load_store_details_name(name)
-        return obj
+        dict = load.load_store_details_name(name)
+        return dict
 
 
 ######################################################################################################################à

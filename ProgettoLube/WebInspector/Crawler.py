@@ -5,7 +5,7 @@ import socket
 import threading
 import time
 import urllib.request
-
+from urllib.request import Request, urlopen
 import logging
 from os.path import basename
 from urllib.error import HTTPError, URLError
@@ -32,11 +32,12 @@ class Crawler:
         self.logger.info("THREAD " + str(index) + " ANALIZZO : " + url)
         self.logger.info(
             "-------------------------------------------------------------------------------------------------")
-        try:
-            page = urllib.request.urlopen(url, timeout=20)
-        except HTTPError as e:
-            page = e.read()
-        soup = BeautifulSoup(page, 'html.parser')
+        options = Options()
+        options.add_argument('--headless')
+        browser = webdriver.Chrome(options=options)
+        browser.get(url)
+        soup = BeautifulSoup(browser.page_source, "html.parser")
+        browser.close()
         body = soup.find('body')
         images = body.findAll('img')
         for image in images:
@@ -50,7 +51,7 @@ class Crawler:
                 urlimg = "http://" + urlimg
             urlimg = self.elimina_parametri_url_img(urlimg)
             path = os.path.join(
-                r"C:\Users\matti\git\ProgettoLube\ProgettoLube\WebInspector\images" + "\\" + basename(
+                r"C:\Users\matti\git\ProgettoLube\ProgettoLube\WebInspector\photo_downloaded" + "\\" + basename(
                     urlimg))
             self.logger.info("THREAD " + str(index) + " SALVO " + urlimg)
             # logger.info(path)
@@ -62,7 +63,10 @@ class Crawler:
                 if imgsize > size:
                     with open(path, "wb") as f:
                         try:
-                            content = urllib.request.urlopen(urlimg, timeout=10).read()
+                            req = Request(
+                                urlimg,
+                                headers={'User-Agent': 'Mozilla/5.0'})
+                            content = urlopen(req).read()
                         except (HTTPError, URLError) as error:
                             logging.error('Data of %s not retrieved because %s\nURL: %s', urlimg, error, url)
                         except socket.timeout:
@@ -93,8 +97,9 @@ class Crawler:
 
     def find_href(self, root, child, ref):
         options = Options()
-        options.add_argument('--headless')
-        browser = webdriver.Chrome(options=options)
+        #options.add_argument('--headless')
+        options.add_argument("start-maximized")
+        browser = webdriver.Chrome(chrome_options=options)
         browser.get(child)
         soup = BeautifulSoup(browser.page_source, "html.parser")
         browser.close()
@@ -124,15 +129,19 @@ class Crawler:
         # seguo solo gli iframe che contengono la parola lube o la root del sito ma se l'iframe è della lube no
         iframelube = []
         for x in soup.find_all('iframe'):
-            if no not in x['src']:
-                if x['src'].startswith(root):
-                    print("IFRAME : ", x['src'])
-                    iframelube.append(x['src'])
+            if x.has_attr('src'):
+                if no not in x['src']:
+                    if x['src'].startswith(root):
+                        print("IFRAME : ", x['src'])
+                        iframelube.append(x['src'])
         soup.decompose()
         if len(iframelube) > 0:
             for x in iframelube:
                 try:
-                    page = urllib.request.urlopen(x, timeout=20)
+                    req = Request(
+                        x,
+                        headers={'User-Agent': 'Mozilla/5.0'})
+                    page = urlopen(req)
                 except HTTPError as e:
                     page = e.read()
                 frame = BeautifulSoup(page, 'html.parser')
@@ -206,14 +215,17 @@ class Crawler:
         key = 'api.gruppolube.it'
         for url in lista_href:
             try:
-                page = urllib.request.urlopen(url, timeout=20)
+                req = Request(
+                    url,
+                    headers={'User-Agent': 'Mozilla/5.0'})
+                page = urlopen(req)
             except HTTPError as e:
                 page = e.read()
             # soup = BeautifulSoup(page.content, 'html.parser')
             soup = BeautifulSoup(page, 'html.parser')
             for script in soup.find_all('script', {"src": True}):
                 if key in script['src']:
-                    self.logger.info("FOUND SCRIPT : " + script['src']+" IN " + url)
+                    self.logger.info("FOUND SCRIPT : " + script['src'] + " IN " + url)
                     Dict[url] = script['src']
 
         return Dict
@@ -225,7 +237,10 @@ class Crawler:
         for url in lista_href:
             temp = []
             try:
-                page = urllib.request.urlopen(url, timeout=20)
+                req = Request(
+                    url,
+                    headers={'User-Agent': 'Mozilla/5.0'})
+                content = urlopen(req)
             except HTTPError as e:
                 page = e.read()
             # soup = BeautifulSoup(page.content, 'html.parser')

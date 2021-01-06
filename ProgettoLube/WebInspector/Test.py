@@ -1,11 +1,16 @@
 import os
 import unittest
-import urllib
+from os.path import basename
+from urllib.request import Request, urlopen
 from urllib.error import HTTPError
 from bs4 import BeautifulSoup
 import time
 import pymongo
+from selenium import webdriver
 
+from selenium.webdriver.chrome.options import Options
+
+from Crawler import Crawler
 from ImageClassificator import ImageClassificator
 from ImageWorker import ImageWorker
 from LoadResources import LoadResources
@@ -66,15 +71,40 @@ class MyTestCase(unittest.TestCase):
         worker.processImage(path1, path2)
 
     def testino(self):
-        url = "https://www.coop.se/butiker-erbjudanden/coop/coop-ladugardsangen-/"
-        try:
-            page = urllib.request.urlopen(url, timeout=20)
-        except HTTPError as e:
-            page = e.read()
-        soup = BeautifulSoup(page, 'html.parser')
-        lst = ['C', 'B', 'A', 'B']
-        lst = list(dict.fromkeys(lst))
-        print(lst)
+        url = "https://www.lubebrescia.it/media/widgetkit/cucina-classica-5b0210bc2cc2ff588457b4ce462a3522.jpg"
+        #content = urllib.request.urlopen(url, timeout=10)
+        path = r"C:\Users\matti\git\ProgettoLube\ProgettoLube\WebInspector\photo_downloaded"+"\\"+\
+               basename('https://www.lubebrescia.it/media/widgetkit/cucina-classica-5b0210bc2cc2ff588457b4ce462a3522.jpg')
+        req = Request(
+            'https://www.lubebrescia.it/media/widgetkit/cucina-classica-5b0210bc2cc2ff588457b4ce462a3522.jpg',
+            headers={'User-Agent': 'Mozilla/5.0'})
+        with open(path, "wb") as f:
+            content = urlopen(req).read()
+            try:
+                f.write(content)
+            except IOError as e:
+                print("I/O error: ".format(e.errno, e.strerror))
+        #webpage = urlopen(req).read()
+        #print(webpage)
+        # soup = BeautifulSoup(browser.page_source, "html.parser")
+        # browser.close()
+        # for x in soup.find_all('iframe'):
+        #     if x.has_attr('src'):
+        #         print(x)
+        # url = "https://www.lubebrescia.it"
+        # options = Options()
+        # options.add_argument('--headless')
+        # browser = webdriver.Chrome(options=options)
+        # browser.get(url)
+        # soup = BeautifulSoup(browser.page_source, "html.parser")
+        # browser.close()
+        # body = soup.find('body')
+        # print("BODY :", body)
+        # crawler = Crawler()
+        # lista = ["https://www.lubebrescia.it/news-cucine/53-ultime-cucine-a-meta-prezzo-brescia.html",
+        #          "https://www.lubebrescia.it/#","https://www.lubebrescia.it/news-cucine/54-interiordesign.html"]
+        # crawler.scrape_photos("https://www.lubebrescia.it",lista)
+
 
     def test_list_dir(self):
         from os import listdir
@@ -123,8 +153,16 @@ class MyTestCase(unittest.TestCase):
 
     def test_pandas(self):
         pino = LoadResources()
-        pino.load_store_positions()
+        pino.load_store_details_name("Lube Creo Store Pratola Peligna")
 
+    def test_path_files(self):
+        path = 'dataset_image_ssim\\'
+        mypath2 = "C:\\Users\\matti\\git\\ProgettoLube\\ProgettoLube\\WebInspector\\"
+        paths = [os.path.join(path, fn) for fn in next(os.walk(path))[2]]
+        temp = []
+        for x in paths:
+            temp.append(mypath2 + x)
+        print(temp)
 
 if __name__ == '__main__':
     unittest.main()

@@ -17,35 +17,35 @@ class Vgg16:
     img_width = 180
     base_dir = "C:\\Users\\matti\\OneDrive\\Desktop\\vgg16_logos"
 
-    train_dir = os.path.join(base_dir, 'training')
-    validation_dir = os.path.join(base_dir, 'validation')
-
-    # Directory with our training cat pictures
-    #train_cats_dir = os.path.join(train_dir, 'cats')
-
-    # Directory with our training dog pictures
-    #train_dogs_dir = os.path.join(train_dir, 'dogs')
-
-    # Directory with our validation cat pictures
-    #validation_cats_dir = os.path.join(validation_dir, 'cats')
-
-    # Directory with our validation dog pictures
-    #validation_dogs_dir = os.path.join(validation_dir, 'dogs')
-
-    # Add our data-augmentation parameters to ImageDataGenerator
-    train_datagen = ImageDataGenerator(rescale=1. / 255., rotation_range=40, width_shift_range=0.2,
-                                       height_shift_range=0.2, shear_range=0.2, zoom_range=0.2, horizontal_flip=True)
-
-    # Note that the validation data should not be augmented!
-    test_datagen = ImageDataGenerator(rescale=1.0 / 255.)
-
-    # Flow training images in batches of 20 using train_datagen generator
-    train_generator = train_datagen.flow_from_directory(train_dir, batch_size=20, class_mode='binary',
-                                                        target_size=(224, 224))
-
-    # Flow validation images in batches of 20 using test_datagen generator
-    validation_generator = test_datagen.flow_from_directory(validation_dir, batch_size=20, class_mode='binary',
-                                                            target_size=(224, 224))
+    # train_dir = os.path.join(base_dir, 'training')
+    # validation_dir = os.path.join(base_dir, 'validation')
+    #
+    # # Directory with our training cat pictures
+    # #train_cats_dir = os.path.join(train_dir, 'cats')
+    #
+    # # Directory with our training dog pictures
+    # #train_dogs_dir = os.path.join(train_dir, 'dogs')
+    #
+    # # Directory with our validation cat pictures
+    # #validation_cats_dir = os.path.join(validation_dir, 'cats')
+    #
+    # # Directory with our validation dog pictures
+    # #validation_dogs_dir = os.path.join(validation_dir, 'dogs')
+    #
+    # # Add our data-augmentation parameters to ImageDataGenerator
+    # train_datagen = ImageDataGenerator(rescale=1. / 255., rotation_range=40, width_shift_range=0.2,
+    #                                    height_shift_range=0.2, shear_range=0.2, zoom_range=0.2, horizontal_flip=True)
+    #
+    # # Note that the validation data should not be augmented!
+    # test_datagen = ImageDataGenerator(rescale=1.0 / 255.)
+    #
+    # # Flow training images in batches of 20 using train_datagen generator
+    # train_generator = train_datagen.flow_from_directory(train_dir, batch_size=20, class_mode='binary',
+    #                                                     target_size=(224, 224))
+    #
+    # # Flow validation images in batches of 20 using test_datagen generator
+    # validation_generator = test_datagen.flow_from_directory(validation_dir, batch_size=20, class_mode='binary',
+    #                                                         target_size=(224, 224))
 
     #base_model = VGG16(input_shape=(224, 224, 3),  # Shape of our images
                       # include_top=False,  # Leave out the last fully connected layer
@@ -73,170 +73,186 @@ class Vgg16:
 
     #vgghist = model.fit(train_generator, validation_data=validation_generator, steps_per_epoch=100, epochs=10)
 
-    img = keras.preprocessing.image.load_img(
-        'C:\\Users\\matti\\git\\ProgettoLube\\ProgettoLube\\WebInspector\\images\\logo.png', target_size=(img_height,img_width)
-    )
-    img_array = keras.preprocessing.image.img_to_array(img)
-    img_array = tf.expand_dims(img_array, 0)  # Create a batch
+    # img = keras.preprocessing.image.load_img(
+    #     'C:\\Users\\matti\\git\\ProgettoLube\\ProgettoLube\\WebInspector\\images\\logo.png', target_size=(img_height,img_width)
+    # )
+    # img_array = keras.preprocessing.image.img_to_array(img)
+    # img_array = tf.expand_dims(img_array, 0)  # Create a batch
 
-    image = load_img('C:\\Users\\matti\\git\\ProgettoLube\\ProgettoLube\\WebInspector\\images\\logo.png',
-                     target_size=(224, 224))
+    ###############################################################################################################
+    categorie = ['book_jacket','web_site','monitor','scoreboard','street_sign','perfume','carton','digital_clock'
+        ,'hair_spray']
+    pino = "photo_downloaded\\"
+    mypath2 = "C:\\Users\\matti\\git\\ProgettoLube\\ProgettoLube\\WebInspector\\"
+    paths = [os.path.join("photo_downloaded\\", fn) for fn in next(os.walk("photo_downloaded\\"))[2]]
+    temp = []
+    for x in paths:
+        temp.append("C:\\Users\\matti\\git\\ProgettoLube\\ProgettoLube\\WebInspector\\" + x)
+    for x in temp:
+        image = load_img(x,
+                         target_size=(224, 224))
 
-    plt.imshow(image)
-    plt.show()
+        #plt.imshow(image)
+        #plt.show()
 
-    #im = cv2.resize(cv2.imread(IMAGE_PATH), (224, 224))
-    # il metodo predict si attende un tensore N, 224, 224, 3
-    # quindi per una sola immagine deve essere 1, 224, 224, 3
-    #im = np.expand_dims(im, axis=0)
+        # im = cv2.resize(cv2.imread(IMAGE_PATH), (224, 224))
+        # il metodo predict si attende un tensore N, 224, 224, 3
+        # quindi per una sola immagine deve essere 1, 224, 224, 3
+        # im = np.expand_dims(im, axis=0)
 
-    # altro modo di procedere
-    image = np.array(image)
-    image = np.expand_dims(image, axis=0)
+        # altro modo di procedere
+        image = np.array(image)
+        image = np.expand_dims(image, axis=0)
 
-    predictions = model.predict(image)
-    label = decode_predictions(predictions, top=5)
-    # retrieve the most likely result, e.g. highest probability
-    print(label)
-    label = label[0][0]
-    # label = label[0][:]
-    # print(label)
-    # print the classification
-    print('%s (%.2f%%)' % (label[1], label[2] * 100))
+        predictions = model.predict(image)
+        label = decode_predictions(predictions, top=5)
+        # retrieve the most likely result, e.g. highest probability
+        #print(label)
+        label = label[0][0]
+        # label = label[0][:]
+        # print(label)
+        # print the classification
+        print('%s (%.2f%%)' % (label[1], label[2] * 100))
+        for y in categorie:
+            if label[1] == y:
+                print("LOGO CORRETTO TROVATO ",x)
 
-    ######################################################################################
 
-    image2 = load_img('C:\\Users\\matti\\git\\ProgettoLube\\ProgettoLube\\WebInspector\\images\\logo2.png',
-                     target_size=(224, 224))
 
-    plt.imshow(image2)
-    plt.show()
-
-    # im = cv2.resize(cv2.imread(IMAGE_PATH), (224, 224))
-    # il metodo predict si attende un tensore N, 224, 224, 3
-    # quindi per una sola immagine deve essere 1, 224, 224, 3
-    # im = np.expand_dims(im, axis=0)
-
-    # altro modo di procedere
-    image2 = np.array(image2)
-    image2 = np.expand_dims(image2, axis=0)
-
-    predictions = model.predict(image2)
-    label = decode_predictions(predictions, top=5)
-    # retrieve the most likely result, e.g. highest probability
-    print(label)
-    label = label[0][0]
-    # label = label[0][:]
-    # print(label)
-    # print the classification
-    print('%s (%.2f%%)' % (label[1], label[2] * 100))
 
     ######################################################################################
 
-    image3 = load_img('C:\\Users\\matti\\git\\ProgettoLube\\ProgettoLube\\WebInspector\\images\\cane.jpg',
-                      target_size=(224, 224))
-
-    plt.imshow(image3)
-    plt.show()
-
-    # im = cv2.resize(cv2.imread(IMAGE_PATH), (224, 224))
-    # il metodo predict si attende un tensore N, 224, 224, 3
-    # quindi per una sola immagine deve essere 1, 224, 224, 3
-    # im = np.expand_dims(im, axis=0)
-
-    # altro modo di procedere
-    image3 = np.array(image3)
-    image3 = np.expand_dims(image3, axis=0)
-
-    predictions = model.predict(image3)
-    label = decode_predictions(predictions, top=5)
-    # retrieve the most likely result, e.g. highest probability
-    print(label)
-    label = label[0][0]
-    # label = label[0][:]
+    # image2 = load_img('C:\\Users\\matti\\git\\ProgettoLube\\ProgettoLube\\WebInspector\\images\\logo2.png',
+    #                  target_size=(224, 224))
+    #
+    # plt.imshow(image2)
+    # plt.show()
+    #
+    # # im = cv2.resize(cv2.imread(IMAGE_PATH), (224, 224))
+    # # il metodo predict si attende un tensore N, 224, 224, 3
+    # # quindi per una sola immagine deve essere 1, 224, 224, 3
+    # # im = np.expand_dims(im, axis=0)
+    #
+    # # altro modo di procedere
+    # image2 = np.array(image2)
+    # image2 = np.expand_dims(image2, axis=0)
+    #
+    # predictions = model.predict(image2)
+    # label = decode_predictions(predictions, top=5)
+    # # retrieve the most likely result, e.g. highest probability
     # print(label)
-    # print the classification
-    print('%s (%.2f%%)' % (label[1], label[2] * 100))
-
-    ######################################################################################
-
-    image4 = load_img('C:\\Users\\matti\\git\\ProgettoLube\\ProgettoLube\\WebInspector\\images\\scavolini.png',
-                      target_size=(224, 224))
-
-    plt.imshow(image4)
-    plt.show()
-
-    # im = cv2.resize(cv2.imread(IMAGE_PATH), (224, 224))
-    # il metodo predict si attende un tensore N, 224, 224, 3
-    # quindi per una sola immagine deve essere 1, 224, 224, 3
-    # im = np.expand_dims(im, axis=0)
-
-    # altro modo di procedere
-    image4 = np.array(image4)
-    image4 = np.expand_dims(image4, axis=0)
-
-    predictions = model.predict(image4)
-    label = decode_predictions(predictions, top=5)
-    # retrieve the most likely result, e.g. highest probability
-    print(label)
-    label = label[0][0]
-    # label = label[0][:]
+    # label = label[0][0]
+    # # label = label[0][:]
+    # # print(label)
+    # # print the classification
+    # print('%s (%.2f%%)' % (label[1], label[2] * 100))
+    #
+    # ######################################################################################
+    #
+    # image3 = load_img('C:\\Users\\matti\\git\\ProgettoLube\\ProgettoLube\\WebInspector\\images\\cane.jpg',
+    #                   target_size=(224, 224))
+    #
+    # plt.imshow(image3)
+    # plt.show()
+    #
+    # # im = cv2.resize(cv2.imread(IMAGE_PATH), (224, 224))
+    # # il metodo predict si attende un tensore N, 224, 224, 3
+    # # quindi per una sola immagine deve essere 1, 224, 224, 3
+    # # im = np.expand_dims(im, axis=0)
+    #
+    # # altro modo di procedere
+    # image3 = np.array(image3)
+    # image3 = np.expand_dims(image3, axis=0)
+    #
+    # predictions = model.predict(image3)
+    # label = decode_predictions(predictions, top=5)
+    # # retrieve the most likely result, e.g. highest probability
     # print(label)
-    # print the classification
-    print('%s (%.2f%%)' % (label[1], label[2] * 100))
-
-    ######################################################################################
-
-    image5 = load_img('C:\\Users\\matti\\git\\ProgettoLube\\ProgettoLube\\WebInspector\\images\\promo.png',
-                      target_size=(224, 224))
-
-    plt.imshow(image5)
-    plt.show()
-
-    # im = cv2.resize(cv2.imread(IMAGE_PATH), (224, 224))
-    # il metodo predict si attende un tensore N, 224, 224, 3
-    # quindi per una sola immagine deve essere 1, 224, 224, 3
-    # im = np.expand_dims(im, axis=0)
-
-    # altro modo di procedere
-    image5 = np.array(image5)
-    image5 = np.expand_dims(image5, axis=0)
-
-    predictions = model.predict(image5)
-    label = decode_predictions(predictions, top=5)
-    # retrieve the most likely result, e.g. highest probability
-    print(label)
-    label = label[0][0]
-    # label = label[0][:]
+    # label = label[0][0]
+    # # label = label[0][:]
+    # # print(label)
+    # # print the classification
+    # print('%s (%.2f%%)' % (label[1], label[2] * 100))
+    #
+    # ######################################################################################
+    #
+    # image4 = load_img('C:\\Users\\matti\\git\\ProgettoLube\\ProgettoLube\\WebInspector\\images\\scavolini.png',
+    #                   target_size=(224, 224))
+    #
+    # plt.imshow(image4)
+    # plt.show()
+    #
+    # # im = cv2.resize(cv2.imread(IMAGE_PATH), (224, 224))
+    # # il metodo predict si attende un tensore N, 224, 224, 3
+    # # quindi per una sola immagine deve essere 1, 224, 224, 3
+    # # im = np.expand_dims(im, axis=0)
+    #
+    # # altro modo di procedere
+    # image4 = np.array(image4)
+    # image4 = np.expand_dims(image4, axis=0)
+    #
+    # predictions = model.predict(image4)
+    # label = decode_predictions(predictions, top=5)
+    # # retrieve the most likely result, e.g. highest probability
     # print(label)
-    # print the classification
-    print('%s (%.2f%%)' % (label[1], label[2] * 100))
-
-    ######################################################################################
-
-    image6 = load_img('C:\\Users\\matti\\git\\ProgettoLube\\ProgettoLube\\WebInspector\\images\\car.jpg',
-                      target_size=(224, 224))
-
-    plt.imshow(image6)
-    plt.show()
-
-    # im = cv2.resize(cv2.imread(IMAGE_PATH), (224, 224))
-    # il metodo predict si attende un tensore N, 224, 224, 3
-    # quindi per una sola immagine deve essere 1, 224, 224, 3
-    # im = np.expand_dims(im, axis=0)
-
-    # altro modo di procedere
-    image6 = np.array(image6)
-    image6 = np.expand_dims(image6, axis=0)
-
-    predictions = model.predict(image6)
-    label = decode_predictions(predictions, top=5)
-    # retrieve the most likely result, e.g. highest probability
-    print(label)
-    label = label[0][0]
-    # label = label[0][:]
+    # label = label[0][0]
+    # # label = label[0][:]
+    # # print(label)
+    # # print the classification
+    # print('%s (%.2f%%)' % (label[1], label[2] * 100))
+    #
+    # ######################################################################################
+    #
+    # image5 = load_img('C:\\Users\\matti\\git\\ProgettoLube\\ProgettoLube\\WebInspector\\images\\promo.png',
+    #                   target_size=(224, 224))
+    #
+    # plt.imshow(image5)
+    # plt.show()
+    #
+    # # im = cv2.resize(cv2.imread(IMAGE_PATH), (224, 224))
+    # # il metodo predict si attende un tensore N, 224, 224, 3
+    # # quindi per una sola immagine deve essere 1, 224, 224, 3
+    # # im = np.expand_dims(im, axis=0)
+    #
+    # # altro modo di procedere
+    # image5 = np.array(image5)
+    # image5 = np.expand_dims(image5, axis=0)
+    #
+    # predictions = model.predict(image5)
+    # label = decode_predictions(predictions, top=5)
+    # # retrieve the most likely result, e.g. highest probability
     # print(label)
-    # print the classification
-    print('%s (%.2f%%)' % (label[1], label[2] * 100))
+    # label = label[0][0]
+    # # label = label[0][:]
+    # # print(label)
+    # # print the classification
+    # print('%s (%.2f%%)' % (label[1], label[2] * 100))
+    #
+    # ######################################################################################
+    #
+    # image6 = load_img('C:\\Users\\matti\\git\\ProgettoLube\\ProgettoLube\\WebInspector\\images\\car.jpg',
+    #                   target_size=(224, 224))
+    #
+    # plt.imshow(image6)
+    # plt.show()
+    #
+    # # im = cv2.resize(cv2.imread(IMAGE_PATH), (224, 224))
+    # # il metodo predict si attende un tensore N, 224, 224, 3
+    # # quindi per una sola immagine deve essere 1, 224, 224, 3
+    # # im = np.expand_dims(im, axis=0)
+    #
+    # # altro modo di procedere
+    # image6 = np.array(image6)
+    # image6 = np.expand_dims(image6, axis=0)
+    #
+    # predictions = model.predict(image6)
+    # label = decode_predictions(predictions, top=5)
+    # # retrieve the most likely result, e.g. highest probability
+    # print(label)
+    # label = label[0][0]
+    # # label = label[0][:]
+    # # print(label)
+    # # print the classification
+    # print('%s (%.2f%%)' % (label[1], label[2] * 100))
 
 
