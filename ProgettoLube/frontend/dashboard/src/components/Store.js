@@ -119,7 +119,17 @@ function Store(props) {
 
     const [year, setYear] = useState(0);
     const [month, setMonth] = useState(0);
-    const [viewmonth, setViewmonth] = useState(0);
+    const [viewmonth, setViewmonth] = useState();
+
+    const showButton = () => {
+        if (window.innerWidth <= 960) {
+            setButton(false);
+        } else {
+            setButton(true);
+        }
+    }
+
+    window.addEventListener("resize", showButton);
 
 
     const fetchResellerDetails = async () => {
@@ -154,16 +164,50 @@ function Store(props) {
                 setReports(response);
             });
         setColumns(pino);
-        setGrid(true);
+        //setGrid(true);
         return null;
 
     }
 
     function getReportMensile() {
+        //non ha selezionato il nome dello store
+        console.log(month);
+        const pino = [
+            { field: 'id', headerName: 'Name', width: 400, },
+            { field: 'year', headerName: 'Anno', width: 400 },
+            { field: 'month', headerName: 'Mese', width: 400 },
+            { field: 'valutazione', headerName: 'Valutazione', width: '100%' },
+        ];
+
+        axios.get(`http://localhost:5000/reports/retrieveMonthYearAverageName?year=${year}&month=${month}&name=${data}&range1=${range[0]}&range2=${range[1]}`)
+            .then(res => {
+                const reports = res.data.lista;
+                setReports(reports);
+            });
+        setColumns(pino);
+        return null;
+
 
     }
 
     function getReportDate() {
+        
+    const pino = [
+        { field: 'id', headerName: 'Name', width: 350, },
+        { field: 'year', headerName: 'Anno', width: 250 },
+        { field: 'month', headerName: 'Mese', width: 250 },
+        { field: 'day', headerName: 'Giorno', width: 250 },
+        { field: 'valutazione', headerName: 'Valutazione', width: '100%' },
+      ];
+     
+        axios.get(`http://localhost:5000/reports/retrieveDayMonthYearName?year=${date.getFullYear()}&month=${date.getMonth()+1}&day=${date.getDate()}&name=${data}&range1=${range[0]}&range2=${range[1]}`)
+          .then(res => {
+            const reports = res.data.lista;
+            setReports(reports);
+          });
+        setColumns(pino);
+        return null;
+      
 
     }
     function FormAnnuale() {
@@ -354,6 +398,7 @@ function Store(props) {
                     optionClasses={'option classes'}
                 />
                 <Button
+                    onClick={() => { getReportMensile() }}
                     variant="contained"
                     color="primary"
                     className={classes.button}
@@ -431,6 +476,7 @@ function Store(props) {
                     value={date}
                 />
                 <Button
+                    onClick={() => { getReportDate() }}
                     variant="contained"
                     color="primary"
                     className={classes.button}
@@ -448,117 +494,115 @@ function Store(props) {
             <div className="Titolo">
                 <h2>DETTAGLI {data}</h2>
             </div>
-            <Carousel activeIndex={index} onSelect={handleSelect} interval={null}>
-                <Carousel.Item>
-                    {choice == 'Report annuali' ?
-                        <FormAnnuale /> : choice == 'Report mensili' ?
-                            <FormMensile /> : choice == 'Report giornalieri' ?
-                                <FormGiornaliero /> : null}
+            <div className={button ? 'Ricerca' : 'RicercaHidden'} >
+                {choice == 'Report annuali' ?
+                    <FormAnnuale /> : choice == 'Report mensili' ?
+                        <FormMensile /> : choice == 'Report giornalieri' ?
+                            <FormGiornaliero /> : null}
 
-                    <FormControl className={classes.formControl}   >
+                <FormControl className={classes.formControl}   >
 
-                        <InputLabel id="demo-simple-select-disabled-label">Ultimi Report</InputLabel>
-                        <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            value={choice}
-                            onChange={handleChange}
-                            placeholder={choice}
+                    <InputLabel id="demo-simple-select-disabled-label">Ultimi Report</InputLabel>
+                    <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={choice}
+                        onChange={handleChange}
+                        placeholder={choice}
 
 
-                        >
-                            <MenuItem value={'Report annuali'}>Report annuali</MenuItem>
-                            <MenuItem value={'Report mensili'}>Report mensili</MenuItem>
-                            <MenuItem value={'Report giornalieri'}>Report giornalieri</MenuItem>
-                        </Select>
-                    </FormControl>
-                    <div className="ContainerTabella">
-                        <div className="Tabella">
-                            {grid ? <DataGrid rows={reports} columns={columns} /> : null}
-                        </div>
-                    </div>
-                    
-                    {/* <div className="Container"> */}
-                </Carousel.Item>
-                <Carousel.Item>
-                    <div className="cardsContainer">
+                    >
+                        <MenuItem value={'Report annuali'}>Report annuali</MenuItem>
+                        <MenuItem value={'Report mensili'}>Report mensili</MenuItem>
+                        <MenuItem value={'Report giornalieri'}>Report giornalieri</MenuItem>
+                    </Select>
+                </FormControl>
+            </div>
+            <div className="ContainerTabella">
+                <div className="Tabella">
+                    <DataGrid rows={reports} columns={columns} />
+                </div>
+            </div>
 
-                        <Card className={classes.root} variant="outlined" style={{ position: "relative", width: 'auto', height: "auto", marginTop: 5, marginBottom: 5, marginLeft: 5, marginRight: 5, }}>
-                            <CardContent>
-                                <Typography variant="h5" component="h2">
-                                    DESAGE: <br />{storeDetails.DESAGE}
-                                </Typography>
-                                <Typography className={classes.title} color="textSecondary" gutterBottom>
-                                    ID NEGOZIO: {storeDetails.IDNEGOZIO}
-                                </Typography>
-                                {/* <Typography className={classes.pos} color="textSecondary">
+            {/* <div className="Container"> */}
+
+            <div className="cardsContainer">
+
+                <Card className={classes.root} variant="outlined" style={{ position: "relative", width: 'auto', height: "auto", marginTop: 5, marginBottom: 5, marginLeft: 5, marginRight: 5 }}>
+                    <CardContent >
+                        <Typography variant="h5" component="h2">
+                            TIPOLOGIA: <br /> {storeDetails.TIPOLOGIA}
+
+                        </Typography>
+                        <Typography className={classes.title} color="textSecondary" gutterBottom>
+                            ID NEGOZIO: {storeDetails.IDNEGOZIO}
+                        </Typography>
+                        {/* <Typography className={classes.pos} color="textSecondary">
                                 adjective
         </Typography> */}
-                                <Typography variant="body2" component="p">
-                                    <br /> RAGIONE SOCIALE:   {storeDetails["RAGIONE SOCIALE"]}
-                                    <br />  TIPOLOGIA: {storeDetails.TIPOLOGIA}
-                                    <br />  BRAND LUBE: {storeDetails["BRAND LUBE"]}
-                                    <br />  BRAND CREO: {storeDetails["BRAND CREO"]}
-                                </Typography>
-                            </CardContent>
+                        <Typography variant="body2" component="p">
+                            <br /> RAGIONE SOCIALE:   {storeDetails["RAGIONE SOCIALE"]}
+                            <br /> DESAGE: {storeDetails.DESAGE}
+                            <br />  BRAND LUBE: {storeDetails["BRAND LUBE"]}
+                            <br />  BRAND CREO: {storeDetails["BRAND CREO"]}
+                        </Typography>
+                    </CardContent>
 
-                        </Card>
-                        <Card className={classes.root} variant="outlined" style={{ position: "relative", width: 'auto', height: "auto", marginTop: 5, marginBottom: 5, marginLeft: 5, marginRight: 5, }}>
-                            <CardContent>
+                </Card>
+                <Card className={classes.root} variant="outlined" style={{ position: "relative", width: 'auto', height: "auto", marginTop: 5, marginBottom: 5, marginLeft: 5, marginRight: 5, }}>
+                    <CardContent>
 
-                                <Typography variant="h5" component="h2">
-                                    LOCAZIONE: <br /> {storeDetails.COMUNE}
-                                </Typography>
-                                <Typography className={classes.pos} color="textSecondary">
-                                    {storeDetails.INDIRIZZO}
-                                </Typography>
-                                <Typography variant="body2" component="p">
-                                    PROVINCIA: ({storeDetails.PROV})
+                        <Typography variant="h5" component="h2">
+                            LOCAZIONE: <br /> {storeDetails.COMUNE}
+                        </Typography>
+                        <Typography className={classes.pos} color="textSecondary">
+                            {storeDetails.INDIRIZZO}
+                        </Typography>
+                        <Typography variant="body2" component="p">
+                            PROVINCIA: ({storeDetails.PROV})
                             <br />
-                                    {storeDetails.CAP}
+                            {storeDetails.CAP}
 
 
-                                </Typography>
-                            </CardContent>
+                        </Typography>
+                    </CardContent>
 
-                        </Card>
-                        <Card className={classes.root} variant="outlined" style={{ position: "relative", width: 'auto', height: "auto", marginTop: 5, marginBottom: 5, marginLeft: 5, marginRight: 5, }}>
-                            <CardContent>
-                                <Typography variant="h5" component="h2">
-                                    SOCIAL
+                </Card>
+                <Card className={classes.root} variant="outlined" style={{ position: "relative", width: 'auto', height: "auto", marginTop: 5, marginBottom: 5, marginLeft: 5, marginRight: 5, }}>
+                    <CardContent>
+                        <Typography variant="h5" component="h2">
+                            SOCIAL
         </Typography>
 
-                                <Typography variant="body2" component="p">
-                                    <br />   <SocialIcon url={storeDetails.FB} /> <br />
-                                    <br />   <SocialIcon url={storeDetails.ISTAGRAM} /> <br />
-                                    <br /> <a href={storeDetails.SITO}><LanguageIcon style={{ fontSize: 53 }}></LanguageIcon></a>
+                        <Typography variant="body2" component="p">
+                            <br />   {storeDetails.FB ? <SocialIcon url={storeDetails.FB} /> : null} <br />
+                            <br />   {storeDetails.ISTAGRAM ? <SocialIcon url={storeDetails.ISTAGRAM} /> : null} <br />
+                            <br /> {storeDetails.SITO ? <a href={storeDetails.SITO}><LanguageIcon style={{ fontSize: 53 }}></LanguageIcon></a> : null}
 
-                                </Typography>
-                            </CardContent>
+                        </Typography>
+                    </CardContent>
 
-                        </Card>
-                        <Card className={classes.root} variant="outlined" style={{ position: "relative", width: 'auto', height: "auto", marginTop: 5, marginBottom: 5, marginLeft: 5, marginRight: 5, }}>
-                            <CardContent>
+                </Card>
+                <Card className={classes.root} variant="outlined" style={{ position: "relative", width: 'auto', height: "auto", marginTop: 5, marginBottom: 5, marginLeft: 5, marginRight: 5, }}>
+                    <CardContent>
 
-                                <Typography variant="h5" component="h2">
-                                    CONTATTI
+                        <Typography variant="h5" component="h2">
+                            CONTATTI
         </Typography>
-                                <Typography className={classes.pos} color="textSecondary">
-                                    <br />  <SocialIcon url="http://whatsapp.com" /> <br />{storeDetails.Whatsapp}
-                                </Typography>
-                                <Typography variant="body2" component="p">
-                                    <br />   <SocialIcon url="mailto:" /> <br />{storeDetails["Mail 1"]}
-                                    <br /><br />  <SocialIcon url="mailto:" /> <br />{storeDetails["MAIL 2"]}
+                        <Typography className={classes.pos} color="textSecondary">
+                            <br />  <SocialIcon url="http://whatsapp.com" /> <br />{storeDetails.Whatsapp}
+                        </Typography>
+                        <Typography variant="body2" component="p">
+                            <br />   <SocialIcon url="mailto:" /> <br />{storeDetails["Mail 1"]}
+                            <br /><br />  <SocialIcon url="mailto:" /> <br />{storeDetails["MAIL 2"]}
+
+                        </Typography>
+                    </CardContent>
+
+                </Card>
 
 
-
-                                </Typography>
-                            </CardContent>
-
-                        </Card>
-
-
-                        {/* <Card style={{ width: '20vh', maxHeight: "auto", marginTop: 5, marginBottom: 5, marginLeft: 5, marginRight: 5, }}>
+                {/* <Card style={{ width: '20vh', maxHeight: "auto", marginTop: 5, marginBottom: 5, marginLeft: 5, marginRight: 5, }}>
                         <Card.Body>
                             <Card.Title>INDIRIZZO</Card.Title>
                             <Card.Text>
@@ -621,9 +665,9 @@ function Store(props) {
                            
                         </Card.Body>
                     </Card> */}
-                    </div>
-                </Carousel.Item>
-            </Carousel>
+            </div>
+
+
             {/* </div> */}
         </div>
     );

@@ -198,6 +198,11 @@ class MyTestCase(unittest.TestCase):
                 }
                 db.insert(pino)
 
+    def test_scarpe_keyword(self):
+        lista = ["https://www.lubecreostorepratolapeligna.it",]
+        crw = Crawler()
+        crw.scrape_keyword(lista)
+
 
 if __name__ == '__main__':
     unittest.main()

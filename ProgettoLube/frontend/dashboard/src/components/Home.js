@@ -175,14 +175,17 @@ function Home() {
     }
   }
   function fetchReportDate() {
-    /**TODO: bisogna ottenere dal form con data completa l'anno,mese e giorno da dare alla chiamata qua sotto */
+   
+
     const pino = [
-      { field: 'id', headerName: 'Name', width: 400, },
-      { field: 'year', headerName: 'Anno', width: 400 },
+      { field: 'id', headerName: 'Name', width: 350, },
+      { field: 'year', headerName: 'Anno', width: 250 },
+      { field: 'month', headerName: 'Mese', width: 250 },
+      { field: 'day', headerName: 'Giorno', width: 250 },
       { field: 'valutazione', headerName: 'Valutazione', width: '100%' },
     ];
     if (!value) {
-      axios.get(`http://localhost:5000/reports/retrieveDayMonthYearAverage?year=${year}&month=${month}&day=${null}&range1=${range[0]}&range2=${range[1]}`)
+      axios.get(`http://localhost:5000/reports/retrieveDayMonthYear?year=${date.getFullYear()}&month=${date.getMonth()+1}&day=${date.getDate()}&range1=${range[0]}&range2=${range[1]}`)
         .then(res => {
           const reports = res.data.lista;
           setReports(reports)
@@ -190,7 +193,7 @@ function Home() {
       setColumns(pino);
       return null;
     } else {
-      axios.get(`http://localhost:5000/reports/retrieveDayMonthYearAverageName?year=${year}&month=${month}&day=${null}&name=${value}&range1=${range[0]}&range2=${range[1]}`)
+      axios.get(`http://localhost:5000/reports/retrieveDayMonthYearName?year=${date.getFullYear()}&month=${date.getMonth()+1}&day=${date.getDate()}&name=${value}&range1=${range[0]}&range2=${range[1]}`)
         .then(res => {
           const reports = res.data.lista;
           setReports(reports);
@@ -223,7 +226,7 @@ function Home() {
 
   const [year, setYear] = useState(0);
   const [month, setMonth] = useState(0);
-  const [viewmonth, setViewmonth] = useState(0);
+  const [viewmonth, setViewmonth] = useState();
 
   /* Variabili */
   const history = useHistory();
@@ -339,7 +342,7 @@ function Home() {
               max={3}
               min={1}
               progress
-              style={{ marginTop: 16, marginBottom:16 }}
+              style={{ marginTop: 16, marginBottom:16,width:"10vw",marginRight:"6vw" }}
               value={range}
               onChange={value => {
                 if (value[0] <= value[1]) {
@@ -439,7 +442,7 @@ function Home() {
               max={3}
               min={1}
               progress
-              style={{ marginTop: 16, marginBottom:16 }}
+              style={{ marginTop: 16, marginBottom:16,width:"10vw",marginRight:"6vw" }}
               value={range}
               onChange={value => {
                 if (value[0] <= value[1]) {
@@ -451,7 +454,7 @@ function Home() {
           </Col>
           <Col md={8}>
             <InputGroup
-              style={{ width: 200 }}
+              style={{ width: 150 }}
             >
               <InputNumber
                 min={1}
@@ -605,10 +608,13 @@ function Home() {
         </Row>
       </div>
       <DatePicker
-        onChange={setDate}
+        onChange={(value) => {
+          setDate(value);
+        }}
         value={date}
       />
       <Button
+        onClick={() => { fetchReportDate() }}
         variant="contained"
         color="primary"
         className={classes.button}

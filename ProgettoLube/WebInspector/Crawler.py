@@ -61,6 +61,7 @@ class Crawler:
                 size = 0  # FILTRO modifica per regolare la grandezza desiderata dell'immagine da scaricare
                 # es:10*1024=10k
                 if imgsize > size:
+                    content = None
                     with open(path, "wb") as f:
                         try:
                             req = Request(
@@ -74,7 +75,7 @@ class Crawler:
                         except urllib.error.URLError as error:
                             logging.error('Data of %s not retrieved because %s\nURL: %s', urlimg, error, url)
                         try:
-                            f.write(content)
+                            f.write(content) if content is not None else None
                         except IOError as e:
                             print("I/O error: ".format(e.errno, e.strerror))
 
@@ -97,8 +98,8 @@ class Crawler:
 
     def find_href(self, root, child, ref):
         options = Options()
-        #options.add_argument('--headless')
-        options.add_argument("start-maximized")
+        options.add_argument('--headless')
+        #options.add_argument("start-maximized")
         browser = webdriver.Chrome(chrome_options=options)
         browser.get(child)
         soup = BeautifulSoup(browser.page_source, "html.parser")
@@ -240,7 +241,7 @@ class Crawler:
                 req = Request(
                     url,
                     headers={'User-Agent': 'Mozilla/5.0'})
-                content = urlopen(req)
+                page = urlopen(req)
             except HTTPError as e:
                 page = e.read()
             # soup = BeautifulSoup(page.content, 'html.parser')
