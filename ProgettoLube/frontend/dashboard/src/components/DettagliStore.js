@@ -124,7 +124,7 @@ function DettagliStore(props) {
 
 
     const fetchResellerDetails = async () => {
-        axios.get(`http://8a204e28719a.ngrok.io/resellers/retrieveResellerDetails?name=${data}`)
+        axios.get(`http://127.0.0.1:5000/resellers/retrieveResellerDetails?name=${data}`)
             .then(res => {
                 const response = res.data;
 
@@ -167,7 +167,7 @@ function DettagliStore(props) {
               },
         ];
         //waiting for backy
-        axios.get(`http://8a204e28719a.ngrok.io/reports/retrieveYearAverageName?year=${year}&name=${data}&range1=${range[0]}&range2=${range[1]}`)
+        axios.get(`http://127.0.0.1:5000/reports/retrieveYearAverageName?year=${year}&name=${data}&range1=${range[0]}&range2=${range[1]}`)
             .then(res => {
                 const response = res.data.lista;
                 console.log(response);
@@ -209,7 +209,7 @@ function DettagliStore(props) {
               },
         ];
 
-        axios.get(`http://8a204e28719a.ngrok.io/reports/retrieveMonthYearAverageName?year=${year}&month=${month}&name=${data}&range1=${range[0]}&range2=${range[1]}`)
+        axios.get(`http://127.0.0.1:5000/reports/retrieveMonthYearAverageName?year=${year}&month=${month}&name=${data}&range1=${range[0]}&range2=${range[1]}`)
             .then(res => {
                 const reports = res.data.lista;
                 setReports(reports);
@@ -276,7 +276,7 @@ function DettagliStore(props) {
               },
         ];
 
-        axios.get(`http://8a204e28719a.ngrok.io/reports/retrieveDayMonthYearName?year=${date.getFullYear()}&month=${date.getMonth() + 1}&day=${date.getDate()}&name=${data}&range1=${range[0]}&range2=${range[1]}`)
+        axios.get(`http://127.0.0.1:5000/reports/retrieveDayMonthYearName?year=${date.getFullYear()}&month=${date.getMonth() + 1}&day=${date.getDate()}&name=${data}&range1=${range[0]}&range2=${range[1]}`)
             .then(res => {
                 const reports = res.data.lista;
                 setReports(reports);

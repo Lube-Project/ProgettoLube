@@ -128,7 +128,7 @@ function Home() {
   }
 
   const fetchResellerNames = async () => {
-    axios.get(`http://8a204e28719a.ngrok.io/resellers/retrieveResellersNames`)
+    axios.get(`http://127.0.0.1:5000/resellers/retrieveResellersNames`)
       .then(res => {
         const data = res.data;
         // console.log(data.lista);
@@ -170,7 +170,7 @@ function Home() {
       },
     ];
     if (!value) {
-      axios.get(`http://8a204e28719a.ngrok.io/reports/retrieveYearAverage?year=${year}&range1=${range[0]}&range2=${range[1]}`)
+      axios.get(`http://127.0.0.1:5000/reports/retrieveYearAverage?year=${year}&range1=${range[0]}&range2=${range[1]}`)
         .then(res => {
           const reports = res.data.lista;
           setReports(reports)
@@ -178,7 +178,7 @@ function Home() {
       setColumns(pino);
       return null;
     } else {
-      axios.get(`http://8a204e28719a.ngrok.io/reports/retrieveYearAverageName?year=${year}&name=${value}&range1=${range[0]}&range2=${range[1]}`)
+      axios.get(`http://127.0.0.1:5000/reports/retrieveYearAverageName?year=${year}&name=${value}&range1=${range[0]}&range2=${range[1]}`)
         .then(res => {
           const reports = res.data.lista;
           setReports(reports);
@@ -217,7 +217,7 @@ function Home() {
       },
     ];
     if (!value) {
-      axios.get(`http://8a204e28719a.ngrok.io/reports/retrieveMonthYearAverage?year=${year}&month=${month}&range1=${range[0]}&range2=${range[1]}`)
+      axios.get(`http://127.0.0.1:5000/reports/retrieveMonthYearAverage?year=${year}&month=${month}&range1=${range[0]}&range2=${range[1]}`)
         .then(res => {
           const reports = res.data.lista;
           console.log(reports);
@@ -226,7 +226,7 @@ function Home() {
       setColumns(pino);
       return null;
     } else {
-      axios.get(`http://8a204e28719a.ngrok.io/reports/retrieveMonthYearAverageName?year=${year}&month=${month}&name=${value}&range1=${range[0]}&range2=${range[1]}`)
+      axios.get(`http://127.0.0.1:5000/reports/retrieveMonthYearAverageName?year=${year}&month=${month}&name=${value}&range1=${range[0]}&range2=${range[1]}`)
         .then(res => {
           const reports = res.data.lista;
           setReports(reports);
@@ -266,7 +266,7 @@ function Home() {
       },
     ];
     if (!value) {
-      axios.get(`http://8a204e28719a.ngrok.io/reports/retrieveDayMonthYear?year=${date.getFullYear()}&month=${date.getMonth() + 1}&day=${date.getDate()}&range1=${range[0]}&range2=${range[1]}`)
+      axios.get(`http://127.0.0.1:5000/reports/retrieveDayMonthYear?year=${date.getFullYear()}&month=${date.getMonth() + 1}&day=${date.getDate()}&range1=${range[0]}&range2=${range[1]}`)
         .then(res => {
           const reports = res.data.lista;
           setReports(reports)
@@ -274,7 +274,7 @@ function Home() {
       setColumns(pino);
       return null;
     } else {
-      axios.get(`http://8a204e28719a.ngrok.io/reports/retrieveDayMonthYearName?year=${date.getFullYear()}&month=${date.getMonth() + 1}&day=${date.getDate()}&name=${value}&range1=${range[0]}&range2=${range[1]}`)
+      axios.get(`http://127.0.0.1:5000/reports/retrieveDayMonthYearName?year=${date.getFullYear()}&month=${date.getMonth() + 1}&day=${date.getDate()}&name=${value}&range1=${range[0]}&range2=${range[1]}`)
         .then(res => {
           const reports = res.data.lista;
           setReports(reports);

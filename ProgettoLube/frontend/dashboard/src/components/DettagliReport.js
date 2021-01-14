@@ -49,7 +49,7 @@ function Dettagli(props) {
     // chiamata fake per richiedere i dati 
     const fetchData = async () => {
         const id = props.match.params.id;
-        axios.get(`http://8a204e28719a.ngrok.io/reports/findOne?id=${id}`)
+        axios.get(`http://127.0.0.1:5000/reports/findOne?id=${id}`)
             .then(res => {
                 const report = res.data.lista;
                 console.log('Report', report);
