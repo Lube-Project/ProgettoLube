@@ -64,7 +64,7 @@ function Home() {
 
   /* chiamata VERA per richiedere i dati al server */
   const fetchLastReports = async () => {
-    axios.get(`http://8a204e28719a.ngrok.io/reports/retrieveLastReports`)
+    axios.get(`http://127.0.0.1:5000/reports/retrieveLastReports`)
       .then(res => {
         const reports = res.data.lista;
         //console.log(reports);
@@ -116,7 +116,7 @@ function Home() {
                 thisRow[f] = params.getValue(f);
               });
 
-              return thisRow.valutazione == 3 ? <div>🔴</div> : thisRow.valutazione == 2 ? <div>🟠</div> : thisRow.valutazione == 1 ? <div>🟢</div> : null ;
+              return thisRow.valutazione == 3 ? <div>🔴</div> : thisRow.valutazione == 2 ? <div>🟡</div> : thisRow.valutazione == 1 ? <div>🟢</div> : null ;
             }
           },
         ];
@@ -147,7 +147,27 @@ function Home() {
     const pino = [
       { field: 'id', headerName: 'Name', width: 400, },
       { field: 'year', headerName: 'Anno', width: 400 },
-      { field: 'valutazione', headerName: 'Valutazione', width: '100%' },
+      {
+        field: 'valutazione',
+        headerName: "Valutazione",
+        sortable: false,
+        width: '100%',
+        disableClickEventBubbling: true,
+        renderCell: (params: CellParams) => {
+          const api: GridApi = params.api;
+          const fields = api
+            .getAllColumns()
+            .map((c) => c.field)
+            .filter((c) => c !== "__check__" && !!c);
+          const thisRow = {};
+
+          fields.forEach((f) => {
+            thisRow[f] = params.getValue(f);
+          });
+
+          return thisRow.valutazione == 3 ? <div>🔴</div> : thisRow.valutazione >= 2 && thisRow.valutazione <=2.9 ? <div>🟡</div> : thisRow.valutazione >= 1 && thisRow.valutazione <=1.9 ? <div>🟢</div> : null ;
+        }
+      },
     ];
     if (!value) {
       axios.get(`http://8a204e28719a.ngrok.io/reports/retrieveYearAverage?year=${year}&range1=${range[0]}&range2=${range[1]}`)
@@ -174,7 +194,27 @@ function Home() {
       { field: 'id', headerName: 'Name', width: 400, },
       { field: 'year', headerName: 'Anno', width: 400 },
       { field: 'month', headerName: 'Mese', width: 400 },
-      { field: 'valutazione', headerName: 'Valutazione', width: '100%' },
+      {
+        field: 'valutazione',
+        headerName: "Valutazione",
+        sortable: false,
+        width: '100%',
+        disableClickEventBubbling: true,
+        renderCell: (params: CellParams) => {
+          const api: GridApi = params.api;
+          const fields = api
+            .getAllColumns()
+            .map((c) => c.field)
+            .filter((c) => c !== "__check__" && !!c);
+          const thisRow = {};
+
+          fields.forEach((f) => {
+            thisRow[f] = params.getValue(f);
+          });
+
+          return thisRow.valutazione == 3 ? <div>🔴</div> : thisRow.valutazione >= 2 && thisRow.valutazione <=2.9 ? <div>🟡</div> : thisRow.valutazione >= 1 && thisRow.valutazione <=1.9 ? <div>🟢</div> : null ;
+        }
+      },
     ];
     if (!value) {
       axios.get(`http://8a204e28719a.ngrok.io/reports/retrieveMonthYearAverage?year=${year}&month=${month}&range1=${range[0]}&range2=${range[1]}`)
@@ -203,7 +243,27 @@ function Home() {
       { field: 'year', headerName: 'Anno', width: 250 },
       { field: 'month', headerName: 'Mese', width: 250 },
       { field: 'day', headerName: 'Giorno', width: 250 },
-      { field: 'valutazione', headerName: 'Valutazione', width: '100%' },
+      {
+        field: 'valutazione',
+        headerName: "Valutazione",
+        sortable: false,
+        width: '100%',
+        disableClickEventBubbling: true,
+        renderCell: (params: CellParams) => {
+          const api: GridApi = params.api;
+          const fields = api
+            .getAllColumns()
+            .map((c) => c.field)
+            .filter((c) => c !== "__check__" && !!c);
+          const thisRow = {};
+
+          fields.forEach((f) => {
+            thisRow[f] = params.getValue(f);
+          });
+
+          return thisRow.valutazione == 3 ? <div>🔴</div> : thisRow.valutazione == 2 ? <div>🟡</div> : thisRow.valutazione == 1 ? <div>🟢</div> : null ;
+        }
+      },
     ];
     if (!value) {
       axios.get(`http://8a204e28719a.ngrok.io/reports/retrieveDayMonthYear?year=${date.getFullYear()}&month=${date.getMonth() + 1}&day=${date.getDate()}&range1=${range[0]}&range2=${range[1]}`)

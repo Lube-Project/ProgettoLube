@@ -144,7 +144,27 @@ function DettagliStore(props) {
         const pino = [
             { field: 'id', headerName: 'Name', width: 400, },
             { field: 'year', headerName: 'Anno', width: 400 },
-            { field: 'valutazione', headerName: 'Valutazione', width: '100%' },
+            {
+                field: 'valutazione',
+                headerName: "Valutazione",
+                sortable: false,
+                width: '100%',
+                disableClickEventBubbling: true,
+                renderCell: (params: CellParams) => {
+                  const api: GridApi = params.api;
+                  const fields = api
+                    .getAllColumns()
+                    .map((c) => c.field)
+                    .filter((c) => c !== "__check__" && !!c);
+                  const thisRow = {};
+        
+                  fields.forEach((f) => {
+                    thisRow[f] = params.getValue(f);
+                  });
+        
+                  return thisRow.valutazione == 3 ? <div>🔴</div> : thisRow.valutazione >= 2 && thisRow.valutazione <=2.9 ? <div>🟡</div> : thisRow.valutazione >= 1 && thisRow.valutazione <=1.9 ? <div>🟢</div> : null ;
+                }
+              },
         ];
         //waiting for backy
         axios.get(`http://8a204e28719a.ngrok.io/reports/retrieveYearAverageName?year=${year}&name=${data}&range1=${range[0]}&range2=${range[1]}`)
@@ -166,7 +186,27 @@ function DettagliStore(props) {
             { field: 'id', headerName: 'Name', width: 400, },
             { field: 'year', headerName: 'Anno', width: 400 },
             { field: 'month', headerName: 'Mese', width: 400 },
-            { field: 'valutazione', headerName: 'Valutazione', width: '100%' },
+            {
+                field: 'valutazione',
+                headerName: "Valutazione",
+                sortable: false,
+                width: '100%',
+                disableClickEventBubbling: true,
+                renderCell: (params: CellParams) => {
+                  const api: GridApi = params.api;
+                  const fields = api
+                    .getAllColumns()
+                    .map((c) => c.field)
+                    .filter((c) => c !== "__check__" && !!c);
+                  const thisRow = {};
+        
+                  fields.forEach((f) => {
+                    thisRow[f] = params.getValue(f);
+                  });
+        
+                  return thisRow.valutazione == 3 ? <div>🔴</div> : thisRow.valutazione >= 2 && thisRow.valutazione <=2.9 ? <div>🟡</div> : thisRow.valutazione >= 1 && thisRow.valutazione <=1.9 ? <div>🟢</div> : null ;
+                }
+              },
         ];
 
         axios.get(`http://8a204e28719a.ngrok.io/reports/retrieveMonthYearAverageName?year=${year}&month=${month}&name=${data}&range1=${range[0]}&range2=${range[1]}`)
@@ -213,7 +253,27 @@ function DettagliStore(props) {
             { field: 'year', headerName: 'Anno', width: 250 },
             { field: 'month', headerName: 'Mese', width: 250 },
             { field: 'day', headerName: 'Giorno', width: 250 },
-            { field: 'valutazione', headerName: 'Valutazione', width: '100%' },
+            {
+                field: 'valutazione',
+                headerName: "Valutazione",
+                sortable: false,
+                width: '100%',
+                disableClickEventBubbling: true,
+                renderCell: (params: CellParams) => {
+                  const api: GridApi = params.api;
+                  const fields = api
+                    .getAllColumns()
+                    .map((c) => c.field)
+                    .filter((c) => c !== "__check__" && !!c);
+                  const thisRow = {};
+        
+                  fields.forEach((f) => {
+                    thisRow[f] = params.getValue(f);
+                  });
+        
+                  return thisRow.valutazione == 3 ? <div>🔴</div> : thisRow.valutazione == 2 ? <div>🟡</div> : thisRow.valutazione == 1 ? <div>🟢</div> : null ;
+                }
+              },
         ];
 
         axios.get(`http://8a204e28719a.ngrok.io/reports/retrieveDayMonthYearName?year=${date.getFullYear()}&month=${date.getMonth() + 1}&day=${date.getDate()}&name=${data}&range1=${range[0]}&range2=${range[1]}`)
