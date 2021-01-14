@@ -13,7 +13,7 @@ import {
   GridApi
 } from "@material-ui/data-grid";
 
-import { Carousel } from 'react-bootstrap';
+import Carousel from 'react-elastic-carousel';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import axios from 'axios';
@@ -28,7 +28,8 @@ import InputLabel from '@material-ui/core/InputLabel';
 import SearchIcon from '@material-ui/icons/Search';
 import { Slider, RangeSlider, InputNumber, InputGroup, Row, Col } from 'rsuite';
 import 'rsuite/dist/styles/rsuite-default.css';
-
+import Pallino from './Pallino.js';
+import logoLube from '../logoLube.png';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -63,16 +64,16 @@ function Home() {
 
   /* chiamata VERA per richiedere i dati al server */
   const fetchLastReports = async () => {
-    axios.get(`http://localhost:5000/reports/retrieveLastReports`)
+    axios.get(`http://8a204e28719a.ngrok.io/reports/retrieveLastReports`)
       .then(res => {
         const reports = res.data.lista;
         //console.log(reports);
         const pino = [
           {
             field: "",
-            headerName: "Button",
+            headerName: "Bottone",
             sortable: false,
-            width: 100,
+            width: 200,
             disableClickEventBubbling: true,
             renderCell: (params: CellParams) => {
               const onClick = () => {
@@ -94,10 +95,30 @@ function Home() {
               return <Button onClick={onClick}>Dettagli</Button>;
             }
           },
-          { field: 'id', headerName: 'id', width: 200, hide: true },
+          { field: 'id', headerName: 'id', width: 400, hide: true },
           { field: 'date', headerName: 'Data', width: 400 },
           { field: 'name', headerName: 'Nome', width: 400 },
-          { field: 'valutazione', headerName: 'Valutazione', width: '100%' },
+          {
+            field: 'valutazione',
+            headerName: "Valutazione",
+            sortable: false,
+            width: '100%',
+            disableClickEventBubbling: true,
+            renderCell: (params: CellParams) => {
+              const api: GridApi = params.api;
+              const fields = api
+                .getAllColumns()
+                .map((c) => c.field)
+                .filter((c) => c !== "__check__" && !!c);
+              const thisRow = {};
+
+              fields.forEach((f) => {
+                thisRow[f] = params.getValue(f);
+              });
+
+              return thisRow.valutazione == 3 ? <div>🔴</div> : thisRow.valutazione == 2 ? <div>🟠</div> : thisRow.valutazione == 1 ? <div>🟢</div> : null ;
+            }
+          },
         ];
         setColumns(pino);
         setReports(reports);
@@ -107,7 +128,7 @@ function Home() {
   }
 
   const fetchResellerNames = async () => {
-    axios.get(`http://localhost:5000/resellers/retrieveResellersNames`)
+    axios.get(`http://8a204e28719a.ngrok.io/resellers/retrieveResellersNames`)
       .then(res => {
         const data = res.data;
         // console.log(data.lista);
@@ -129,7 +150,7 @@ function Home() {
       { field: 'valutazione', headerName: 'Valutazione', width: '100%' },
     ];
     if (!value) {
-      axios.get(`http://localhost:5000/reports/retrieveYearAverage?year=${year}&range1=${range[0]}&range2=${range[1]}`)
+      axios.get(`http://8a204e28719a.ngrok.io/reports/retrieveYearAverage?year=${year}&range1=${range[0]}&range2=${range[1]}`)
         .then(res => {
           const reports = res.data.lista;
           setReports(reports)
@@ -137,7 +158,7 @@ function Home() {
       setColumns(pino);
       return null;
     } else {
-      axios.get(`http://localhost:5000/reports/retrieveYearAverageName?year=${year}&name=${value}&range1=${range[0]}&range2=${range[1]}`)
+      axios.get(`http://8a204e28719a.ngrok.io/reports/retrieveYearAverageName?year=${year}&name=${value}&range1=${range[0]}&range2=${range[1]}`)
         .then(res => {
           const reports = res.data.lista;
           setReports(reports);
@@ -156,7 +177,7 @@ function Home() {
       { field: 'valutazione', headerName: 'Valutazione', width: '100%' },
     ];
     if (!value) {
-      axios.get(`http://localhost:5000/reports/retrieveMonthYearAverage?year=${year}&month=${month}&range1=${range[0]}&range2=${range[1]}`)
+      axios.get(`http://8a204e28719a.ngrok.io/reports/retrieveMonthYearAverage?year=${year}&month=${month}&range1=${range[0]}&range2=${range[1]}`)
         .then(res => {
           const reports = res.data.lista;
           console.log(reports);
@@ -165,7 +186,7 @@ function Home() {
       setColumns(pino);
       return null;
     } else {
-      axios.get(`http://localhost:5000/reports/retrieveMonthYearAverageName?year=${year}&month=${month}&name=${value}&range1=${range[0]}&range2=${range[1]}`)
+      axios.get(`http://8a204e28719a.ngrok.io/reports/retrieveMonthYearAverageName?year=${year}&month=${month}&name=${value}&range1=${range[0]}&range2=${range[1]}`)
         .then(res => {
           const reports = res.data.lista;
           setReports(reports);
@@ -175,7 +196,7 @@ function Home() {
     }
   }
   function fetchReportDate() {
-   
+
 
     const pino = [
       { field: 'id', headerName: 'Name', width: 350, },
@@ -185,7 +206,7 @@ function Home() {
       { field: 'valutazione', headerName: 'Valutazione', width: '100%' },
     ];
     if (!value) {
-      axios.get(`http://localhost:5000/reports/retrieveDayMonthYear?year=${date.getFullYear()}&month=${date.getMonth()+1}&day=${date.getDate()}&range1=${range[0]}&range2=${range[1]}`)
+      axios.get(`http://8a204e28719a.ngrok.io/reports/retrieveDayMonthYear?year=${date.getFullYear()}&month=${date.getMonth() + 1}&day=${date.getDate()}&range1=${range[0]}&range2=${range[1]}`)
         .then(res => {
           const reports = res.data.lista;
           setReports(reports)
@@ -193,7 +214,7 @@ function Home() {
       setColumns(pino);
       return null;
     } else {
-      axios.get(`http://localhost:5000/reports/retrieveDayMonthYearName?year=${date.getFullYear()}&month=${date.getMonth()+1}&day=${date.getDate()}&name=${value}&range1=${range[0]}&range2=${range[1]}`)
+      axios.get(`http://8a204e28719a.ngrok.io/reports/retrieveDayMonthYearName?year=${date.getFullYear()}&month=${date.getMonth() + 1}&day=${date.getDate()}&name=${value}&range1=${range[0]}&range2=${range[1]}`)
         .then(res => {
           const reports = res.data.lista;
           setReports(reports);
@@ -218,10 +239,10 @@ function Home() {
   const [range, setRange] = useState([1, 3]);
   const [columns, setColumns] = useState([]);
 
-  const [click,setClick]= useState(false);
-  const [button,setButton]= useState(true);
+  const [click, setClick] = useState(false);
+  const [button, setButton] = useState(true);
 
- 
+
 
 
   const [year, setYear] = useState(0);
@@ -242,18 +263,18 @@ function Home() {
   };
 
 
-  const handleClick=()=> setClick(!click);
-  const closeMobileMenu=()=>setClick(false);
+  const handleClick = () => setClick(!click);
+  const closeMobileMenu = () => setClick(false);
 
-  const showButton=() =>{
-    if(window.innerWidth<=960){
+  const showButton = () => {
+    if (window.innerWidth <= 960) {
       setButton(false);
-    }else{
+    } else {
       setButton(true);
     }
-    }
-  
-  window.addEventListener("resize",showButton);
+  }
+
+  window.addEventListener("resize", showButton);
   /* Liste */
   /*const columns = [
     {
@@ -301,7 +322,7 @@ function Home() {
 
   function FormLastReports() {
     return (
-      <div>
+      <div className="RicercaAnnuale">
         <Button
           // onClick={fetchReportAnnuali()}
           onClick={() => { fetchLastReports() }}
@@ -331,18 +352,16 @@ function Home() {
           style={{ width: '20%' }}
           renderInput={(params) => <TextField {...params} label="Seleziona sito" variant="outlined" />}
         />
-       
-       <div className="InputGroup">
 
         <Row>
           <Col md={10}>
             <RangeSlider
-            
+
               step={0.1}
               max={3}
               min={1}
               progress
-              style={{ marginTop: 16, marginBottom:16,width:"10vw",marginRight:"6vw" }}
+              style={{ marginTop: 16, marginBottom: 16, width: "10vw" }}
               value={range}
               onChange={value => {
                 if (value[0] <= value[1]) {
@@ -354,7 +373,7 @@ function Home() {
           </Col>
           <Col md={8}>
             <InputGroup
-              style={{ width: 200 }}
+              style={{ width: "15vw" }}
             >
               <InputNumber
                 min={1}
@@ -384,8 +403,7 @@ function Home() {
             </InputGroup>
           </Col>
         </Row>
-        </div>
-        <YearPicker 
+        <YearPicker
           defaultValue={'Seleziona anno'}
           start={2020}
           end={2050}
@@ -420,8 +438,8 @@ function Home() {
 
   function FormMensile() {
     return (
-      <div className="RicercaAnnuale">
-       
+      <div className="RicercaMensile">
+
         <Autocomplete
           placeholder='Seleziona Sito'
           value={value}
@@ -433,16 +451,16 @@ function Home() {
           style={{ width: '20%' }}
           renderInput={(params) => <TextField {...params} label="Seleziona sito" variant="outlined" />}
         />
-          <div className="InputGroup">
-          <Row>
+
+        <Row>
           <Col md={10}>
             <RangeSlider
-            
+
               step={0.1}
               max={3}
               min={1}
               progress
-              style={{ marginTop: 16, marginBottom:16,width:"10vw",marginRight:"6vw" }}
+              style={{ marginTop: 16, marginBottom: 16, width: "10vw" }}
               value={range}
               onChange={value => {
                 if (value[0] <= value[1]) {
@@ -454,7 +472,7 @@ function Home() {
           </Col>
           <Col md={8}>
             <InputGroup
-              style={{ width: 150 }}
+              style={{ width: "15vw" }}
             >
               <InputNumber
                 min={1}
@@ -484,8 +502,7 @@ function Home() {
             </InputGroup>
           </Col>
         </Row>
-        </div>
-        <YearPicker 
+        <YearPicker
           defaultValue={'Seleziona anno'}
           start={2020}
           end={2050}
@@ -541,30 +558,29 @@ function Home() {
 
   function FormGiornaliero() {
     return (
-    <div className="RicercaAnnuale">
-      
-      <Autocomplete
-        placeholder='Seleziona Sito'
-        value={value}
-        onChange={(event, newValue) => {
-          setValue(newValue);
-        }}
-        id="controllable-states-demo"
-        options={storeName}
-        style={{ width: '20%' }}
-        renderInput={(params) => <TextField {...params} label="Seleziona sito" variant="outlined" />}
-      />
-                <div className="InputGroup">
+      <div className="RicercaMensile">
 
-                <Row>
+        <Autocomplete
+          placeholder='Seleziona Sito'
+          value={value}
+          onChange={(event, newValue) => {
+            setValue(newValue);
+          }}
+          id="controllable-states-demo"
+          options={storeName}
+          style={{ width: '20%' }}
+          renderInput={(params) => <TextField {...params} label="Seleziona sito" variant="outlined" />}
+        />
+
+        <Row>
           <Col md={10}>
             <RangeSlider
-            
+
               step={0.1}
               max={3}
               min={1}
               progress
-              style={{ marginTop: 16, marginBottom:16 }}
+              style={{ marginTop: 16, marginBottom: 16, width: "10vw" }}
               value={range}
               onChange={value => {
                 if (value[0] <= value[1]) {
@@ -576,7 +592,7 @@ function Home() {
           </Col>
           <Col md={8}>
             <InputGroup
-              style={{ width: 200 }}
+              style={{ width: "15vw" }}
             >
               <InputNumber
                 min={1}
@@ -606,100 +622,94 @@ function Home() {
             </InputGroup>
           </Col>
         </Row>
-      </div>
-      <DatePicker
-        onChange={(value) => {
-          setDate(value);
-        }}
-        value={date}
-      />
-      <Button
-        onClick={() => { fetchReportDate() }}
-        variant="contained"
-        color="primary"
-        className={classes.button}
-        endIcon={<SearchIcon />}
-      >
-        Send
+        <DatePicker
+          onChange={(value) => {
+            setDate(value);
+          }}
+          value={date}
+        />
+        <Button
+          onClick={() => { fetchReportDate() }}
+          variant="contained"
+          color="primary"
+          className={classes.button}
+          endIcon={<SearchIcon />}
+        >
+          Send
       </Button>
 
-    </div>)
+      </div>)
   }
 
 
   return (
-    <div className="App">
+    <div className="App Esempio">
 
-      {/* <div className="Titolo">
-        <h3>HOME</h3>
-      </div> */}
+      <Carousel itemsToShow={1}>
 
-      {/* VECCHIO
-      posts.map(post => (
-        <Link key={post.id} to={`/${post.id}`}>
-          <h4 key={post.id} >{post.title}</h4>
-        </Link>
-      )) */}
-
-      {/*  , giorno , anno, mese , range valutazione(tra 1 e 3) */}
-
-      <div className="Container">
-
-        {/* <Carousel activeIndex={index} onSelect={handleSelect} interval={null}>
+        <div className="CaroselloHome">
+          <h2>SITI WEB</h2>
+          {/* <Carousel activeIndex={index} onSelect={handleSelect} interval={null}>
 
           <Carousel.Item> */}
 
-<div className={button ? 'Ricerca' : 'RicercaHidden'} >
-          {/* <h4 style={{ letterSpacing: 5 }}>SITI WEB</h4> */}
+          <div className={button ? 'Ricerca' : 'RicercaHidden'} >
+            {/* <h4 style={{ letterSpacing: 5 }}>SITI WEB</h4> */}
 
-          {choice == 'Report annuali' ?
-            <FormAnnuale /> : choice == 'Report mensili' ?
-              <FormMensile /> : choice == 'Report giornalieri' ?
-                <FormGiornaliero /> : choice == 'Last reports' ? <FormLastReports/> : null }
+            {choice == 'Report annuali' ?
+              <FormAnnuale /> : choice == 'Report mensili' ?
+                <FormMensile /> : choice == 'Report giornalieri' ?
+                  <FormGiornaliero /> : choice == 'Last reports' ? <FormLastReports /> : null}
 
-          <FormControl className={classes.formControl}   >
-           
-            <InputLabel id="demo-simple-select-disabled-label">Ultimi Report</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={choice}
-              onChange={handleChange}
-              placeholder={choice}
-              
+            <FormControl className={classes.formControl}   >
 
-            >
-              <MenuItem value={'Report annuali'}>Report annuali</MenuItem>
-              <MenuItem value={'Report mensili'}>Report mensili</MenuItem>
-              <MenuItem value={'Report giornalieri'}>Report giornalieri</MenuItem>
-              <MenuItem value={'Last reports'}>Ultimi Report</MenuItem>
-            </Select>
-          </FormControl>
-        </div>
+              <InputLabel id="demo-simple-select-disabled-label">Ultimi Report</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={choice}
+                onChange={handleChange}
+                placeholder={choice}
 
-        <br />
-        <div className="ContainerTabella">
-          <div className="Tabella">
-            {/*console.log('datatable', datatable)*/}
-            {/*  <MDBDataTableV5 hover entriesOptions={[5, 20, 25]}
-                  entries={5} pagesAmount={4} data={datatable} />*/}
-            <DataGrid rows={feedRow()} columns={columns} />
+
+              >
+                <MenuItem value={'Report annuali'}>Report annuali</MenuItem>
+                <MenuItem value={'Report mensili'}>Report mensili</MenuItem>
+                <MenuItem value={'Report giornalieri'}>Report giornalieri</MenuItem>
+                <MenuItem value={'Last reports'}>Ultimi Report</MenuItem>
+              </Select>
+            </FormControl>
           </div>
-        </div>
-        {/* </Carousel.Item> */}
 
-        {/* <Carousel.Item>*/}
-        {/* <h4 style={{ letterSpacing: 5 }}>PROFILI SOCIAL</h4> */}
-        {/* <br />
+          <br />
+          <div className="ContainerTabella">
+            <div className="Tabella">
+              {/*console.log('datatable', datatable)*/}
+              {/*  <MDBDataTableV5 hover entriesOptions={[5, 20, 25]}
+                  entries={5} pagesAmount={4} data={datatable} />*/}
+              <DataGrid rows={feedRow()} columns={columns} />
+            </div>
+          </div>
+          {/* </Carousel.Item> */}
+
+          {/* <Carousel.Item>*/}
+          {/* <h4 style={{ letterSpacing: 5 }}>PROFILI SOCIAL</h4> */}
+          {/* <br />
             <div className="ContainerTabella">
               <div className="Tabella"> */}
-        {/* <DataGrid rows={siti} columns={columns} /> */}
-        {/* </div>
+          {/* <DataGrid rows={siti} columns={columns} /> */}
+          {/* </div>
             </div> */}
 
-        {/* </Carousel.Item>
+          {/* </Carousel.Item>
         </Carousel>   */}
-      </div>
+        </div>
+
+        <div className="CaroselloHome">
+          <h2>SOCIAL MEDIA</h2>
+
+        </div>
+      </Carousel>
     </div>
   );
 }
