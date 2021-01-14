@@ -165,7 +165,7 @@ function Home() {
             thisRow[f] = params.getValue(f);
           });
 
-          return thisRow.valutazione == 3 ? <div>🔴</div> : thisRow.valutazione >= 2 && thisRow.valutazione <=2.9 ? <div>🟡</div> : thisRow.valutazione >= 1 && thisRow.valutazione <=1.9 ? <div>🟢</div> : null ;
+          return thisRow.valutazione == 3 ? <div>🔴</div> : thisRow.valutazione >= 2 && thisRow.valutazione <=2.9 ? <div>🟡</div> : thisRow.valutazione >= 1 && thisRow.valutazione <= 2? <div>🟢</div> : null ;
         }
       },
     ];
@@ -212,7 +212,7 @@ function Home() {
             thisRow[f] = params.getValue(f);
           });
 
-          return thisRow.valutazione == 3 ? <div>🔴</div> : thisRow.valutazione >= 2 && thisRow.valutazione <=2.9 ? <div>🟡</div> : thisRow.valutazione >= 1 && thisRow.valutazione <=1.9 ? <div>🟢</div> : null ;
+          return thisRow.valutazione == 3 ? <div>🔴</div> : thisRow.valutazione >= 2 && thisRow.valutazione <=2.9 ? <div>🟡</div> : thisRow.valutazione >= 1 && thisRow.valutazione <= 2 ? <div>🟢</div> : null ;
         }
       },
     ];
