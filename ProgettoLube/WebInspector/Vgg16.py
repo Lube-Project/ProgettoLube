@@ -1,5 +1,7 @@
 import os
 import zipfile
+
+import PIL
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras.applications.vgg16 import VGG16
@@ -10,6 +12,8 @@ from tensorflow.python.keras.applications.vgg16 import decode_predictions
 from tensorflow.python.keras.preprocessing.image import load_img
 import numpy as np
 import matplotlib.pyplot as plt
+
+from ImageClassificator import ImageClassificator
 
 
 class Vgg16:
@@ -80,17 +84,25 @@ class Vgg16:
     # img_array = tf.expand_dims(img_array, 0)  # Create a batch
 
     ###############################################################################################################
+    ic = ImageClassificator()
+    flag_stampa_trend_training = False  # modificare se si vuole vedere il grafico del trend
+    ic.create_model(flag_stampa_trend_training)
     categorie = ['book_jacket','web_site','monitor','scoreboard','street_sign','perfume','carton','digital_clock'
-        ,'hair_spray']
+        ,'hair_spray','wall_clock']
     pino = "photo_downloaded\\"
     mypath2 = "C:\\Users\\matti\\git\\ProgettoLube\\ProgettoLube\\WebInspector\\"
     paths = [os.path.join("photo_downloaded\\", fn) for fn in next(os.walk("photo_downloaded\\"))[2]]
     temp = []
+    counter = 0
     for x in paths:
         temp.append("C:\\Users\\matti\\git\\ProgettoLube\\ProgettoLube\\WebInspector\\" + x)
     for x in temp:
-        image = load_img(x,
-                         target_size=(224, 224))
+        try:
+            image = load_img(x,
+                             target_size=(224, 224))
+
+        except PIL.UnidentifiedImageError as e:
+            print('error')
 
         #plt.imshow(image)
         #plt.show()
@@ -103,8 +115,11 @@ class Vgg16:
         # altro modo di procedere
         image = np.array(image)
         image = np.expand_dims(image, axis=0)
+        try:
+            predictions = model.predict(image)
+        except ValueError:
+            print('error')
 
-        predictions = model.predict(image)
         label = decode_predictions(predictions, top=5)
         # retrieve the most likely result, e.g. highest probability
         #print(label)
@@ -115,10 +130,11 @@ class Vgg16:
         print('%s (%.2f%%)' % (label[1], label[2] * 100))
         for y in categorie:
             if label[1] == y:
+                counter = counter+1
                 print("LOGO CORRETTO TROVATO ",x)
+                ic.predict(x)
 
-
-
+    print(counter)
 
     ######################################################################################
 

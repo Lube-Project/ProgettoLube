@@ -23,8 +23,8 @@ class TaskExecutor:
     def run_process(self):
         service = Service()
         # Load siti from excel (LoadResources class)
-        lista_siti = ["https://www.lubecreostorepratolapeligna.it", ]
-        #lista_siti = ["https://www.lubebrescia.it", ]
+        lista_siti = ["https://www.cucineluberoma.it", ]
+        #lista_siti = ["https://lubecreomilano.it/", ]
         for sito in lista_siti:
             report = service.valuta(sito)
             # self.db_manager.insert(self.cl,report)

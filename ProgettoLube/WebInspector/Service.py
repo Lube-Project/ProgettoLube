@@ -9,6 +9,7 @@ class Service:
         crawler = Crawler()
         img_worker = ImageWorker()
         report_pagine = crawler.generate_reportpagine(sito)
+        print(report_pagine.toJSON())
         # TODO: generazione report foto
         #report_foto = img_worker.generate_reportfoto()
         # TODO: cancellare directory foto

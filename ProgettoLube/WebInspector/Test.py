@@ -28,16 +28,17 @@ class MyTestCase(unittest.TestCase):
 
     def test_imageclassificator(self):
         ic = ImageClassificator()
-        flag_stampa_trend_training = True  # modificare se si vuole vedere il grafico del trend
+        flag_stampa_trend_training = False  # modificare se si vuole vedere il grafico del trend
         ic.create_model(flag_stampa_trend_training)
         start_time = time.time()
-        ic.predict('C:\\Users\\matti\\git\\ProgettoLube\\ProgettoLube\\WebInspector\\images\\promo.png')
-        ic.predict('C:\\Users\\matti\\git\\ProgettoLube\\ProgettoLube\\WebInspector\\images\\capra.jpg')
-        ic.predict('C:\\Users\\matti\\git\\ProgettoLube\\ProgettoLube\\WebInspector\\images\\logo.png')
-        ic.predict('C:\\Users\\matti\\git\\ProgettoLube\\ProgettoLube\\WebInspector\\images\\logo2.png')
-        ic.predict('C:\\Users\\matti\\git\\ProgettoLube\\ProgettoLube\\WebInspector\\images\\scavolini.png')
-        ic.predict('C:\\Users\\matti\\git\\ProgettoLube\\ProgettoLube\\WebInspector\\images\\cane.jpg')
-        ic.predict('C:\\Users\\matti\\git\\ProgettoLube\\ProgettoLube\\WebInspector\\images\\car.jpg')
+        # ic.predict('C:\\Users\\matti\\git\\ProgettoLube\\ProgettoLube\\WebInspector\\images\\promo.png')
+        # ic.predict('C:\\Users\\matti\\git\\ProgettoLube\\ProgettoLube\\WebInspector\\images\\capra.jpg')
+        # ic.predict('C:\\Users\\matti\\git\\ProgettoLube\\ProgettoLube\\WebInspector\\images\\logo.png')
+        # ic.predict('C:\\Users\\matti\\git\\ProgettoLube\\ProgettoLube\\WebInspector\\images\\logo2.png')
+        # ic.predict('C:\\Users\\matti\\git\\ProgettoLube\\ProgettoLube\\WebInspector\\images\\scavolini.png')
+        # ic.predict('C:\\Users\\matti\\git\\ProgettoLube\\ProgettoLube\\WebInspector\\images\\cane.jpg')
+        # ic.predict('C:\\Users\\matti\\git\\ProgettoLube\\ProgettoLube\\WebInspector\\images\\car.jpg')
+        ic.predict('C:\\Users\\matti\\git\\ProgettoLube\\ProgettoLube\\WebInspector\\photo_downloaded\\Lube-Store-Tuscolana-Logo-nero3.png')
         print("TEMPO PREDIZIONI :  %s seconds " % (time.time() - start_time))
 
     def test_report_structure(self):
@@ -199,9 +200,16 @@ class MyTestCase(unittest.TestCase):
                 db.insert(pino)
 
     def test_scarpe_keyword(self):
-        lista = ["https://www.lubecreostorepratolapeligna.it",]
+        lista = ["https://www.cucineluberoma.it","https://lubecreomilano.it/",]
         crw = Crawler()
         crw.scrape_keyword(lista)
+
+    def test_string(self):
+        string = "mystring/"
+        if string.endswith('/'):
+            string = string[:-1]
+
+        print(string)
 
 
 if __name__ == '__main__':

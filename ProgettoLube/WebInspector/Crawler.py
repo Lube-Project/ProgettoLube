@@ -10,6 +10,7 @@ import logging
 from os.path import basename
 from urllib.error import HTTPError, URLError
 
+from selenium.common.exceptions import TimeoutException, WebDriverException
 from selenium import webdriver
 
 from bs4 import BeautifulSoup
@@ -31,53 +32,67 @@ class Crawler:
             "-------------------------------------------------------------------------------------------------")
         self.logger.info("THREAD " + str(index) + " ANALIZZO : " + url)
         self.logger.info(
-            "-------------------------------------------------------------------------------------------------")
+             "-------------------------------------------------------------------------------------------------")
         options = Options()
         options.add_argument('--headless')
         browser = webdriver.Chrome(options=options)
-        browser.get(url)
-        soup = BeautifulSoup(browser.page_source, "html.parser")
+        page = None
+        try:
+            browser.get(url)
+            page = browser.page_source
+        except WebDriverException as e:
+            print("Selenium Exception: {0} Message: {1}".format("my message", str(e)))
+        soup = BeautifulSoup(page, "html.parser")
         browser.close()
         body = soup.find('body')
         images = body.findAll('img')
         for image in images:
             # counter = counter + 1
-            urlimg = image['src']
-            if urlimg[0:2] == "//":
-                urlimg = urlimg.lstrip('/')
-            if urlimg[0:4] != "http" and urlimg[0:3] != "www":
-                urlimg = root + urlimg
-            if urlimg[0:3] == "www":
-                urlimg = "http://" + urlimg
-            urlimg = self.elimina_parametri_url_img(urlimg)
-            path = os.path.join(
-                r"C:\Users\matti\git\ProgettoLube\ProgettoLube\WebInspector\photo_downloaded" + "\\" + basename(
-                    urlimg))
-            self.logger.info("THREAD " + str(index) + " SALVO " + urlimg)
-            # logger.info(path)
-            if urlimg != "":
-                # imgsize = requests.get(urlimg, headers=headers).content
-                imgsize = 10
-                size = 0  # FILTRO modifica per regolare la grandezza desiderata dell'immagine da scaricare
-                # es:10*1024=10k
-                if imgsize > size:
-                    content = None
-                    with open(path, "wb") as f:
+            if image.has_attr('src'):
+                urlimg = image['src']
+                if urlimg[0:2] == "//":
+                    urlimg = urlimg.lstrip('/')
+                if urlimg[0:4] != "http" and urlimg[0:3] != "www":
+                    urlimg = root + urlimg
+                if urlimg[0:3] == "www":
+                    urlimg = "http://" + urlimg
+                urlimg = self.elimina_parametri_url_img(urlimg)
+                path = os.path.join(
+                    r"C:\Users\matti\git\ProgettoLube\ProgettoLube\WebInspector\photo_downloaded" + "\\" + basename(
+                        urlimg))
+                self.logger.info("THREAD " + str(index) + " SALVO " + urlimg)
+                # logger.info(path)
+                if urlimg != "":
+                    # imgsize = requests.get(urlimg, headers=headers).content
+                    imgsize = 10
+                    size = 0  # FILTRO modifica per regolare la grandezza desiderata dell'immagine da scaricare
+                    # es:10*1024=10k
+                    if imgsize > size:
+                        content = None
                         try:
-                            req = Request(
-                                urlimg,
-                                headers={'User-Agent': 'Mozilla/5.0'})
-                            content = urlopen(req).read()
-                        except (HTTPError, URLError) as error:
-                            logging.error('Data of %s not retrieved because %s\nURL: %s', urlimg, error, url)
-                        except socket.timeout:
-                            logging.error('socket timed out - URL %s', urlimg)
-                        except urllib.error.URLError as error:
-                            logging.error('Data of %s not retrieved because %s\nURL: %s', urlimg, error, url)
-                        try:
-                            f.write(content) if content is not None else None
-                        except IOError as e:
+                            with open(path, "wb") as f:
+                                try:
+                                    req = Request(
+                                        urlimg,
+                                        headers={'User-Agent': 'Mozilla/5.0'})
+                                    content = urlopen(req).read()
+                                except (HTTPError, URLError) as error:
+                                    logging.error('Data of %s not retrieved because %s\nURL: %s', urlimg, error, url)
+                                except socket.timeout:
+                                    logging.error('socket timed out - URL %s', urlimg)
+                                except urllib.error.URLError as error:
+                                    logging.error('Data of %s not retrieved because %s\nURL: %s', urlimg, error, url)
+                                try:
+                                    f.write(content) if content is not None else None
+                                except IOError as e:
+                                    print("I/O error: ".format(e.errno, e.strerror))
+                        except (OSError,IOError) as e:
                             print("I/O error: ".format(e.errno, e.strerror))
+
+
+
+
+
 
     # Per pulire i parametri dagli url delle immagini
     def elimina_parametri_url_img(self, url):
@@ -99,17 +114,23 @@ class Crawler:
     def find_href(self, root, child, ref):
         options = Options()
         options.add_argument('--headless')
-        #options.add_argument("start-maximized")
+        # options.add_argument("start-maximized")
         browser = webdriver.Chrome(chrome_options=options)
-        browser.get(child)
-        soup = BeautifulSoup(browser.page_source, "html.parser")
+        page = None
+        try:
+            browser.get(child)
+            page = browser.page_source
+        except WebDriverException as e:
+            print("Selenium Exception: {0} Message: {1}".format("my message", str(e)))
+
+        soup = BeautifulSoup(page, "html.parser")
         browser.close()
         lista = []
         links = []
         cleaned = []
-        esclusioni = ['.jpg', '.bmp', '.gif', '.jpeg''.png', '.tiff', '.cssjs', '.mid', '.mp2', '.mp3', '.mp4', '.wav',
+        esclusioni = ['.jpg', '.bmp', '.gif', '.jpeg','.png', '.tiff', '.cssjs', '.mid', '.mp2', '.mp3', '.mp4', '.wav',
                       '.avi', '.mov', '.mpeg', '.ram', '.m4v', '.pdf', '.rm', '.smil', '.wmv', '.swf', '.wma', '.zip',
-                      '.rar', '.gz']
+                      '.rar', '.gz','/tel:','/mailto:','javascript','.js']
         for a in soup.find_all('a', href=True):
             # print(a)
             href = ''
@@ -179,6 +200,8 @@ class Crawler:
         return report_pagine
 
     def scrape_href(self, sito):
+        if sito.endswith('/'):
+            sito = sito[:-1]
         lista = [sito]
         count = 0
         for e in lista:
@@ -203,11 +226,12 @@ class Crawler:
 
     def scrape_photos(self, sito, lista_href):
         flag = True
-        threads = [threading.Thread(target=self.run, args=(sito, lista_href.index(url), url,))
-                   for url in lista_href]
-        for t in threads:
-            t.start()
-        time.sleep(120)
+        # threads = [threading.Thread(target=self.run, args=(sito, lista_href.index(url), url,))
+        #            for url in lista_href]
+        # for t in threads:
+        #     t.start()
+        for x in lista_href:
+            self.run(sito, lista_href.index(x), x)
         return flag
 
     def scrape_script(self, lista_href):
