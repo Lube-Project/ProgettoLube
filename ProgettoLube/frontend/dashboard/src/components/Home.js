@@ -17,9 +17,6 @@ import Carousel from 'react-elastic-carousel';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import axios from 'axios';
-//import { MDBDataTableV5 } from 'mdbreact';
-//import DatePicker from 'react-datepicker';
-//import "react-datepicker/dist/react-datepicker.css";
 import { YearPicker, MonthPicker, DayPicker } from 'react-dropdown-date';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -28,8 +25,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import SearchIcon from '@material-ui/icons/Search';
 import { Slider, RangeSlider, InputNumber, InputGroup, Row, Col } from 'rsuite';
 import 'rsuite/dist/styles/rsuite-default.css';
-import Pallino from './Pallino.js';
-import logoLube from '../logoLube.png';
+
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -59,6 +55,16 @@ function Home() {
     fetchLastReports();
     fetchResellerNames();
   }, []);
+
+  function mettiPallini(array){
+    array = array.map(oggetto => {
+      oggetto.valutazione = oggetto.valutazione >=2.75 && oggetto.valutazione <=3 ? '🔴' 
+      : oggetto.valutazione >= 2 && oggetto.valutazione < 2.75 ? '🟡' 
+      : oggetto.valutazione >= 1 && oggetto.valutazione < 2 ? '🟢' 
+      : '' ;
+    })
+    return array;
+  }
 
 
 
@@ -98,31 +104,11 @@ function Home() {
           { field: 'id', headerName: 'id', width: 400, hide: true },
           { field: 'date', headerName: 'Data', width: 400 },
           { field: 'name', headerName: 'Nome', width: 400 },
-          {
-            field: 'valutazione',
-            headerName: "Valutazione",
-            sortable: false,
-            width: '100%',
-            disableClickEventBubbling: true,
-            renderCell: (params: CellParams) => {
-              const api: GridApi = params.api;
-              const fields = api
-                .getAllColumns()
-                .map((c) => c.field)
-                .filter((c) => c !== "__check__" && !!c);
-              const thisRow = {};
-
-              fields.forEach((f) => {
-                thisRow[f] = params.getValue(f);
-              });
-
-              return thisRow.valutazione == 3 ? <div>🔴</div> : thisRow.valutazione == 2 ? <div>🟡</div> : thisRow.valutazione == 1 ? <div>🟢</div> : null ;
-            }
-          },
+          { field: 'valutazione', headerName: 'Valutazione', width: '100%' },
         ];
         setColumns(pino);
+        mettiPallini(reports);
         setReports(reports);
-
       })
 
   }
@@ -137,90 +123,45 @@ function Home() {
 
   }
 
-  function feedRow() {
-    return reports;
-  }
-
-
   function fetchReportAnnuali() {
-    //non ha selezionato il nome dello store
-    const pino = [
-      { field: 'id', headerName: 'Name', width: 400, },
-      { field: 'year', headerName: 'Anno', width: 400 },
-      {
-        field: 'valutazione',
-        headerName: "Valutazione",
-        sortable: false,
-        width: '100%',
-        disableClickEventBubbling: true,
-        renderCell: (params: CellParams) => {
-          const api: GridApi = params.api;
-          const fields = api
-            .getAllColumns()
-            .map((c) => c.field)
-            .filter((c) => c !== "__check__" && !!c);
-          const thisRow = {};
-
-          fields.forEach((f) => {
-            thisRow[f] = params.getValue(f);
-          });
-
-          return thisRow.valutazione == 3 ? <div>🔴</div> : thisRow.valutazione >= 2 && thisRow.valutazione <=2.9 ? <div>🟡</div> : thisRow.valutazione >= 1 && thisRow.valutazione <= 2? <div>🟢</div> : null ;
-        }
-      },
-    ];
+        
     if (!value) {
       axios.get(`http://127.0.0.1:5000/reports/retrieveYearAverage?year=${year}&range1=${range[0]}&range2=${range[1]}`)
         .then(res => {
           const reports = res.data.lista;
+          mettiPallini(reports);
           setReports(reports)
-        });
-      setColumns(pino);
-      return null;
+        });    
     } else {
       axios.get(`http://127.0.0.1:5000/reports/retrieveYearAverageName?year=${year}&name=${value}&range1=${range[0]}&range2=${range[1]}`)
         .then(res => {
           const reports = res.data.lista;
+          mettiPallini(reports);
           setReports(reports);
-        });
-      setColumns(pino);
-      return null;
+        });   
     }
+    const pino = [
+      { field: 'id', headerName: 'Name', width: 400, },
+      { field: 'year', headerName: 'Anno', width: 400 },
+      { field: 'valutazione', headerName: 'Valutazione', width: 400 },
+    ];
+    setColumns(pino);
+    return null;
   }
   function fetchReportMensili() {
     //non ha selezionato il nome dello store
 
     const pino = [
-      { field: 'id', headerName: 'Name', width: 400, },
-      { field: 'year', headerName: 'Anno', width: 400 },
-      { field: 'month', headerName: 'Mese', width: 400 },
-      {
-        field: 'valutazione',
-        headerName: "Valutazione",
-        sortable: false,
-        width: '100%',
-        disableClickEventBubbling: true,
-        renderCell: (params: CellParams) => {
-          const api: GridApi = params.api;
-          const fields = api
-            .getAllColumns()
-            .map((c) => c.field)
-            .filter((c) => c !== "__check__" && !!c);
-          const thisRow = {};
-
-          fields.forEach((f) => {
-            thisRow[f] = params.getValue(f);
-          });
-
-          return thisRow.valutazione == 3 ? <div>🔴</div> : thisRow.valutazione >= 2 && thisRow.valutazione <=2.9 ? <div>🟡</div> : thisRow.valutazione >= 1 && thisRow.valutazione <= 2 ? <div>🟢</div> : null ;
-        }
-      },
+      { field: 'id', headerName: 'Name', width: 350, },
+      { field: 'year', headerName: 'Anno', width: 340 },
+      { field: 'month', headerName: 'Mese', width: 340 },
+      { field: 'valutazione', headerName: 'Valutazione', width: '100%' },
     ];
     if (!value) {
       axios.get(`http://127.0.0.1:5000/reports/retrieveMonthYearAverage?year=${year}&month=${month}&range1=${range[0]}&range2=${range[1]}`)
         .then(res => {
           const reports = res.data.lista;
-          console.log(reports);
+          mettiPallini(reports);
           setReports(reports)
         });
       setColumns(pino);
@@ -229,6 +170,7 @@ function Home() {
       axios.get(`http://127.0.0.1:5000/reports/retrieveMonthYearAverageName?year=${year}&month=${month}&name=${value}&range1=${range[0]}&range2=${range[1]}`)
         .then(res => {
           const reports = res.data.lista;
+          mettiPallini(reports);
           setReports(reports);
         });
       setColumns(pino);
@@ -240,35 +182,16 @@ function Home() {
 
     const pino = [
       { field: 'id', headerName: 'Name', width: 350, },
-      { field: 'year', headerName: 'Anno', width: 250 },
-      { field: 'month', headerName: 'Mese', width: 250 },
-      { field: 'day', headerName: 'Giorno', width: 250 },
-      {
-        field: 'valutazione',
-        headerName: "Valutazione",
-        sortable: false,
-        width: '100%',
-        disableClickEventBubbling: true,
-        renderCell: (params: CellParams) => {
-          const api: GridApi = params.api;
-          const fields = api
-            .getAllColumns()
-            .map((c) => c.field)
-            .filter((c) => c !== "__check__" && !!c);
-          const thisRow = {};
-
-          fields.forEach((f) => {
-            thisRow[f] = params.getValue(f);
-          });
-
-          return thisRow.valutazione == 3 ? <div>🔴</div> : thisRow.valutazione == 2 ? <div>🟡</div> : thisRow.valutazione == 1 ? <div>🟢</div> : null ;
-        }
-      },
+      { field: 'year', headerName: 'Anno', width: 200 },
+      { field: 'month', headerName: 'Mese', width: 200 },
+      { field: 'day', headerName: 'Giorno', width: 200 },
+      { field: 'valutazione', headerName: 'Valutazione', width: '100%' },
     ];
     if (!value) {
       axios.get(`http://127.0.0.1:5000/reports/retrieveDayMonthYear?year=${date.getFullYear()}&month=${date.getMonth() + 1}&day=${date.getDate()}&range1=${range[0]}&range2=${range[1]}`)
         .then(res => {
           const reports = res.data.lista;
+          mettiPallini(reports);
           setReports(reports)
         });
       setColumns(pino);
@@ -277,6 +200,7 @@ function Home() {
       axios.get(`http://127.0.0.1:5000/reports/retrieveDayMonthYearName?year=${date.getFullYear()}&month=${date.getMonth() + 1}&day=${date.getDate()}&name=${value}&range1=${range[0]}&range2=${range[1]}`)
         .then(res => {
           const reports = res.data.lista;
+          mettiPallini(reports);
           setReports(reports);
         });
       setColumns(pino);
@@ -286,38 +210,23 @@ function Home() {
 
 
   /* Hooks */
-  const [posts, setPosts] = useState([]);
   const [storeName, setStoreName] = useState([]);
   const [index, setIndex] = useState(0);
-  const [drop, setDrop] = useState([]);
   const [value, setValue] = React.useState();
-  const [siti, setSiti] = useState([]);
-  const [datatable, setDatatable] = useState({});
   const [reports, setReports] = useState([]);
   const [choice, setChoice] = React.useState('');
   const [date, setDate] = useState(new Date());
   const [range, setRange] = useState([1, 3]);
   const [columns, setColumns] = useState([]);
-
   const [click, setClick] = useState(false);
   const [button, setButton] = useState(true);
-
-
-
-
   const [year, setYear] = useState(0);
   const [month, setMonth] = useState(0);
   const [viewmonth, setViewmonth] = useState();
 
   /* Variabili */
   const history = useHistory();
-  const list = [];
-  var sito;
-  // function lista(key, value, text) { // costruttore
-  //   this.key = value;
-  //   this.value = value;
-  //   this.text = text;
-  // };
+
   const handleChange = (event) => {
     setChoice(event.target.value);
   };
@@ -335,50 +244,7 @@ function Home() {
   }
 
   window.addEventListener("resize", showButton);
-  /* Liste */
-  /*const columns = [
-    {
-      field: "",
-      headerName: "Button",
-      sortable: false,
-      width: 100,
-      disableClickEventBubbling: true,
-      renderCell: (params: CellParams) => {
-        const onClick = () => {
-          const api: GridApi = params.api;
-          const fields = api
-            .getAllColumns()
-            .map((c) => c.field)
-            .filter((c) => c !== "__check__" && !!c);
-          const thisRow = {};
-
-          fields.forEach((f) => {
-            thisRow[f] = params.getValue(f);
-          });
-
-          let path = `/${thisRow.id}`;
-          return history.push(path);
-        };
-
-        return <Button onClick={onClick}>Dettagli</Button>;
-      }
-    },
-    { field: 'id', headerName: 'id', width: 200, hide: true },
-    { field: 'date', headerName: 'Data', width: 200 },
-    { field: 'name', headerName: 'Nome', width: 200 },
-    { field: 'valutazione', headerName: 'Valutazione', width: '100%' },
-  ];*/
-
-  /* creo la lista per il search selection */
-  // posts.map(post => (
-  //   sito = new lista(post.userId, post.id, post.title),
-  //   list.push(sito)
-  // ));
-
-  /* carosello */
-  const handleSelect = (selectedIndex, e) => {
-    setIndex(selectedIndex);
-  };
+  
 
   function FormLastReports() {
     return (
@@ -709,9 +575,6 @@ function Home() {
 
         <div className="CaroselloHome">
           <h2>SITI WEB</h2>
-          {/* <Carousel activeIndex={index} onSelect={handleSelect} interval={null}>
-
-          <Carousel.Item> */}
 
           <div className={button ? 'Ricerca' : 'RicercaHidden'} >
             {/* <h4 style={{ letterSpacing: 5 }}>SITI WEB</h4> */}
@@ -744,25 +607,9 @@ function Home() {
           <br />
           <div className="ContainerTabella">
             <div className="Tabella">
-              {/*console.log('datatable', datatable)*/}
-              {/*  <MDBDataTableV5 hover entriesOptions={[5, 20, 25]}
-                  entries={5} pagesAmount={4} data={datatable} />*/}
-              <DataGrid rows={feedRow()} columns={columns} />
+              <DataGrid rows={reports} columns={columns} />
             </div>
           </div>
-          {/* </Carousel.Item> */}
-
-          {/* <Carousel.Item>*/}
-          {/* <h4 style={{ letterSpacing: 5 }}>PROFILI SOCIAL</h4> */}
-          {/* <br />
-            <div className="ContainerTabella">
-              <div className="Tabella"> */}
-          {/* <DataGrid rows={siti} columns={columns} /> */}
-          {/* </div>
-            </div> */}
-
-          {/* </Carousel.Item>
-        </Carousel>   */}
         </div>
 
         <div className="CaroselloHome">
