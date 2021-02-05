@@ -135,11 +135,10 @@ class ImageClassificator:
 
         predictions = self.model.predict(img_array)
         score = tf.nn.softmax(predictions[0])
-
-        print(
-            os.path.basename(img_path)+" is most likely belongs to {} with a {:.2f} percent confidence."
-                .format(self.class_names[np.argmax(score)], 100 * np.max(score))
-        )
+        result = os.path.basename(img_path)+" is most likely belongs to {} with a {:.2f} percent confidence.".format(
+            self.class_names[np.argmax(score)], 100 * np.max(score))
+        print(result)
+        return self.class_names[np.argmax(score)]
 
 # sunflower_url = "https://storage.googleapis.com/download.tensorflow.org/example_images/592px-Red_sunflower.jpg"
 # sunflower_path = tf.keras.utils.get_file('Red_sunflower', origin=sunflower_url)

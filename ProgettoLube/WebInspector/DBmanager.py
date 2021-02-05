@@ -10,16 +10,21 @@ class DBmanager:
     client = None
     db = None
     collection = None
+    collection_keyword = None
+    collection_facebook = None
+    collection_instagram = None
 
     def start_connection(self):
         self.client = pymongo.MongoClient(
             "mongodb+srv://molciprom:molciprom@clusterlube.auwyr.mongodb.net/lube_reports?retryWrites=true&w=majority")
         self.db = self.client["lube_reports"]
         self.collection = self.db["web_reports"]
+        self.collection_facebook = self.db["instagram_reports"]
+        self.collection_instagram = self.db["facebook_reports"]
 
     def insert(self, report):
-        #print(report.toJSON())
-        #x = self.collection.insert_one(report.toJSON())
+        # print(report.toJSON())
+        # x = self.collection.insert_one(report.toJSON())
         x = self.collection.insert_one(report)
 
     def find_all(self):
@@ -346,3 +351,5 @@ class DBmanager:
         ]):
             lista.append(z)
         return lista
+
+

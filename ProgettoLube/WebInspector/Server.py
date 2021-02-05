@@ -6,6 +6,8 @@ import flask
 from flask import request, jsonify
 from flask_restplus import Api, Resource, fields
 from flask_cors import CORS
+
+import DashboardConfig
 from DBmanager import DBmanager
 from bson.objectid import ObjectId
 from LoadResources import LoadResources
@@ -19,6 +21,7 @@ app = Api(app=flask_app,
 CORS(flask_app)
 name_space = app.namespace('reports', description='Provide reports')
 name_space_resources = app.namespace('resellers', description='Provide resellers info')
+dashboard_settings = app.namespace('settings', description='Provide methods to modify settings of dashboard')
 db_manager = DBmanager()
 db_manager.start_connection()
 resource_fields = app.model('Report', {
@@ -227,6 +230,41 @@ class retrieveDayMonthYearName(Resource):
 
 
 # TODO: other api rest
+############################################ SETTINGS #####################################################
+@dashboard_settings.route('/getKeywords')
+class retrieveKeywords(Resource):
+
+    @app.doc(responses={200: 'OK', },
+             description='Provide all keywords that the Crawlers use to analyze')
+    def get(self):
+        return {"lista": DashboardConfig.keywords}
+
+
+@dashboard_settings.route('/addKeyword')
+class addKeyword(Resource):
+
+    @app.doc(responses={200: 'OK', },
+             params={'keyword': {'description': 'new keyword to be used by the Crawlers', 'type': 'string',
+                                 'required': True}, },
+             description='Method to add a new keyword')
+    def get(self):
+        keyword = request.args.get('keyword', type=str)
+        DashboardConfig.keywords.append(keyword)
+        return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
+
+
+@dashboard_settings.route('/deleteKeyword')
+class removeKeyword(Resource):
+
+    @app.doc(responses={200: 'OK', },
+             params={'keyword': {'description': 'keyword to be removed', 'type': 'string',
+                                 'required': True}, },
+             description='Method to remove a keyword')
+    def get(self):
+        keyword = request.args.get('keyword', type=str)
+        DashboardConfig.keywords.remove(keyword)
+        return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
+
 
 # app.run()
 

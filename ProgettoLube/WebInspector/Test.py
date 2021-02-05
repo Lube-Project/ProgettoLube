@@ -1,27 +1,35 @@
-import os
-import unittest
-from os.path import basename
-from urllib.request import Request, urlopen
-from urllib.error import HTTPError
-from bs4 import BeautifulSoup
-from bson.objectid import ObjectId
-import time
-import pymongo
 import datetime
+import os
 import random
-from selenium import webdriver
+import time
+import unittest
+import urllib
+from urllib.parse import urlparse
+from os.path import basename
+from socket import socket
+from urllib.error import HTTPError, URLError
+from urllib.request import Request, urlopen
 
+from selenium import webdriver
+from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.chrome.options import Options
 
+import DashboardConfig
 from Crawler import Crawler
+from CrawlerSocial import CrawlerSocial
+from DBmanager import DBmanager
 from ImageClassificator import ImageClassificator
+from ImageProcessor import ImageProcessor
 from ImageWorker import ImageWorker
 from LoadResources import LoadResources
 from OpenCV import OpenCV
-from DBmanager import DBmanager
 from Report import Report
 from ReportFoto import ReportFoto
 from ReportPagine import ReportPagine
+from instascrape import *
+from facebook_scraper import get_posts
+
+from ReportSocial import ReportSocial
 
 
 class MyTestCase(unittest.TestCase):
@@ -38,7 +46,8 @@ class MyTestCase(unittest.TestCase):
         # ic.predict('C:\\Users\\matti\\git\\ProgettoLube\\ProgettoLube\\WebInspector\\images\\scavolini.png')
         # ic.predict('C:\\Users\\matti\\git\\ProgettoLube\\ProgettoLube\\WebInspector\\images\\cane.jpg')
         # ic.predict('C:\\Users\\matti\\git\\ProgettoLube\\ProgettoLube\\WebInspector\\images\\car.jpg')
-        ic.predict('C:\\Users\\matti\\git\\ProgettoLube\\ProgettoLube\\WebInspector\\photo_downloaded\\Lube-Store-Tuscolana-Logo-nero3.png')
+        ic.predict(
+            'C:\\Users\\matti\\git\\ProgettoLube\\ProgettoLube\\WebInspector\\photo_downloaded\\Lube-Store-Tuscolana-Logo-nero3.png')
         print("TEMPO PREDIZIONI :  %s seconds " % (time.time() - start_time))
 
     def test_report_structure(self):
@@ -111,7 +120,6 @@ class MyTestCase(unittest.TestCase):
         # crawler.scrape_photos("https://www.lubebrescia.it",lista)
 
     def test_list_dir(self):
-        from os import listdir
         mypath = "photo_downloaded\\"
         mypath2 = "C:\\Users\\matti\\git\\ProgettoLube\\ProgettoLube\\WebInspector"
         import os
@@ -142,8 +150,10 @@ class MyTestCase(unittest.TestCase):
 
     def test_time(self):
         # x = datetime.datetime.now().replace(hour=00,minute=00,second=00,microsecond=00)
-        print(datetime.datetime(random.randint(2020,2021),random.randint(1,12),random.randint(1,27),
-                                 ))
+        oggi = datetime.date.today()
+        trentaggfa = oggi - datetime.timedelta(days=30)
+        # lastMonth = today - datetime.timedelta(days=1)
+        print(trentaggfa)
 
     # print(x)
 
@@ -185,31 +195,121 @@ class MyTestCase(unittest.TestCase):
         db.start_connection()
         load = LoadResources()
         nomi = load.load_name_resellers()
-        #range = [1,3]
+        # range = [1,3]
         lista = []
         for i in range(0, 9, 1):
             for x in nomi:
                 date = datetime.datetime(random.randint(2020, 2021), random.randint(1, 12), random.randint(1, 27),
                                          )
                 pino = {
-                    "date":date,
-                    "name":x,
-                    "report":thisdict2,
-                    "valutazione":random.randint(1,3)
+                    "date": date,
+                    "name": x,
+                    "report": thisdict2,
+                    "valutazione": random.randint(1, 3)
                 }
                 db.insert(pino)
 
     def test_scarpe_keyword(self):
-        lista = ["https://www.cucineluberoma.it","https://lubecreomilano.it/",]
+        lista = ["https://www.cucineluberoma.it", "https://lubecreomilano.it/", ]
         crw = Crawler()
         crw.scrape_keyword(lista)
 
     def test_string(self):
-        string = "mystring/"
-        if string.endswith('/'):
-            string = string[:-1]
+        options = Options()
+        options.add_argument('--headless')
+        browser = webdriver.Chrome(options=options)
+        page = None
+        try:
+            browser.get("https://www.cucinelubenapoli.it/cucine-lube")
+            page = browser.page_source
+        except WebDriverException as e:
+            print("Selenium Exception: {0} Message: {1}".format("my message", str(e)))
+        soup = BeautifulSoup(page, "html.parser")
+        browser.close()
+        browser.quit()
+        body = soup.find('body')
+        images = body.findAll('img')
+        for image in images:
+            if image.has_attr('src') or image.has_attr('data-src'):
+                print(image['src']) if image.has_attr('src') else print(image['data-src'])
 
-        print(string)
+    def test_facebook_scraper(self):
+        # TIME: 36m 49s Pratola Peligna 2007 post trovati
+        db = DBmanager()
+        db.start_connection()
+        target = 'pro.muccia'  # 'ProLocoSerravallediChientiMC'  # 'pro.muccia' 'ProLocoSerravallediChientiMC'
+        # #'CucineLubecreokitchenspratolapeligna'
+        proc = ImageProcessor()
+        crawler = CrawlerSocial()
+        report = crawler.facebook_crawler(target, db, proc)
+
+    def test_instgram_scraper(self):
+        db = DBmanager()
+        db.start_connection()
+        proc = ImageProcessor()
+        socialCrawl = CrawlerSocial()
+        target = 'https://www.instagram.com/lube_marseille_store/'
+        # target = 'https://www.instagram.com/molteni_matteo/'
+        report = socialCrawl.instagram_crawler(target, db, proc)
+
+    def test_json(self):
+        response = requests.get('https://api.github.com/').json()
+        print(response)
+
+    def testroba(self):
+        from selenium import webdriver
+
+        # sessionid = '45669560469%3AChazF6EraaLc9A%3A16'
+        # cookie = {"name": "sessionid", "value": f"{sessionid};", "domain": "www.instagram.com"}
+        driver = webdriver.Chrome()
+        driver.get('https://www.instagram.com')
+        with open('C:\\Users\\matti\\git\\ProgettoLube\\ProgettoLube\\WebInspector\\cookie_instagram.json', 'r',
+                  newline='') as input_data:
+            cookies = json.load(input_data)
+        for i in cookies:
+            driver.add_cookie(i)
+        driver.get('https://www.instagram.com')
+
+    def test_basename(self):
+        url = 'https://scontent-fco1-1.cdninstagram.com/v/t51.2885-15/e35/122934023_1083903042041257_2189170774886622649_n.jpg?_nc_ht=scontent-fco1-1.cdninstagram.com&_nc_cat=101&_nc_ohc=ZPwJuG5Ru2AAX89RtbU&tp=1&oh=e83c58cddac8997b4e30364c04c78266&oe=603DE74D'
+        a = urlparse(url)
+        print(os.path.basename(a.path))
+
+    def test_crawler_run(self):
+        crawler = Crawler()
+        crawler.run("https://www.cucinelubenapoli.it/", 0, "https://www.cucinelubenapoli.it/")
+
+    def test_image_processor(self):
+        proc = ImageProcessor()
+        result = proc.run()
+        print(result)
+
+    def test_download(self):
+        crawler = Crawler()
+        with open(r'C:\Users\matti\OneDrive\Desktop\lista.txt') as f:
+            content = f.readlines()
+        # you may also want to remove whitespace characters like `\n` at the end of each line
+        content = [x.strip() for x in content]
+        for x in content:
+            print(x)
+        crawler.scrape_photos("https://www.cucineluberoma.it/", content)
+
+    def test_db_keywords(self):
+        db = DBmanager()
+        db.start_connection()
+        lista = db.retrieve_keywords()
+        for x in lista:
+            print(x)
+
+    def test_config(self):
+        lista = DashboardConfig.keywords
+
+
+
+def get_image_urls(post):
+    """Returns a list of URLs for all images in a scraped Post object"""
+    image_urls = {key: val for key, val in post.flat_json_dict.items() if "display_url" in key}
+    return list(set(image_urls.values()))
 
 
 if __name__ == '__main__':
