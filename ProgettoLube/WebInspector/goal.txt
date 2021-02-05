@@ -1,0 +1,27 @@
+come anticipato in call, ti riporto un brief per il progetto di AI applicato al monitoraggio delle attività dei ns. clienti (utilizzo dei logo LUBE e/o CREO e le eventuali promozioni nei loro siti e profili social FB e IG).
+
+STEP1: monitoraggio siti rivenditori. Gli elementi da controllare sono (in ordine di importanza):
+1.	(sito store) Presenza logo Lube e Creo (a seconda che sia store Lube/Creo) e store + località (es. vedi header del ns. rivenditore https://www.lubecreostorepratolapeligna.it)
+2.	(sito x monomarca) Presenza logo Lube e Creo (a seconda che sia store Lube/Creo) e store + località
+3.	Correttezza logo Lube e Creo
+4.	Presenza loghi e foto competitors (in genere su pagina di secondo livello)
+5.	Presenza promozioni con sconti percentuali
+6.	Presenza parole come: sconti, fuori tutto, promozione, …
+7.	Presenza prezzi cucine
+8.	Presenza gallery prodotti Lube/Creo agganciata ai ns. script (visibili qui http://script.gruppolube.it)
+9.	Se gli script non ci sono, verificare se le gallery immagini, modello x modello, sono presenti e aggiornate (se possibile)
+
+STEP2: monitoraggio profili social. Occorrerebbe controllare (in ordine di importanza):
+1.	Presenza e correttezza logo Lube e Creo
+2.	Presenza loghi e foto competitors (in genere su cliente monomarca; negli store la probabilità che vengano mostrati marchi di concorrenti è nulla, per loro sarebbe un suicidio)
+3.	Presenza promozioni con sconti percentuali
+4.	Presenza parole come: sconti, fuori tutto, promozione, …
+5.	Presenza prezzi cucine
+6.	Quantità di post nel tempo
+
+Avremmo bisogno di una dashboard molto semplice nella quale iniziare a tracciare i primi alert (e avere la possibilità di visualizzare lo storico).
+Sarebbe anche molto interessante avere un’indicazione geolocalizzata degli alert (su mappa Italia).
+
+Ovviamente ben vengano altre idee per un migliore sviluppo del progetto anche, e soprattutto, perché noi abbiamo una visione molto settoriale ed è importante ricevere osservazioni e punti di vista esterni.
+
+Inizialmente, se può essere conveniente in termini di impegno ore-uomo, si potrebbe lavorare solo per il discorso siti (di cui vi passerò presto un elenco dei 500 store che monitoriamo) e poi sui social.

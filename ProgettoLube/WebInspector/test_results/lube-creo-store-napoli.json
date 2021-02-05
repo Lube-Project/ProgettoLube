@@ -1,0 +1,199 @@
+{
+	"report_foto": {
+		"foto_trovate": 470,
+		"logo": {
+			"lube&creo ERRATI": "0",
+			"lube&creo TUTTO OK": "1",
+			"lube&creo loghi ok ma proporzioni o abbinamenti NON CORRETTI": "0"
+		}
+	},
+	"report_pagine": {
+		"dictionary_parolechiave": {
+			"https://www.cucinelubenapoli.it": [
+				"key sconto found :0 times",
+				"key sconti found :0 times",
+				"key fuori tutto found :0 times",
+				"key promozione found :0 times",
+				"key % found :0 times",
+				"key offerta found :1 times",
+				"key offerte found :0 times",
+				"key promozioni found :0 times",
+				"key \u20ac found :0 times"
+			],
+			"https://www.cucinelubenapoli.it/": [
+				"key sconto found :0 times",
+				"key sconti found :0 times",
+				"key fuori tutto found :0 times",
+				"key promozione found :0 times",
+				"key % found :0 times",
+				"key offerta found :1 times",
+				"key offerte found :0 times",
+				"key promozioni found :0 times",
+				"key \u20ac found :0 times"
+			],
+			"https://www.cucinelubenapoli.it/blog": [
+				"key sconto found :0 times",
+				"key sconti found :0 times",
+				"key fuori tutto found :0 times",
+				"key promozione found :0 times",
+				"key % found :0 times",
+				"key offerta found :0 times",
+				"key offerte found :0 times",
+				"key promozioni found :1 times",
+				"key \u20ac found :0 times"
+			],
+			"https://www.cucinelubenapoli.it/contatti": [
+				"key sconto found :0 times",
+				"key sconti found :0 times",
+				"key fuori tutto found :0 times",
+				"key promozione found :0 times",
+				"key % found :0 times",
+				"key offerta found :0 times",
+				"key offerte found :0 times",
+				"key promozioni found :0 times",
+				"key \u20ac found :0 times"
+			],
+			"https://www.cucinelubenapoli.it/cucina-round-lube-napoli": [
+				"key sconto found :0 times",
+				"key sconti found :0 times",
+				"key fuori tutto found :0 times",
+				"key promozione found :0 times",
+				"key % found :0 times",
+				"key offerta found :0 times",
+				"key offerte found :0 times",
+				"key promozioni found :1 times",
+				"key \u20ac found :0 times"
+			],
+			"https://www.cucinelubenapoli.it/cucine-creo": [
+				"key sconto found :0 times",
+				"key sconti found :0 times",
+				"key fuori tutto found :0 times",
+				"key promozione found :0 times",
+				"key % found :0 times",
+				"key offerta found :0 times",
+				"key offerte found :0 times",
+				"key promozioni found :0 times",
+				"key \u20ac found :0 times"
+			],
+			"https://www.cucinelubenapoli.it/cucine-lube": [
+				"key sconto found :0 times",
+				"key sconti found :0 times",
+				"key fuori tutto found :0 times",
+				"key promozione found :0 times",
+				"key % found :0 times",
+				"key offerta found :1 times",
+				"key offerte found :0 times",
+				"key promozioni found :0 times",
+				"key \u20ac found :0 times"
+			],
+			"https://www.cucinelubenapoli.it/cucinelubenapoli": [
+				"key sconto found :0 times",
+				"key sconti found :0 times",
+				"key fuori tutto found :0 times",
+				"key promozione found :0 times",
+				"key % found :0 times",
+				"key offerta found :0 times",
+				"key offerte found :0 times",
+				"key promozioni found :0 times",
+				"key \u20ac found :0 times"
+			],
+			"https://www.cucinelubenapoli.it/flavour-cucine-lube-napoli": [
+				"key sconto found :0 times",
+				"key sconti found :0 times",
+				"key fuori tutto found :0 times",
+				"key promozione found :0 times",
+				"key % found :0 times",
+				"key offerta found :0 times",
+				"key offerte found :0 times",
+				"key promozioni found :1 times",
+				"key \u20ac found :0 times"
+			],
+			"https://www.cucinelubenapoli.it/lube-creo-napoli-promozioni": [
+				"key sconto found :0 times",
+				"key sconti found :0 times",
+				"key fuori tutto found :0 times",
+				"key promozione found :0 times",
+				"key % found :0 times",
+				"key offerta found :0 times",
+				"key offerte found :3 times",
+				"key promozioni found :3 times",
+				"key \u20ac found :0 times"
+			],
+			"https://www.cucinelubenapoli.it/news-ed-eventi-galleria": [
+				"key sconto found :0 times",
+				"key sconti found :0 times",
+				"key fuori tutto found :0 times",
+				"key promozione found :0 times",
+				"key % found :0 times",
+				"key offerta found :0 times",
+				"key offerte found :0 times",
+				"key promozioni found :0 times",
+				"key \u20ac found :0 times"
+			],
+			"https://www.cucinelubenapoli.it/perche-scegliere-lube": [
+				"key sconto found :0 times",
+				"key sconti found :0 times",
+				"key fuori tutto found :0 times",
+				"key promozione found :0 times",
+				"key % found :0 times",
+				"key offerta found :1 times",
+				"key offerte found :0 times",
+				"key promozioni found :1 times",
+				"key \u20ac found :0 times"
+			],
+			"https://www.cucinelubenapoli.it/progettazione": [
+				"key sconto found :0 times",
+				"key sconti found :0 times",
+				"key fuori tutto found :0 times",
+				"key promozione found :0 times",
+				"key % found :0 times",
+				"key offerta found :0 times",
+				"key offerte found :0 times",
+				"key promozioni found :0 times",
+				"key \u20ac found :0 times"
+			],
+			"https://www.cucinelubenapoli.it/promo-lube-creo-napoli": [
+				"key sconto found :0 times",
+				"key sconti found :0 times",
+				"key fuori tutto found :0 times",
+				"key promozione found :0 times",
+				"key % found :0 times",
+				"key offerta found :0 times",
+				"key offerte found :5 times",
+				"key promozioni found :5 times",
+				"key \u20ac found :0 times"
+			],
+			"https://www.cucinelubenapoli.it/showroom": [
+				"key sconto found :0 times",
+				"key sconti found :0 times",
+				"key fuori tutto found :0 times",
+				"key promozione found :0 times",
+				"key % found :0 times",
+				"key offerta found :0 times",
+				"key offerte found :0 times",
+				"key promozioni found :0 times",
+				"key \u20ac found :0 times"
+			]
+		},
+		"dictionary_script": {},
+		"lista_href": [
+			"https://www.cucinelubenapoli.it",
+			"https://www.cucinelubenapoli.it/",
+			"https://www.cucinelubenapoli.it/cucine-lube",
+			"https://www.cucinelubenapoli.it/cucine-creo",
+			"https://www.cucinelubenapoli.it/showroom",
+			"https://www.cucinelubenapoli.it/progettazione",
+			"https://www.cucinelubenapoli.it/news-ed-eventi-galleria",
+			"https://www.cucinelubenapoli.it/promo-lube-creo-napoli",
+			"https://www.cucinelubenapoli.it/contatti",
+			"https://www.cucinelubenapoli.it/blog",
+			"https://www.cucinelubenapoli.it/cucinelubenapoli",
+			"https://www.cucinelubenapoli.it/flavour-cucine-lube-napoli",
+			"https://www.cucinelubenapoli.it/perche-scegliere-lube",
+			"https://www.cucinelubenapoli.it/lube-creo-napoli-promozioni",
+			"https://www.cucinelubenapoli.it/cucina-round-lube-napoli"
+		]
+	},
+	"sito": "https://www.cucinelubenapoli.it/",
+	"valutazione": null
+}
