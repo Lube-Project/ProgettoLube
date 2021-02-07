@@ -20,6 +20,7 @@
 # Come iniziare
 
 ## Dipendenze
+ATTENZIONE: Selenium lavora con i chrome driver in sincronia con la versione di chrome del vostro pc. Nella cartella chrome driver, eliminare quello che trovate se incompatibile e metterci quello compatibile con la versione del vostro browser.
 ## Come installare
 ```
   pip install requirements.txt

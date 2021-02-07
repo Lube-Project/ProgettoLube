@@ -4,6 +4,7 @@ import pymongo
 import json
 import flask
 from flask import request, jsonify
+from flask import render_template
 from flask_restplus import Api, Resource, fields
 from flask_cors import CORS
 
@@ -29,7 +30,6 @@ resource_fields = app.model('Report', {
     'range1': fields.Float,
     'range2': fields.Float,
 })
-
 
 ######################################### LOAD RESOURCES ##############################################################
 @name_space_resources.route('/retrieveResellersNames')
@@ -263,6 +263,28 @@ class removeKeyword(Resource):
     def get(self):
         keyword = request.args.get('keyword', type=str)
         DashboardConfig.keywords.remove(keyword)
+        return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
+
+
+@dashboard_settings.route('/getSocialActivityTimeCrawler')
+class getSocialActivityTimeCrawler(Resource):
+
+    @app.doc(responses={200: 'OK', },
+             description="Provides the number of days the crawler monitors the seller's social network")
+    def get(self):
+        return DashboardConfig.numeroGiorniToCheckOnSocialProfileActivity
+
+
+@dashboard_settings.route('/modifySocialActivityTimeCrawler')
+class modifySocialActivityTimeCrawler(Resource):
+
+    @app.doc(responses={200: 'OK', },
+             params={'days': {'description': 'new days number', 'type': 'int',
+                              'required': True}, },
+             description='Method to remove a keyword')
+    def get(self):
+        days = request.args.get('days', type=int)
+        DashboardConfig.numeroGiorniToCheckOnSocialProfileActivity = days
         return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
 
 

@@ -32,7 +32,7 @@ class CrawlerSocial:
         for post in get_posts(target, pages=500):
             last_post_date = post['time'] if last_post_date is None else last_post_date
             last_month_date = last_post_date - datetime.timedelta(
-                days=30) if last_month_date is None else last_month_date
+                days=DashboardConfig.numeroGiorniToCheckOnSocialProfileActivity) if last_month_date is None else last_month_date
             print("last post date", last_post_date)
             print("last month date", last_month_date)
             print("upload date", post['time'])
@@ -141,7 +141,7 @@ class CrawlerSocial:
         for profile_post in list_post:
             profile_post.scrape(headers=headers)
             last_post_date = profile_post['upload_date'] if last_post_date is None else last_post_date
-            last_month_date = last_post_date - datetime.timedelta(days=30) if last_month_date is None else last_month_date
+            last_month_date = last_post_date - datetime.timedelta(days=DashboardConfig.numeroGiorniToCheckOnSocialProfileActivity) if last_month_date is None else last_month_date
             print("last post date",last_post_date)
             print("last month date",last_month_date)
             print("upload date",profile_post['upload_date'])
