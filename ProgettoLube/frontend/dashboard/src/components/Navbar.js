@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import logoLube from '../logoLube.png';
 import { StepButton } from '@material-ui/core';
 import {Button} from './Button';
+import Settings from '@material-ui/icons/Settings';
 
 
 function Navbar() {
@@ -58,9 +59,9 @@ function Navbar() {
           <li className="nav-item">
             Mappa</li>
         </Link>
-        <Link style={{ color: '#fff', textDecoration: 'none' }} to="/contact" onClick={closeMobileMenu}>
+        <Link style={{ color: '#fff', textDecoration: 'none' }} to="/setting" onClick={closeMobileMenu}>
           <li className="nav-item">
-            Contact</li>
+            <Settings style={{ fontSize: 23 }}>Impostazioni</Settings></li>
         </Link></ul>
     </div>
   );

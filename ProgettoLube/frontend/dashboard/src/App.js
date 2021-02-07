@@ -4,7 +4,7 @@ import './css/Navbar.css';
 
 import Home from './components/Home';
 import Mappa from './components/Mappa';
-import Contact from './components/Contact';
+import Setting from './components/Setting';
 import Navbar from './components/Navbar';
 import DettagliReport from './components/DettagliReport';
 import DettagliStore from './components/DettagliStore';
@@ -20,7 +20,7 @@ function App() {
           <Switch>
             <Route exact path='/' component={Home} />
             <Route exact path='/mappa' component={Mappa} />
-            <Route exact path='/contact' component={Contact} />
+            <Route exact path='/setting' component={Setting} />
             <Route exact path='/:id' component={DettagliReport} />
             <Route exact path='/store/:name' component={DettagliStore} />
           </Switch>
