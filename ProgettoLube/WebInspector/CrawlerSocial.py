@@ -92,7 +92,7 @@ class CrawlerSocial:
         self.logger.info("LOOKING FOR KEYWORDS...")
         Dict = {}
         # key_set = ["sconto", "sconti", "fuori tutto", "promozione", "%", "offerta", "offerte", "promozioni", "€"]
-        key_set = DashboardConfig.keywords
+        key_set = DashboardConfig.keywordsCrawlerSocial
         for post in lista:
             temp = []
             for key in key_set:
@@ -168,7 +168,7 @@ class CrawlerSocial:
     def search_keyword_post_insta(self, lista_post):
         Dict = {}
         # key_set = ["sconto", "sconti", "fuori tutto", "promozione", "%", "offerta", "offerte", "promozioni", "€"]
-        key_set = DashboardConfig.keywords
+        key_set = DashboardConfig.keywordsCrawlerSocial
         for post in lista_post:
             temp = []
             for key in key_set:

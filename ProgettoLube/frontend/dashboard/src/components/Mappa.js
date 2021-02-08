@@ -22,7 +22,7 @@ function Mappa() {
 
 
   function getResellersName() {
-    axios.get(`http://377d9b605ad4.ngrok.io/resellers/retrieveResellersNames`)
+    axios.get(`http://localhost:5000/resellers/retrieveResellersNames`)
       .then(res => {
         const data = res.data;
         // console.log(data.lista);
@@ -31,7 +31,7 @@ function Mappa() {
 
   }
   function getResellersPosition() {
-    axios.get(`http://377d9b605ad4.ngrok.io/resellers/retrieveResellersPositions`)
+    axios.get(`http://localhost:5000/resellers/retrieveResellersPositions`)
       .then(res => {
         const data = res.data.lista;
         var lista = [];
@@ -91,11 +91,10 @@ function Mappa() {
         />
 
         <ReactMapGL
-
           mapStyle='mapbox://styles/stagemtmv/ckjh2rchph5tm19mqudag4i6e'
           {...viewport}
           onViewportChange={nextViewport => setViewport(nextViewport)}
-          mapboxApiAccessToken="pk.eyJ1Ijoic3RhZ2VtdG12IiwiYSI6ImNramgxZ25jcjk0a3UycWxiYmU1OWZ1ZnIifQ.uy5k7k9bzMeox5fzR3Iz3A"
+          mapboxApiAccessToken="pk.eyJ1Ijoic3RhZ2VtdG12IiwiYSI6ImNra3dzMGNhejI5bnEzMHFuaWE4end4dWoifQ.1GvLt9pNFptc1-tG5pP0yQ"
 
         >
 

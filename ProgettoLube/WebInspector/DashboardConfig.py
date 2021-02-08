@@ -1,2 +1,3 @@
 numeroGiorniToCheckOnSocialProfileActivity = 30
-keywords = ["sconto", "sconti", "fuori tutto", "promozione", "%", "offerta", "offerte", "promozioni", "€"]
+keywordsCrawler = ["sconto", "sconti", "fuori tutto", "promozione", "%", "offerta", "offerte", "promozioni", "€"]
+keywordsCrawlerSocial = ["sconto", "sconti", "fuori tutto", "promozione", "%", "offerta", "offerte", "promozioni", "€"]

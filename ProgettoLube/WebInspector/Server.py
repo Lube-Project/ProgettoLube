@@ -31,6 +31,7 @@ resource_fields = app.model('Report', {
     'range2': fields.Float,
 })
 
+
 ######################################### LOAD RESOURCES ##############################################################
 @name_space_resources.route('/retrieveResellersNames')
 class retrieveResellersNames(Resource):
@@ -231,17 +232,18 @@ class retrieveDayMonthYearName(Resource):
 
 # TODO: other api rest
 ############################################ SETTINGS #####################################################
-@dashboard_settings.route('/getKeywords')
-class retrieveKeywords(Resource):
+@dashboard_settings.route('/getKeywordsCrawler')
+class retrieveKeywordsCrawler(Resource):
 
     @app.doc(responses={200: 'OK', },
              description='Provide all keywords that the Crawlers use to analyze')
     def get(self):
-        return {"lista": DashboardConfig.keywords}
+        lista = list(dict.fromkeys(DashboardConfig.keywordsCrawler))
+        return {"lista": lista}
 
 
-@dashboard_settings.route('/addKeyword')
-class addKeyword(Resource):
+@dashboard_settings.route('/addKeywordCrawler')
+class addKeywordCrawler(Resource):
 
     @app.doc(responses={200: 'OK', },
              params={'keyword': {'description': 'new keyword to be used by the Crawlers', 'type': 'string',
@@ -249,12 +251,12 @@ class addKeyword(Resource):
              description='Method to add a new keyword')
     def get(self):
         keyword = request.args.get('keyword', type=str)
-        DashboardConfig.keywords.append(keyword)
+        DashboardConfig.keywordsCrawler.append(keyword)
         return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
 
 
-@dashboard_settings.route('/deleteKeyword')
-class removeKeyword(Resource):
+@dashboard_settings.route('/deleteKeywordCrawler')
+class removeKeywordCrawler(Resource):
 
     @app.doc(responses={200: 'OK', },
              params={'keyword': {'description': 'keyword to be removed', 'type': 'string',
@@ -262,7 +264,43 @@ class removeKeyword(Resource):
              description='Method to remove a keyword')
     def get(self):
         keyword = request.args.get('keyword', type=str)
-        DashboardConfig.keywords.remove(keyword)
+        DashboardConfig.keywordsCrawler.remove(keyword)
+        return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
+
+
+@dashboard_settings.route('/getKeywordsCrawlerSocial')
+class retrieveKeywordsCrawlerSocial(Resource):
+
+    @app.doc(responses={200: 'OK', },
+             description='Provide all keywords that the Crawlers use to analyze')
+    def get(self):
+        lista = list(dict.fromkeys(DashboardConfig.keywordsCrawlerSocial))
+        return {"lista": lista}
+
+
+@dashboard_settings.route('/addKeywordCrawlerSocial')
+class addKeywordCrawlerSocial(Resource):
+
+    @app.doc(responses={200: 'OK', },
+             params={'keyword': {'description': 'new keyword to be used by the Crawlers', 'type': 'string',
+                                 'required': True}, },
+             description='Method to add a new keyword')
+    def get(self):
+        keyword = request.args.get('keyword', type=str)
+        DashboardConfig.keywordsCrawlerSocial.append(keyword)
+        return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
+
+
+@dashboard_settings.route('/deleteKeywordCrawlerSocial')
+class removeKeywordCrawlerSocial(Resource):
+
+    @app.doc(responses={200: 'OK', },
+             params={'keyword': {'description': 'keyword to be removed', 'type': 'string',
+                                 'required': True}, },
+             description='Method to remove a keyword')
+    def get(self):
+        keyword = request.args.get('keyword', type=str)
+        DashboardConfig.keywordsCrawlerSocial.remove(keyword)
         return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
 
 

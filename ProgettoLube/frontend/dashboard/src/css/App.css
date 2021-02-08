@@ -250,7 +250,7 @@ a.Link::after {
           IMPOSTAZIONI
 ********************************* */
 .Number {
-  width: 30%;
+  width: 16%;
 }
 
 .Container {
@@ -298,7 +298,7 @@ a.Link::after {
 
 .Scroll {
   height: 100%;
-  overflow: scroll;
+  overflow-y: scroll;
   border: 1px solid darkgrey;
   border-radius: 10px;
 }
@@ -306,4 +306,7 @@ a.Link::after {
 .Scritta {
   color: #fff;
   margin-left: 20px; 
+}
+.Descrizione {
+  width: 30%;
 }

@@ -10,16 +10,11 @@ import Divider from '@material-ui/core/Divider';
 
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
-import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
-import FolderIcon from '@material-ui/icons/Folder';
 import DeleteIcon from '@material-ui/icons/Delete';
 
-import { FixedSizeList } from 'react-window';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -39,53 +34,87 @@ function Setting() {
 
   useEffect(() => {
     getCrawlerKeywords();
+    getCrawlerKeywordsSocial();
     getSocialCrawlerDays();
 
   }, []);
 
   function getCrawlerKeywords() {
-    axios.get(`http://377d9b605ad4.ngrok.io/settings/getKeywords`)
+    axios.get(`http://localhost:5000/settings/getKeywordsCrawler`)
       .then(res => {
         const data = res.data;
-        console.log(data.lista);
-        setKeywords(data.lista)
+        console.log("KEYWORDS WEB : ", data.lista);
+        setKeywordsCrawler(data.lista)
       })
   }
 
-  async function addCrawlerKeywords(keyword) {
-    await axios.get(`http://377d9b605ad4.ngrok.io/settings/addKeyword?keyword=${keyword}`)
+  function addCrawlerKeywords(keyword) {
+    if (typeof (keyword) == 'string') {
+      axios.get(`http://localhost:5000/settings/addKeywordCrawler?keyword=${keyword}`);
+      getCrawlerKeywords();
+    }
   }
 
-  async function deleteCrawlerKeywords(keyword) {
-    await axios.get(`http://377d9b605ad4.ngrok.io/settings/deleteKeyword?keyword=${keyword}`)
+  function deleteCrawlerKeywords(keyword) {
+    axios.get(`http://localhost:5000/settings/deleteKeywordCrawler?keyword=${keyword}`);
+    getCrawlerKeywords();
+
+  }
+
+
+  function getCrawlerKeywordsSocial() {
+    axios.get(`http://localhost:5000/settings/getKeywordsCrawlerSocial`)
+      .then(res => {
+        const data = res.data;
+        console.log("KEYWORDS SOCIAL : ", data.lista);
+        setKeywordsSocial(data.lista)
+      })
+  }
+
+  function addCrawlerSocialKeywords(keyword) {
+    if(typeof (keyword) == 'string'){
+      axios.get(`http://localhost:5000/settings/addKeywordCrawlerSocial?keyword=${keyword}`);
+      getCrawlerKeywordsSocial();
+    }
+    
+  }
+
+  function deleteCrawlerSocialKeywords(keyword) {
+    axios.get(`http://localhost:5000/settings/deleteKeywordCrawlerSocial?keyword=${keyword}`);
+    getCrawlerKeywordsSocial();
   }
 
   function getSocialCrawlerDays() {
-    axios.get(`http://377d9b605ad4.ngrok.io/settings/getSocialActivityTimeCrawler`)
+    axios.get(`http://localhost:5000/settings/getSocialActivityTimeCrawler`)
       .then(res => {
         const data = res.data;
         console.log(data);
-        setDays(data)
+        setDays(data);
       })
   }
 
-  async function changeSocialCrawlerDays(days) {
-    await axios.get(`http://377d9b605ad4.ngrok.io/settings/modifySocialActivityTimeCrawler?days=${days}`)
+  function changeSocialCrawlerDays() {
+    axios.get(`http://localhost:5000/settings/modifySocialActivityTimeCrawler?days=${daysInsert}`);
+    getSocialCrawlerDays();
   }
 
 
-  const [keywords, setKeywords] = useState([]);
-  const [days, setDays] = useState(0);
-  const [parola, setParola] = useState("");
+  const [keywordsCrawler, setKeywordsCrawler] = useState([]);
+  const [keywordsSocial, setKeywordsSocial] = useState([]);
+  const [days, setDays] = useState();
+  const [daysInsert, setDaysInsert] = useState();
+  const [parolaWeb, setParolaWeb] = useState("");
+  const [parolaSocial, setParolaSocial] = useState("");
   const handleChange = (event) => {
-    setDays(event.target.value);
+    setDaysInsert(event.target.value);
   };
   const handleChange2 = (event) => {
-    setParola(event.target.value);
+    setParolaWeb(event.target.value);
+  };
+  const handleChange3 = (event) => {
+    setParolaSocial(event.target.value);
   };
 
-  const [dense, setDense] = React.useState(false);
-  const [secondary, setSecondary] = React.useState(false);
 
 
   return (
@@ -101,18 +130,21 @@ function Setting() {
           <Divider light />
           <br />
           <div className="Impostazione2">
-            <p>Descrizione ....</p>
-
+          <div className="Descrizione">
+            <p style={{fontSize:20}}><b>Lista parole chiave da cercare in un sito web :</b></p>
+          </div>
             <div className="Scroll">
               <List>
-                {keywords.map(value => {
+                {keywordsCrawler.map(value => {
                   return <ListItem key={value}>
                     <ListItemText
                       primary={value}
                     />
 
                     <ListItemSecondaryAction>
-                      <IconButton edge="end" aria-label="delete">
+                      <IconButton edge="end" aria-label="delete" onClick={() => {
+                        deleteCrawlerKeywords(value);
+                      }}>
                         <DeleteIcon />
                       </IconButton>
                     </ListItemSecondaryAction>
@@ -124,9 +156,9 @@ function Setting() {
             <TextField
               id="outlined-helperText"
               label="Inserisci parola"
-              defaultValue=""
+              //defaultValue=""
               variant="outlined"
-              value={parola}
+              value={parolaWeb}
               onChange={handleChange2}
             />
 
@@ -135,6 +167,10 @@ function Setting() {
               color="primary"
               className={classes.button}
               endIcon={<Icon>send</Icon>}
+              onClick={() => {
+                addCrawlerKeywords(parolaWeb);
+                setParolaWeb('');
+              }}
             >
               INVIA
             </Button>
@@ -152,7 +188,10 @@ function Setting() {
           <Divider light />
           <br />
           <div className="Impostazione">
-            <p>Descrizione ....</p>
+            <div className="Descrizione">
+            <p style={{fontSize:20}}><b>Partendo dall'ultimo post, il numero di giorni precedenti che determinano il periodo di analisi</b></p>
+            </div>
+            <h4><b>Numero giorni : </b> {days} </h4>
             <TextField
               id="outlined-number"
               label="A quanti giorni vuoi risalire"
@@ -162,8 +201,8 @@ function Setting() {
               }}
               variant="outlined"
               className="Number"
-              defaultValue="30"
-              value={days}
+              defaultValue={days}
+              //value={days}
               onChange={handleChange}
             />
 
@@ -172,6 +211,9 @@ function Setting() {
               color="primary"
               className={classes.button}
               endIcon={<Icon>send</Icon>}
+              onClick={() => {
+                changeSocialCrawlerDays();
+              }}
             >
               INVIA
             </Button>
@@ -181,18 +223,22 @@ function Setting() {
           <br />
 
           <div className="Impostazione2">
-            <p>Descrizione ....</p>
+          <div className="Descrizione">
+            <p style={{fontSize:20}}><b>Lista parole chiave da cercare in un profilo social :</b></p>
+          </div>
 
             <div className="Scroll">
               <List>
-                {keywords.map(value => {
+                {keywordsSocial.map(value => {
                   return <ListItem key={value}>
                     <ListItemText
                       primary={value}
                     />
 
                     <ListItemSecondaryAction>
-                      <IconButton edge="end" aria-label="delete">
+                      <IconButton edge="end" aria-label="delete" onClick={() => {
+                        deleteCrawlerSocialKeywords(value);
+                      }}>
                         <DeleteIcon />
                       </IconButton>
                     </ListItemSecondaryAction>
@@ -202,12 +248,12 @@ function Setting() {
             </div>
 
             <TextField
-              id="outlined-helperText"
+              //id="outlined-helperText"
               label="Inserisci parola"
-              defaultValue=""
+              //defaultValue=""
               variant="outlined"
-              value={parola}
-              onChange={handleChange2}
+              value={parolaSocial}
+              onChange={handleChange3}
             />
 
             <Button
@@ -215,24 +261,17 @@ function Setting() {
               color="primary"
               className={classes.button}
               endIcon={<Icon>send</Icon>}
+              onClick={() => {
+                addCrawlerSocialKeywords(parolaSocial);
+                setParolaSocial('');
+              }}
             >
               INVIA
             </Button>
-
           </div>
-
         </div>
-
+        <br/>
       </div>
-
-      {/* 
-
-
-      <div>GIORNI : {days}</div>
-      {keywords.map(keyword =>
-        (<p key={keyword}>PAROLA CHIAVE : {keyword}</p>)
-      )}*/}
-
     </div>
   );
 }

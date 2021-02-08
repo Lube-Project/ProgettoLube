@@ -134,7 +134,7 @@ function DettagliStore(props) {
 
 
     const fetchResellerDetails = async () => {
-        axios.get(`http://377d9b605ad4.ngrok.io/resellers/retrieveResellerDetails?name=${data}`)
+        axios.get(`http://localhost:5000/resellers/retrieveResellerDetails?name=${data}`)
             .then(res => {
                 const response = res.data;
 
@@ -157,7 +157,7 @@ function DettagliStore(props) {
             { field: 'valutazione', headerName: 'Valutazione', width: 400 },
         ];
         //waiting for backy
-        axios.get(`http://377d9b605ad4.ngrok.io/reports/retrieveYearAverageName?year=${year}&name=${data}&range1=${range[0]}&range2=${range[1]}`)
+        axios.get(`http://localhost:5000/reports/retrieveYearAverageName?year=${year}&name=${data}&range1=${range[0]}&range2=${range[1]}`)
             .then(res => {
                 const response = res.data.lista;
                 mettiPallini(response);
@@ -178,7 +178,7 @@ function DettagliStore(props) {
             { field: 'month', headerName: 'Mese', width: 340 },
             { field: 'valutazione', headerName: 'Valutazione', width: '100%' },
         ];
-        axios.get(`http://377d9b605ad4.ngrok.io/reports/retrieveMonthYearAverageName?year=${year}&month=${month}&name=${data}&range1=${range[0]}&range2=${range[1]}`)
+        axios.get(`http://localhost:5000/reports/retrieveMonthYearAverageName?year=${year}&month=${month}&name=${data}&range1=${range[0]}&range2=${range[1]}`)
             .then(res => {
                 const reports = res.data.lista;
                 mettiPallini(reports);
@@ -199,7 +199,7 @@ function DettagliStore(props) {
             { field: 'day', headerName: 'Giorno', width: 200 },
             { field: 'valutazione', headerName: 'Valutazione', width: '100%' },
         ];
-        axios.get(`http://377d9b605ad4.ngrok.io/reports/retrieveDayMonthYearName?year=${date.getFullYear()}&month=${date.getMonth() + 1}&day=${date.getDate()}&name=${data}&range1=${range[0]}&range2=${range[1]}`)
+        axios.get(`http://localhost:5000/reports/retrieveDayMonthYearName?year=${date.getFullYear()}&month=${date.getMonth() + 1}&day=${date.getDate()}&name=${data}&range1=${range[0]}&range2=${range[1]}`)
             .then(res => {
                 const reports = res.data.lista;
                 mettiPallini(reports);

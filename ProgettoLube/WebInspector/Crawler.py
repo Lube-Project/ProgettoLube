@@ -303,7 +303,7 @@ class Crawler:
         page = None
         soup = None
         #key_set = ["sconto", "sconti", "fuori tutto", "promozione", "%", "offerta", "offerte", "promozioni", "€"]
-        key_set = DashboardConfig.keywords
+        key_set = DashboardConfig.keywordsCrawler
         for url in lista_href:
             temp = []
             try:

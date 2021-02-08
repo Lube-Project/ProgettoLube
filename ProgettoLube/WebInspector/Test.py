@@ -241,7 +241,7 @@ class MyTestCase(unittest.TestCase):
         # #'CucineLubecreokitchenspratolapeligna'
         proc = ImageProcessor()
         crawler = CrawlerSocial()
-        report = crawler.facebook_crawler(target, db, proc)
+        report = crawler.facebook_crawler(target,proc)
 
     def test_instgram_scraper(self):
         db = DBmanager()
@@ -250,7 +250,7 @@ class MyTestCase(unittest.TestCase):
         socialCrawl = CrawlerSocial()
         target = 'https://www.instagram.com/lube_marseille_store/'
         # target = 'https://www.instagram.com/molteni_matteo/'
-        report = socialCrawl.instagram_crawler(target, db, proc)
+        report = socialCrawl.instagram_crawler(target, proc)
 
     def test_json(self):
         response = requests.get('https://api.github.com/').json()

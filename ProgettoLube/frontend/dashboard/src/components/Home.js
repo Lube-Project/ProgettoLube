@@ -70,7 +70,7 @@ function Home() {
 
   /* chiamata VERA per richiedere i dati al server */
   const fetchLastReports = async () => {
-    axios.get(`http://377d9b605ad4.ngrok.io/reports/retrieveLastReports`)
+    axios.get(`http://localhost:5000/reports/retrieveLastReports`)
       .then(res => {
         const reports = res.data.lista;
         //console.log(reports);
@@ -114,7 +114,7 @@ function Home() {
   }
 
   const fetchResellerNames = async () => {
-    axios.get(`http://377d9b605ad4.ngrok.io/resellers/retrieveResellersNames`)
+    axios.get(`http://localhost:5000/resellers/retrieveResellersNames`)
       .then(res => {
         const data = res.data;
         // console.log(data.lista);
@@ -126,14 +126,14 @@ function Home() {
   function fetchReportAnnuali() {
         
     if (!value) {
-      axios.get(`http://377d9b605ad4.ngrok.io/reports/retrieveYearAverage?year=${year}&range1=${range[0]}&range2=${range[1]}`)
+      axios.get(`http://localhost:5000/reports/retrieveYearAverage?year=${year}&range1=${range[0]}&range2=${range[1]}`)
         .then(res => {
           const reports = res.data.lista;
           mettiPallini(reports);
           setReports(reports)
         });    
     } else {
-      axios.get(`http://377d9b605ad4.ngrok.io/reports/retrieveYearAverageName?year=${year}&name=${value}&range1=${range[0]}&range2=${range[1]}`)
+      axios.get(`http://localhost:5000/reports/retrieveYearAverageName?year=${year}&name=${value}&range1=${range[0]}&range2=${range[1]}`)
         .then(res => {
           const reports = res.data.lista;
           mettiPallini(reports);
@@ -158,7 +158,7 @@ function Home() {
       { field: 'valutazione', headerName: 'Valutazione', width: '100%' },
     ];
     if (!value) {
-      axios.get(`http://377d9b605ad4.ngrok.io/reports/retrieveMonthYearAverage?year=${year}&month=${month}&range1=${range[0]}&range2=${range[1]}`)
+      axios.get(`http://localhost:5000/reports/retrieveMonthYearAverage?year=${year}&month=${month}&range1=${range[0]}&range2=${range[1]}`)
         .then(res => {
           const reports = res.data.lista;
           mettiPallini(reports);
@@ -167,7 +167,7 @@ function Home() {
       setColumns(pino);
       return null;
     } else {
-      axios.get(`http://377d9b605ad4.ngrok.io/reports/retrieveMonthYearAverageName?year=${year}&month=${month}&name=${value}&range1=${range[0]}&range2=${range[1]}`)
+      axios.get(`http://localhost:5000/reports/retrieveMonthYearAverageName?year=${year}&month=${month}&name=${value}&range1=${range[0]}&range2=${range[1]}`)
         .then(res => {
           const reports = res.data.lista;
           mettiPallini(reports);
@@ -188,7 +188,7 @@ function Home() {
       { field: 'valutazione', headerName: 'Valutazione', width: '100%' },
     ];
     if (!value) {
-      axios.get(`http://377d9b605ad4.ngrok.io/reports/retrieveDayMonthYear?year=${date.getFullYear()}&month=${date.getMonth() + 1}&day=${date.getDate()}&range1=${range[0]}&range2=${range[1]}`)
+      axios.get(`http://localhost:5000/reports/retrieveDayMonthYear?year=${date.getFullYear()}&month=${date.getMonth() + 1}&day=${date.getDate()}&range1=${range[0]}&range2=${range[1]}`)
         .then(res => {
           const reports = res.data.lista;
           mettiPallini(reports);
@@ -197,7 +197,7 @@ function Home() {
       setColumns(pino);
       return null;
     } else {
-      axios.get(`http://377d9b605ad4.ngrok.io/reports/retrieveDayMonthYearName?year=${date.getFullYear()}&month=${date.getMonth() + 1}&day=${date.getDate()}&name=${value}&range1=${range[0]}&range2=${range[1]}`)
+      axios.get(`localhost:5000/reports/retrieveDayMonthYearName?year=${date.getFullYear()}&month=${date.getMonth() + 1}&day=${date.getDate()}&name=${value}&range1=${range[0]}&range2=${range[1]}`)
         .then(res => {
           const reports = res.data.lista;
           mettiPallini(reports);
@@ -613,7 +613,11 @@ function Home() {
         </div>
 
         <div className="CaroselloHome">
-          <h2>SOCIAL MEDIA</h2>
+          <h2>Facebook</h2>
+
+        </div>
+        <div className="CaroselloHome">
+          <h2>Instagram</h2>
 
         </div>
       </Carousel>
