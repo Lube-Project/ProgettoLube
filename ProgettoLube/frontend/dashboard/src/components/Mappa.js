@@ -22,7 +22,7 @@ function Mappa() {
 
 
   function getResellersName() {
-    axios.get(`http://127.0.0.1:5000/resellers/retrieveResellersNames`)
+    axios.get(`http://377d9b605ad4.ngrok.io/resellers/retrieveResellersNames`)
       .then(res => {
         const data = res.data;
         // console.log(data.lista);
@@ -31,7 +31,7 @@ function Mappa() {
 
   }
   function getResellersPosition() {
-    axios.get(`http://127.0.0.1:5000/resellers/retrieveResellersPositions`)
+    axios.get(`http://377d9b605ad4.ngrok.io/resellers/retrieveResellersPositions`)
       .then(res => {
         const data = res.data.lista;
         var lista = [];

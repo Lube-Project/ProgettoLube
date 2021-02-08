@@ -245,3 +245,65 @@ a.Link::after {
   width: 10px;
   height: 10px;
 }
+
+/* ********************************* 
+          IMPOSTAZIONI
+********************************* */
+.Number {
+  width: 30%;
+}
+
+.Container {
+  /* border: 1px solid black; */
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.Sezione {
+  height: 40vh;
+  width: 90%;
+  background-color: white;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  border-radius: 10px;
+  margin-bottom: 10px;
+  margin-top: 20px;
+}
+
+.TitoloImpo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background-color: indianred;
+}
+
+.Impostazione{
+  height: 15%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 20px;
+}
+
+.Impostazione2 {
+  height: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-left: 20px;
+}  
+
+.Scroll {
+  height: 100%;
+  overflow: scroll;
+  border: 1px solid darkgrey;
+  border-radius: 10px;
+}
+
+.Scritta {
+  color: #fff;
+  margin-left: 20px; 
+}
