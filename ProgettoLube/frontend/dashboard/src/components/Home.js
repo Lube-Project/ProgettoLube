@@ -56,12 +56,12 @@ function Home() {
     fetchResellerNames();
   }, []);
 
-  function mettiPallini(array){
+  function mettiPallini(array) {
     array = array.map(oggetto => {
-      oggetto.valutazione = oggetto.valutazione >=2.75 && oggetto.valutazione <=3 ? '🔴' 
-      : oggetto.valutazione >= 2 && oggetto.valutazione < 2.75 ? '🟡' 
-      : oggetto.valutazione >= 1 && oggetto.valutazione < 2 ? '🟢' 
-      : '' ;
+      oggetto.valutazione = oggetto.valutazione >= 2.75 && oggetto.valutazione <= 3 ? '🔴'
+        : oggetto.valutazione >= 2 && oggetto.valutazione < 2.75 ? '🟡'
+          : oggetto.valutazione >= 1 && oggetto.valutazione < 2 ? '🟢'
+            : '';
     })
     return array;
   }
@@ -101,10 +101,15 @@ function Home() {
               return <Button onClick={onClick}>Dettagli</Button>;
             }
           },
-          { field: 'id', headerName: 'id', width: 400, hide: true },
-          { field: 'date', headerName: 'Data', width: 400 },
-          { field: 'name', headerName: 'Nome', width: 400 },
-          { field: 'valutazione', headerName: 'Valutazione', width: '100%' },
+          { field: 'id', headerName: 'id', width: 150, hide: true },
+          { field: 'date', headerName: 'Data', width: 150 },
+          { field: 'name', headerName: 'Nome', width: 150 },
+          { field: 'valutazione', headerName: 'Valutazione', width: 150 },
+          { field: 'script', headerName: 'Script', width: 150 },
+          { field: 'keywords', headerName: 'Parole Chiave', width: 150 },
+          { field: 'logo', headerName: 'Logo', width: 150 },
+          { field: 'competitors', headerName: 'Competitors', width: 150 },
+          { field: 'parolefoto', headerName: 'Parole Foto', width: 150 },
         ];
         setColumns(pino);
         mettiPallini(reports);
@@ -124,26 +129,31 @@ function Home() {
   }
 
   function fetchReportAnnuali() {
-        
+
     if (!value) {
       axios.get(`http://localhost:5000/reports/retrieveYearAverage?year=${year}&range1=${range[0]}&range2=${range[1]}`)
         .then(res => {
           const reports = res.data.lista;
           mettiPallini(reports);
           setReports(reports)
-        });    
+        });
     } else {
       axios.get(`http://localhost:5000/reports/retrieveYearAverageName?year=${year}&name=${value}&range1=${range[0]}&range2=${range[1]}`)
         .then(res => {
           const reports = res.data.lista;
           mettiPallini(reports);
           setReports(reports);
-        });   
+        });
     }
     const pino = [
-      { field: 'id', headerName: 'Name', width: 400, },
-      { field: 'year', headerName: 'Anno', width: 400 },
-      { field: 'valutazione', headerName: 'Valutazione', width: 400 },
+      { field: 'id', headerName: 'Nome', width: 150, },
+      { field: 'year', headerName: 'Anno', width: 150 },
+      { field: 'valutazione', headerName: 'Valutazione', width: 150 },
+      { field: 'script', headerName: 'Script', width: 150 },
+      { field: 'keywords', headerName: 'Parole Chiave', width: 150 },
+      { field: 'logo', headerName: 'Logo', width: 150 },
+      { field: 'competitors', headerName: 'Competitors', width: 150 },
+      { field: 'parolefoto', headerName: 'Parole Foto', width: 150 },
     ];
     setColumns(pino);
     return null;
@@ -152,10 +162,15 @@ function Home() {
     //non ha selezionato il nome dello store
 
     const pino = [
-      { field: 'id', headerName: 'Name', width: 350, },
-      { field: 'year', headerName: 'Anno', width: 340 },
-      { field: 'month', headerName: 'Mese', width: 340 },
-      { field: 'valutazione', headerName: 'Valutazione', width: '100%' },
+      { field: 'id', headerName: 'Nome', width: 150, },
+      { field: 'year', headerName: 'Anno', width: 150 },
+      { field: 'month', headerName: 'Mese', width: 150 },
+      { field: 'valutazione', headerName: 'Valutazione', width: 150 },
+      { field: 'script', headerName: 'Script', width: 150 },
+      { field: 'keywords', headerName: 'Parole Chiave', width: 150 },
+      { field: 'logo', headerName: 'Logo', width: 150 },
+      { field: 'competitors', headerName: 'Competitors', width: 150 },
+      { field: 'parolefoto', headerName: 'Parole Foto', width: 150 },
     ];
     if (!value) {
       axios.get(`http://localhost:5000/reports/retrieveMonthYearAverage?year=${year}&month=${month}&range1=${range[0]}&range2=${range[1]}`)
@@ -181,11 +196,16 @@ function Home() {
 
 
     const pino = [
-      { field: 'id', headerName: 'Name', width: 350, },
-      { field: 'year', headerName: 'Anno', width: 200 },
-      { field: 'month', headerName: 'Mese', width: 200 },
-      { field: 'day', headerName: 'Giorno', width: 200 },
-      { field: 'valutazione', headerName: 'Valutazione', width: '100%' },
+      { field: 'id', headerName: 'Nome', width: 150, },
+      { field: 'year', headerName: 'Anno', width: 150 },
+      { field: 'month', headerName: 'Mese', width: 150 },
+      { field: 'day', headerName: 'Giorno', width: 150 },
+      { field: 'valutazione', headerName: 'Valutazione', width: 150 },
+      { field: 'script', headerName: 'Script', width: 150 },
+      { field: 'keywords', headerName: 'Parole Chiave', width: 150 },
+      { field: 'logo', headerName: 'Logo', width: 150 },
+      { field: 'competitors', headerName: 'Competitors', width: 150 },
+      { field: 'parolefoto', headerName: 'Parole Foto', width: 150 },
     ];
     if (!value) {
       axios.get(`http://localhost:5000/reports/retrieveDayMonthYear?year=${date.getFullYear()}&month=${date.getMonth() + 1}&day=${date.getDate()}&range1=${range[0]}&range2=${range[1]}`)
@@ -244,7 +264,7 @@ function Home() {
   }
 
   window.addEventListener("resize", showButton);
-  
+
 
   function FormLastReports() {
     return (
@@ -613,12 +633,12 @@ function Home() {
         </div>
 
         <div className="CaroselloHome">
-          <h2>Facebook</h2>
-
+          <h2>FACEBOOK</h2>
+          <div className="TabellaFittizia"><h3>Tabella</h3></div>
         </div>
         <div className="CaroselloHome">
-          <h2>Instagram</h2>
-
+          <h2>INSTAGRAM</h2>
+          <div className="TabellaFittizia"><h3>Tabella</h3></div>
         </div>
       </Carousel>
     </div>

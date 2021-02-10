@@ -64,7 +64,7 @@ function Mappa() {
   const [latitude, setLatitude] = React.useState();
   const [longitude, setLongitude] = React.useState();
   const [viewport, setViewport] = useState({
-    width: "1000",
+    width: "1000px",
     height: "500px",
 
     latitude: 43.041040634170734,
@@ -76,7 +76,7 @@ function Mappa() {
 
   return (
     <div className="App">
-      <h1>MAPPA</h1>
+      <h2>MAPPA</h2>
       <div className="Container">
         <Autocomplete
           placeholder='Seleziona Sito'
