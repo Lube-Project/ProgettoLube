@@ -50,17 +50,35 @@ function Home() {
 
   /* codice eseguito all'avvio della pagina */
   useEffect(() => {
-    // fetchData();
-    //fetchPino();
-    fetchLastReports();
+    fetchLastReportsWeb();
+    fetchLastReportsFacebook();
+    fetchLastReportsInstagram();
     fetchResellerNames();
   }, []);
 
   function mettiPallini(array) {
     array = array.map(oggetto => {
-      oggetto.valutazione = oggetto.valutazione >= 2.75 && oggetto.valutazione <= 3 ? '🔴'
-        : oggetto.valutazione >= 2 && oggetto.valutazione < 2.75 ? '🟡'
-          : oggetto.valutazione >= 1 && oggetto.valutazione < 2 ? '🟢'
+      oggetto.valutazione_foto = oggetto.valutazione_foto >= 2.75 && oggetto.valutazione_foto <= 3 ? '🔴'
+        : oggetto.valutazione_foto >= 2 && oggetto.valutazione_foto < 2.75 ? '🟡'
+          : oggetto.valutazione_foto >= 1 && oggetto.valutazione_foto < 2 ? '🟢'
+            : '';
+      oggetto.valutazione_keywords = oggetto.valutazione_keywords >= 2.75 && oggetto.valutazione_keywords <= 3 ? '🔴'
+        : oggetto.valutazione_keywords >= 2 && oggetto.valutazione_keywords < 2.75 ? '🟡'
+          : oggetto.valutazione_keywords >= 1 && oggetto.valutazione_keywords < 2 ? '🟢'
+            : '';
+      oggetto.valutazione_script = oggetto.valutazione_script == 1 ? '🟢' : '🔴';
+    })
+    return array;
+  }
+  function mettiPalliniSocial(array) {
+    array = array.map(oggetto => {
+      oggetto.valutazione_foto = oggetto.valutazione_foto >= 2.75 && oggetto.valutazione_foto <= 3 ? '🔴'
+        : oggetto.valutazione_foto >= 2 && oggetto.valutazione_foto < 2.75 ? '🟡'
+          : oggetto.valutazione_foto >= 1 && oggetto.valutazione_foto < 2 ? '🟢'
+            : '';
+      oggetto.valutazione_keywords = oggetto.valutazione_keywords >= 2.75 && oggetto.valutazione_keywords <= 3 ? '🔴'
+        : oggetto.valutazione_keywords >= 2 && oggetto.valutazione_keywords < 2.75 ? '🟡'
+          : oggetto.valutazione_keywords >= 1 && oggetto.valutazione_keywords < 2 ? '🟢'
             : '';
     })
     return array;
@@ -69,8 +87,8 @@ function Home() {
 
 
   /* chiamata VERA per richiedere i dati al server */
-  const fetchLastReports = async () => {
-    axios.get(`http://localhost:5000/reports/retrieveLastReports`)
+  const fetchLastReportsWeb = async () => {
+    axios.get(`http://localhost:5000/reportsWeb/retrieveLastReports`)
       .then(res => {
         const reports = res.data.lista;
         //console.log(reports);
@@ -103,17 +121,107 @@ function Home() {
           },
           { field: 'id', headerName: 'id', width: 150, hide: true },
           { field: 'date', headerName: 'Data', width: 150 },
-          { field: 'name', headerName: 'Nome', width: 150 },
-          { field: 'valutazione', headerName: 'Valutazione', width: 150 },
-          { field: 'script', headerName: 'Script', width: 150 },
-          { field: 'keywords', headerName: 'Parole Chiave', width: 150 },
-          { field: 'logo', headerName: 'Logo', width: 150 },
-          { field: 'competitors', headerName: 'Competitors', width: 150 },
-          { field: 'parolefoto', headerName: 'Parole Foto', width: 150 },
+          { field: 'sito', headerName: 'Nome', width: 400 },
+          { field: 'valutazione_foto', headerName: 'Foto', width: 150 },
+          { field: 'valutazione_keywords', headerName: 'Parole chiave', width: 150 },
+          { field: 'valutazione_script', headerName: 'Script', width: 150 },
+
         ];
         setColumns(pino);
         mettiPallini(reports);
         setReports(reports);
+      })
+
+  }
+
+  const fetchLastReportsFacebook = async () => {
+    axios.get(`http://localhost:5000/reportsFacebook/retrieveLastReportsFacebook`)
+      .then(res => {
+        const reports = res.data.lista;
+        //console.log(reports);
+        const pino = [
+          {
+            field: "",
+            headerName: "Bottone",
+            sortable: false,
+            width: 200,
+            disableClickEventBubbling: true,
+            renderCell: (params: CellParams) => {
+              const onClick = () => {
+                const api: GridApi = params.api;
+                const fields = api
+                  .getAllColumns()
+                  .map((c) => c.field)
+                  .filter((c) => c !== "__check__" && !!c);
+                const thisRow = {};
+
+                fields.forEach((f) => {
+                  thisRow[f] = params.getValue(f);
+                });
+
+                let path = `/${thisRow.id}`;
+                return history.push(path);
+              };
+
+              return <Button onClick={onClick}>Dettagli</Button>;
+            }
+          },
+          { field: 'id', headerName: 'id', width: 150, hide: true },
+          { field: 'date', headerName: 'Data', width: 150 },
+          { field: 'nome', headerName: 'Nome', width: 400 },
+          { field: 'quantita_post_neltempo', headerName: 'N. Post', width: 150 },
+          { field: 'valutazione_foto', headerName: 'Foto', width: 150 },
+          { field: 'valutazione_keywords', headerName: 'Parole chiave', width: 150 },
+        ];
+        setColumnsF(pino);
+        mettiPalliniSocial(reports);
+        setReportsF(reports);
+      })
+
+  }
+
+  const fetchLastReportsInstagram = async () => {
+    axios.get(`http://localhost:5000/reportsInstagram/retrieveLastReportsInstagram`)
+      .then(res => {
+        const reports = res.data.lista;
+        //console.log(reports);
+        const pino = [
+          {
+            field: "",
+            headerName: "Bottone",
+            sortable: false,
+            width: 200,
+            disableClickEventBubbling: true,
+            renderCell: (params: CellParams) => {
+              const onClick = () => {
+                const api: GridApi = params.api;
+                const fields = api
+                  .getAllColumns()
+                  .map((c) => c.field)
+                  .filter((c) => c !== "__check__" && !!c);
+                const thisRow = {};
+
+                fields.forEach((f) => {
+                  thisRow[f] = params.getValue(f);
+                });
+
+                let path = `/${thisRow.id}`;
+                return history.push(path);
+              };
+
+              return <Button onClick={onClick}>Dettagli</Button>;
+            }
+          },
+          { field: 'id', headerName: 'id', width: 150, hide: true },
+          { field: 'date', headerName: 'Data', width: 150 },
+          { field: 'nome', headerName: 'Nome', width: 400 },
+          { field: 'quantita_post_neltempo', headerName: 'N. Post', width: 150 },
+          { field: 'valutazione_foto', headerName: 'Foto', width: 150 },
+          { field: 'valutazione_keywords', headerName: 'Parole chiave', width: 150 },
+        ];
+        setColumnsI(pino);
+        mettiPalliniSocial(reports);
+        setReportsI(reports);
       })
 
   }
@@ -127,107 +235,107 @@ function Home() {
       })
 
   }
-
-  function fetchReportAnnuali() {
-
-    if (!value) {
-      axios.get(`http://localhost:5000/reports/retrieveYearAverage?year=${year}&range1=${range[0]}&range2=${range[1]}`)
-        .then(res => {
-          const reports = res.data.lista;
-          mettiPallini(reports);
-          setReports(reports)
-        });
-    } else {
-      axios.get(`http://localhost:5000/reports/retrieveYearAverageName?year=${year}&name=${value}&range1=${range[0]}&range2=${range[1]}`)
-        .then(res => {
-          const reports = res.data.lista;
-          mettiPallini(reports);
-          setReports(reports);
-        });
-    }
-    const pino = [
-      { field: 'id', headerName: 'Nome', width: 150, },
-      { field: 'year', headerName: 'Anno', width: 150 },
-      { field: 'valutazione', headerName: 'Valutazione', width: 150 },
-      { field: 'script', headerName: 'Script', width: 150 },
-      { field: 'keywords', headerName: 'Parole Chiave', width: 150 },
-      { field: 'logo', headerName: 'Logo', width: 150 },
-      { field: 'competitors', headerName: 'Competitors', width: 150 },
-      { field: 'parolefoto', headerName: 'Parole Foto', width: 150 },
-    ];
-    setColumns(pino);
-    return null;
-  }
-  function fetchReportMensili() {
-    //non ha selezionato il nome dello store
-
-    const pino = [
-      { field: 'id', headerName: 'Nome', width: 150, },
-      { field: 'year', headerName: 'Anno', width: 150 },
-      { field: 'month', headerName: 'Mese', width: 150 },
-      { field: 'valutazione', headerName: 'Valutazione', width: 150 },
-      { field: 'script', headerName: 'Script', width: 150 },
-      { field: 'keywords', headerName: 'Parole Chiave', width: 150 },
-      { field: 'logo', headerName: 'Logo', width: 150 },
-      { field: 'competitors', headerName: 'Competitors', width: 150 },
-      { field: 'parolefoto', headerName: 'Parole Foto', width: 150 },
-    ];
-    if (!value) {
-      axios.get(`http://localhost:5000/reports/retrieveMonthYearAverage?year=${year}&month=${month}&range1=${range[0]}&range2=${range[1]}`)
-        .then(res => {
-          const reports = res.data.lista;
-          mettiPallini(reports);
-          setReports(reports)
-        });
-      setColumns(pino);
-      return null;
-    } else {
-      axios.get(`http://localhost:5000/reports/retrieveMonthYearAverageName?year=${year}&month=${month}&name=${value}&range1=${range[0]}&range2=${range[1]}`)
-        .then(res => {
-          const reports = res.data.lista;
-          mettiPallini(reports);
-          setReports(reports);
-        });
+  /*
+    function fetchReportAnnuali() {
+  
+      if (!value) {
+        axios.get(`http://localhost:5000/reports/retrieveYearAverage?year=${year}&range1=${range[0]}&range2=${range[1]}`)
+          .then(res => {
+            const reports = res.data.lista;
+            mettiPallini(reports);
+            setReports(reports)
+          });
+      } else {
+        axios.get(`http://localhost:5000/reports/retrieveYearAverageName?year=${year}&name=${value}&range1=${range[0]}&range2=${range[1]}`)
+          .then(res => {
+            const reports = res.data.lista;
+            mettiPallini(reports);
+            setReports(reports);
+          });
+      }
+      const pino = [
+        { field: 'id', headerName: 'Nome', width: 150, },
+        { field: 'year', headerName: 'Anno', width: 150 },
+        { field: 'valutazione', headerName: 'Valutazione', width: 150 },
+        { field: 'script', headerName: 'Script', width: 150 },
+        { field: 'keywords', headerName: 'Parole Chiave', width: 150 },
+        { field: 'logo', headerName: 'Logo', width: 150 },
+        { field: 'competitors', headerName: 'Competitors', width: 150 },
+        { field: 'parolefoto', headerName: 'Parole Foto', width: 150 },
+      ];
       setColumns(pino);
       return null;
     }
-  }
-  function fetchReportDate() {
-
-
-    const pino = [
-      { field: 'id', headerName: 'Nome', width: 150, },
-      { field: 'year', headerName: 'Anno', width: 150 },
-      { field: 'month', headerName: 'Mese', width: 150 },
-      { field: 'day', headerName: 'Giorno', width: 150 },
-      { field: 'valutazione', headerName: 'Valutazione', width: 150 },
-      { field: 'script', headerName: 'Script', width: 150 },
-      { field: 'keywords', headerName: 'Parole Chiave', width: 150 },
-      { field: 'logo', headerName: 'Logo', width: 150 },
-      { field: 'competitors', headerName: 'Competitors', width: 150 },
-      { field: 'parolefoto', headerName: 'Parole Foto', width: 150 },
-    ];
-    if (!value) {
-      axios.get(`http://localhost:5000/reports/retrieveDayMonthYear?year=${date.getFullYear()}&month=${date.getMonth() + 1}&day=${date.getDate()}&range1=${range[0]}&range2=${range[1]}`)
-        .then(res => {
-          const reports = res.data.lista;
-          mettiPallini(reports);
-          setReports(reports)
-        });
-      setColumns(pino);
-      return null;
-    } else {
-      axios.get(`localhost:5000/reports/retrieveDayMonthYearName?year=${date.getFullYear()}&month=${date.getMonth() + 1}&day=${date.getDate()}&name=${value}&range1=${range[0]}&range2=${range[1]}`)
-        .then(res => {
-          const reports = res.data.lista;
-          mettiPallini(reports);
-          setReports(reports);
-        });
-      setColumns(pino);
-      return null;
+    function fetchReportMensili() {
+      //non ha selezionato il nome dello store
+  
+      const pino = [
+        { field: 'id', headerName: 'Nome', width: 150, },
+        { field: 'year', headerName: 'Anno', width: 150 },
+        { field: 'month', headerName: 'Mese', width: 150 },
+        { field: 'valutazione', headerName: 'Valutazione', width: 150 },
+        { field: 'script', headerName: 'Script', width: 150 },
+        { field: 'keywords', headerName: 'Parole Chiave', width: 150 },
+        { field: 'logo', headerName: 'Logo', width: 150 },
+        { field: 'competitors', headerName: 'Competitors', width: 150 },
+        { field: 'parolefoto', headerName: 'Parole Foto', width: 150 },
+      ];
+      if (!value) {
+        axios.get(`http://localhost:5000/reports/retrieveMonthYearAverage?year=${year}&month=${month}&range1=${range[0]}&range2=${range[1]}`)
+          .then(res => {
+            const reports = res.data.lista;
+            mettiPallini(reports);
+            setReports(reports)
+          });
+        setColumns(pino);
+        return null;
+      } else {
+        axios.get(`http://localhost:5000/reports/retrieveMonthYearAverageName?year=${year}&month=${month}&name=${value}&range1=${range[0]}&range2=${range[1]}`)
+          .then(res => {
+            const reports = res.data.lista;
+            mettiPallini(reports);
+            setReports(reports);
+          });
+        setColumns(pino);
+        return null;
+      }
     }
-  }
-
+    function fetchReportDate() {
+  
+  
+      const pino = [
+        { field: 'id', headerName: 'Nome', width: 150, },
+        { field: 'year', headerName: 'Anno', width: 150 },
+        { field: 'month', headerName: 'Mese', width: 150 },
+        { field: 'day', headerName: 'Giorno', width: 150 },
+        { field: 'valutazione', headerName: 'Valutazione', width: 150 },
+        { field: 'script', headerName: 'Script', width: 150 },
+        { field: 'keywords', headerName: 'Parole Chiave', width: 150 },
+        { field: 'logo', headerName: 'Logo', width: 150 },
+        { field: 'competitors', headerName: 'Competitors', width: 150 },
+        { field: 'parolefoto', headerName: 'Parole Foto', width: 150 },
+      ];
+      if (!value) {
+        axios.get(`http://localhost:5000/reports/retrieveDayMonthYear?year=${date.getFullYear()}&month=${date.getMonth() + 1}&day=${date.getDate()}&range1=${range[0]}&range2=${range[1]}`)
+          .then(res => {
+            const reports = res.data.lista;
+            mettiPallini(reports);
+            setReports(reports)
+          });
+        setColumns(pino);
+        return null;
+      } else {
+        axios.get(`localhost:5000/reports/retrieveDayMonthYearName?year=${date.getFullYear()}&month=${date.getMonth() + 1}&day=${date.getDate()}&name=${value}&range1=${range[0]}&range2=${range[1]}`)
+          .then(res => {
+            const reports = res.data.lista;
+            mettiPallini(reports);
+            setReports(reports);
+          });
+        setColumns(pino);
+        return null;
+      }
+    }
+  */
 
   /* Hooks */
   const [storeName, setStoreName] = useState([]);
@@ -243,7 +351,10 @@ function Home() {
   const [year, setYear] = useState(0);
   const [month, setMonth] = useState(0);
   const [viewmonth, setViewmonth] = useState();
-
+  const [reportsF, setReportsF] = useState([]);
+  const [columnsF, setColumnsF] = useState([]);
+  const [reportsI, setReportsI] = useState([]);
+  const [columnsI, setColumnsI] = useState([]);
   /* Variabili */
   const history = useHistory();
 
@@ -266,7 +377,7 @@ function Home() {
   window.addEventListener("resize", showButton);
 
 
-  function FormLastReports() {
+  /*function FormLastReports() {
     return (
       <div className="RicercaAnnuale">
         <Button
@@ -586,7 +697,7 @@ function Home() {
 
       </div>)
   }
-
+*/
 
   return (
     <div className="App Esempio">
@@ -594,15 +705,15 @@ function Home() {
       <Carousel itemsToShow={1}>
 
         <div className="CaroselloHome">
-          <h2>SITI WEB</h2>
+          <h2>WEB</h2>
 
-          <div className={button ? 'Ricerca' : 'RicercaHidden'} >
-            {/* <h4 style={{ letterSpacing: 5 }}>SITI WEB</h4> */}
+          {/*<div className={button ? 'Ricerca' : 'RicercaHidden'} >
+            { <h4 style={{ letterSpacing: 5 }}>SITI WEB</h4> }
 
             {choice == 'Report annuali' ?
               <FormAnnuale /> : choice == 'Report mensili' ?
                 <FormMensile /> : choice == 'Report giornalieri' ?
-                  <FormGiornaliero /> : choice == 'Last reports' ? <FormLastReports /> : null}
+  <FormGiornaliero /> : choice == 'Last reports' ? <FormLastReports /> : null}
 
             <FormControl className={classes.formControl}   >
 
@@ -622,7 +733,7 @@ function Home() {
                 <MenuItem value={'Last reports'}>Ultimi Report</MenuItem>
               </Select>
             </FormControl>
-          </div>
+          </div>*/}
 
           <br />
           <div className="ContainerTabella">
@@ -634,11 +745,21 @@ function Home() {
 
         <div className="CaroselloHome">
           <h2>FACEBOOK</h2>
-          <div className="TabellaFittizia"><h3>Tabella</h3></div>
+          <br />
+          <div className="ContainerTabella">
+            <div className="Tabella">
+              <DataGrid rows={reportsF} columns={columnsF} />
+            </div>
+          </div>
         </div>
         <div className="CaroselloHome">
           <h2>INSTAGRAM</h2>
-          <div className="TabellaFittizia"><h3>Tabella</h3></div>
+          <br />
+          <div className="ContainerTabella">
+            <div className="Tabella">
+              <DataGrid rows={reportsI} columns={columnsI} />
+            </div>
+          </div>
         </div>
       </Carousel>
     </div>

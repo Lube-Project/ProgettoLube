@@ -19,12 +19,14 @@ class DBmanager:
             "mongodb+srv://molciprom:molciprom@clusterlube.auwyr.mongodb.net/lube_reports?retryWrites=true&w=majority")
         self.db = self.client["lube_reports"]
         self.collection = self.db["web_reports"]
-        self.collection_facebook = self.db["instagram_reports"]
-        self.collection_instagram = self.db["facebook_reports"]
+        self.collection_facebook = self.db["facebook_reports"]
+        self.collection_instagram = self.db["instagram_reports"]
 
     def insert(self, report):
         # print(report.toJSON())
         # x = self.collection.insert_one(report.toJSON())
+        date = datetime.datetime.now()
+        report['date'] = date
         x = self.collection.insert_one(report)
 
     def find_all(self):
@@ -32,12 +34,6 @@ class DBmanager:
         for x in self.collection.find():
             lista.append(x)
         return lista
-
-    def delete(self):
-        pass
-
-    def update(self):
-        pass
 
     def find_one(self, id):
         lista = []
@@ -47,9 +43,12 @@ class DBmanager:
                     "_id": 0,
                     "id": "$_id",
                     "date": 1,
-                    "report": 1,
-                    "name": 1,
-                    "valutazione": 1
+                    "report_foto": 1,
+                    "report_pagine": 1,
+                    "sito": 1,
+                    "valutazione_foto": 1,
+                    "valutazione_script": 1,
+                    "valutazione_keywords": 1
                 }
             },
             {"$match": {"id": id}},
@@ -73,9 +72,12 @@ class DBmanager:
                     "_id": 0,
                     "id": "$_id",
                     "date": 1,
-                    "report": 1,
-                    "name": 1,
-                    "valutazione": 1
+                    "report_foto": 1,
+                    "report_pagine": 1,
+                    "sito": 1,
+                    "valutazione_foto": 1,
+                    "valutazione_script": 1,
+                    "valutazione_keywords": 1
                 }
             },
             {"$match": {"date": date}},
@@ -352,4 +354,123 @@ class DBmanager:
             lista.append(z)
         return lista
 
+    ##################################################### FACEBOOK ######################################################
 
+    def insert_facebook_report(self, report):
+        # print(report.toJSON())
+        # x = self.collection.insert_one(report.toJSON())
+        date = datetime.datetime.now()
+        report['date'] = date
+        x = self.collection_facebook.insert_one(report)
+
+    def find_one_facebook(self, id):
+        lista = []
+        for z in self.collection_facebook.aggregate([
+            {
+                "$project": {
+                    "_id": 0,
+                    "id": "$_id",
+                    "date": 1,
+                    "report_foto": 1,
+                    "dictionary_parolechiave_nel_post": 1,
+                    "social": 1,
+                    "nome": 1,
+                    "quantita_post_neltempo":1,
+                    "valutazione_foto": 1,
+                    "valutazione_keywords": 1
+                }
+            },
+            {"$match": {"id": id}},
+        ]):
+            lista.append(z)
+        return lista
+
+    # return last document
+    def retrieve_last_facebook(self):
+        sup = []
+        lista = []
+        date = []
+        for x in self.collection_facebook.find({}).sort([("date", -1)]).limit(1):
+            sup.append(x)
+        date = x['date']
+        # for x in self.collection.find({"date": date}, {"_id": 0, "date": 1, "report": 1, "name": 1, "valutazione": 1}):
+        # lista.append(x)
+        for z in self.collection_facebook.aggregate([
+            {
+                "$project": {
+                    "_id": 0,
+                    "id": "$_id",
+                    "date": 1,
+                    "report_foto": 1,
+                    "dictionary_parolechiave_nel_post": 1,
+                    "social": 1,
+                    "nome": 1,
+                    "quantita_post_neltempo":1,
+                    "valutazione_foto": 1,
+                    "valutazione_keywords": 1
+                }
+            },
+            {"$match": {"date": date}},
+        ]):
+            lista.append(z)
+        return lista
+##################################################### INSTAGRAM ######################################################
+
+    def insert_instagram_report(self, report):
+        # print(report.toJSON())
+        # x = self.collection.insert_one(report.toJSON())
+        date = datetime.datetime.now()
+        report['date'] = date
+        x = self.collection_instagram.insert_one(report)
+
+    def find_one_instagram(self, id):
+        lista = []
+        for z in self.collection_instagram.aggregate([
+            {
+                "$project": {
+                    "_id": 0,
+                    "id": "$_id",
+                    "nome":1,
+                    "date": 1,
+                    "report_foto": 1,
+                    "dictionary_parolechiave_nel_post": 1,
+                    "quantita_post_neltempo": 1,
+                    "valutazione_foto": 1,
+                    "social": 1,
+                    "valutazione_keywords": 1
+                }
+            },
+            {"$match": {"id": id}},
+        ]):
+            lista.append(z)
+        return lista
+
+    # return last document
+    def retrieve_last_instagram(self):
+        sup = []
+        lista = []
+        date = []
+        for x in self.collection_instagram.find({}).sort([("date", -1)]).limit(1):
+            sup.append(x)
+        date = x['date']
+        # for x in self.collection.find({"date": date}, {"_id": 0, "date": 1, "report": 1, "name": 1, "valutazione": 1}):
+        # lista.append(x)
+        for z in self.collection_instagram.aggregate([
+            {
+                "$project": {
+                    "_id": 0,
+                    "id": "$_id",
+                    "nome": 1,
+                    "date": 1,
+                    "report_foto": 1,
+                    "dictionary_parolechiave_nel_post": 1,
+                    "quantita_post_neltempo": 1,
+                    "valutazione_foto": 1,
+                    "social": 1,
+                    "valutazione_keywords": 1
+                }
+            },
+            {"$match": {"date": date}},
+        ]):
+            lista.append(z)
+        return lista

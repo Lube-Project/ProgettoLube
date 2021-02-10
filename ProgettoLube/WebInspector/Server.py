@@ -20,7 +20,9 @@ app = Api(app=flask_app,
           description="Provide some useful api in order to have reports of resellers websites",
           doc='/api-doc/', )
 CORS(flask_app)
-name_space = app.namespace('reports', description='Provide reports')
+name_space = app.namespace('reportsWeb', description='Provide web reports')
+name_spacetwo = app.namespace('reportsFacebook', description='Provide facebook reports')
+name_spacethree = app.namespace('reportsInstagram', description='Provide instagram reports')
 name_space_resources = app.namespace('resellers', description='Provide resellers info')
 dashboard_settings = app.namespace('settings', description='Provide methods to modify settings of dashboard')
 db_manager = DBmanager()
@@ -324,6 +326,72 @@ class modifySocialActivityTimeCrawler(Resource):
         days = request.args.get('days', type=int)
         DashboardConfig.numeroGiorniToCheckOnSocialProfileActivity = days
         return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
+
+
+##################################### FACEBOOK #########################################################
+
+# app.config["DEBUG"] = True
+@name_spacetwo.route('/retrieveLastReportsFacebook')
+class retrieveLastReportsFacebook(Resource):
+
+    @app.doc(responses={200: 'OK', }, description='Provide all last reports')
+    def get(self):
+        lista = db_manager.retrieve_last_facebook()
+        for x in lista:
+            x['date'] = x['date'].date()
+            x['date'] = x['date'].isoformat()
+        for y in lista:
+            y['id'] = str(y['id'])
+        return {"lista": lista}
+
+
+@name_spacetwo.route('/findOneFacebook')
+class findOneFacebook(Resource):
+    @app.doc(responses={200: 'OK', },
+             params={'id': {'description': 'Specify the id of the report', 'type': 'int', 'required': True}, }
+        , description='find specific report by id')
+    def get(self):
+        id = request.args.get('id', type=str)
+        lista = db_manager.find_one_facebook(ObjectId(id))
+        for x in lista:
+            x['date'] = x['date'].date()
+            x['date'] = x['date'].isoformat()
+        for y in lista:
+            y['id'] = str(y['id'])
+        return {"lista": lista}
+
+
+##################################### INSTAGRAM #########################################################
+
+# app.config["DEBUG"] = True
+@name_spacethree.route('/retrieveLastReportsInstagram')
+class retrieveLastReportsInstagram(Resource):
+
+    @app.doc(responses={200: 'OK', }, description='Provide all last reports')
+    def get(self):
+        lista = db_manager.retrieve_last_instagram()
+        for x in lista:
+            x['date'] = x['date'].date()
+            x['date'] = x['date'].isoformat()
+        for y in lista:
+            y['id'] = str(y['id'])
+        return {"lista": lista}
+
+
+@name_spacethree.route('/findOneInstagram')
+class findOneInstagram(Resource):
+    @app.doc(responses={200: 'OK', },
+             params={'id': {'description': 'Specify the id of the report', 'type': 'int', 'required': True}, }
+        , description='find specific report by id')
+    def get(self):
+        id = request.args.get('id', type=str)
+        lista = db_manager.find_one_instagram(ObjectId(id))
+        for x in lista:
+            x['date'] = x['date'].date()
+            x['date'] = x['date'].isoformat()
+        for y in lista:
+            y['id'] = str(y['id'])
+        return {"lista": lista}
 
 
 # app.run()

@@ -132,7 +132,7 @@ class MyTestCase(unittest.TestCase):
         print(temp)
 
     def test_OCR(self):
-        path = 'C:\\Users\\matti\\git\\ProgettoLube\\ProgettoLube\\WebInspector\\images\\logoc.png'
+        path = r'C:\Users\matti\OneDrive\Immagini\logopp.png'
         ocr = OpenCV()
         ocr.read_text_two(path)
 
@@ -140,7 +140,7 @@ class MyTestCase(unittest.TestCase):
         db_manager = DBmanager()
         db_manager.start_connection()
         range = [1, 3]
-        lista1 = db_manager.retrieve_year_average(2020, range)
+        lista1 = db_manager.retrieve_last()
 
         for x in lista1:
             print(x)
@@ -182,8 +182,12 @@ class MyTestCase(unittest.TestCase):
     def testttt(self):
         db_manager = DBmanager()
         db_manager.start_connection()
-        ciccio = {"name": 'pinoo', "report": 'reportttt'}
-        db_manager.insert(ciccio)
+        with open("C:\\Users\\matti\\git\\ProgettoLube\\ProgettoLube\\WebInspector\\test_results\\instagram\\lube-creo-store-casteldisangrio-instagram.json") as f:
+            data = json.load(f)
+        report = data
+        # date = datetime.datetime.now()
+        # report['date'] = date
+        db_manager.insert_instagram_report(report)
 
     def test_insert(self):
         thisdict2 = {
@@ -237,24 +241,28 @@ class MyTestCase(unittest.TestCase):
         # TIME: 36m 49s Pratola Peligna 2007 post trovati
         db = DBmanager()
         db.start_connection()
-        target = 'pro.muccia'  # 'ProLocoSerravallediChientiMC'  # 'pro.muccia' 'ProLocoSerravallediChientiMC'
-        # #'CucineLubecreokitchenspratolapeligna'
+        # target = 'pro.muccia'  # 'ProLocoSerravallediChientiMC'  # 'pro.muccia' 'ProLocoSerravallediChientiMC'
+        target = 'CucineLubecreokitchenspratolapeligna'
         proc = ImageProcessor()
         crawler = CrawlerSocial()
-        report = crawler.facebook_crawler(target,proc)
+        report = crawler.facebook_crawler(target, proc)
+        print(report.toJSON())
 
     def test_instgram_scraper(self):
         db = DBmanager()
         db.start_connection()
         proc = ImageProcessor()
         socialCrawl = CrawlerSocial()
-        target = 'https://www.instagram.com/lube_marseille_store/'
+        #target = 'https://www.instagram.com/lube_marseille_store/'
         # target = 'https://www.instagram.com/molteni_matteo/'
+        target = 'https://www.instagram.com/lubecreopratolacasteldisangro/'
         report = socialCrawl.instagram_crawler(target, proc)
+        print(report.toJSON())
 
     def test_json(self):
-        response = requests.get('https://api.github.com/').json()
-        print(response)
+        # response = requests.get('https://api.github.com/').json()
+        date = datetime.datetime.now()
+        print(date)
 
     def testroba(self):
         from selenium import webdriver
@@ -302,8 +310,26 @@ class MyTestCase(unittest.TestCase):
             print(x)
 
     def test_config(self):
-        lista = DashboardConfig.keywords
+        # lista = DashboardConfig.keywords
+        c = {'pippo': 1}
+        d = {'x': 2, 'y': 3}
+        paolo = {
+            'c': c,
+            'resoconto': d
+        }
+        # print(paolo)
+        res = paolo['resoconto']
+        cont = 0
+        for x in res.values():
+            cont = cont + x
+        fin = cont / len(res.values())
+        print(fin)
 
+    def test_for(self):
+        # string = "a.a.ad.bfdsbdf.besfbn.vsd"
+        string = "ssssss"
+        string = string.replace(".", "")
+        print(string)
 
 
 def get_image_urls(post):

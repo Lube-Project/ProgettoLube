@@ -4,40 +4,12 @@ import axios from 'axios';
 import '../css/App.css';
 import { Modal, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Divider from '@material-ui/core/Divider';
 
 
 function Dettagli(props) {
 
-    const [modalShow, setModalShow] = React.useState(false);
 
-    function MyVerticallyCenteredModal(props) {
-        return (
-            <Modal
-                {...props}
-                size="lg"
-                aria-labelledby="contained-modal-title-vcenter"
-                centered
-                animation={false}
-            >
-                <Modal.Header closeButton>
-                    <Modal.Title id="contained-modal-title-vcenter">
-                        TITOLO
-              </Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <h4>Sottotitolo</h4>
-                    <p>
-                        Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-                        dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
-                        consectetur ac, vestibulum at eros.
-              </p>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button onClick={props.onHide}>Close</Button>
-                </Modal.Footer>
-            </Modal>
-        );
-    }
 
     // viene eseguito appena viene caricata la pagina
     useEffect(() => {
@@ -45,21 +17,30 @@ function Dettagli(props) {
     }, []);
 
     const [report, setReport] = useState({});
-
+    const [dict_script, setDict_script] = useState({});
+    const [dict_keywords_pagine, setDict_keywords_pagine] = useState({});
+    const [dict_correttezzalogo, setDict_correttezzalogo] = useState({});
+    const [dict_keywords_foto, setDict_keywords_foto] = useState({});
+    const [dict_resoconto_logo, setDict_resoconto_logo] = useState({});
     // chiamata fake per richiedere i dati 
     const fetchData = async () => {
         const id = props.match.params.id;
-        axios.get(`http://localhost:5000/reports/findOne?id=${id}`)
+        axios.get(`http://localhost:5000/reportsWeb/findOne?id=${id}`)
             .then(res => {
                 const report = res.data.lista;
                 console.log('Report', report);
+                setDict_script(report[0].report_pagine.dictionary_script);
+                setDict_keywords_pagine(report[0].report_pagine.dictionary_parolechiave.resoconto);
+                setDict_correttezzalogo(report[0].report_foto.correttezza_logo);
+                setDict_resoconto_logo(report[0].report_foto.correttezza_logo.logo_correctness);
+                setDict_keywords_foto(report[0].report_foto.presenza_keywords_foto.resoconto);
                 setReport(report[0]);
             })
     }
 
     return (
         <div className="AppDettReport">
-
+            <br />
             <div className="Titolo">
                 <h1>{report.name}</h1>
                 <h3>REPORT del {report.date}</h3>
@@ -67,36 +48,92 @@ function Dettagli(props) {
 
             <div className="ContainerGriglia">
 
-                <div className="CardDR" onClick={() => setModalShow(true)}>
-                    <h3>script</h3>
-                    <h4>si / no</h4>
-                </div>
-                <div className="CardDR" onClick={() => setModalShow(true)}>
-                    <h3>parole chiave</h3>
-                    <h4>si / no</h4>
-                </div>
-                <div className="CardDR" onClick={() => setModalShow(true)}>
-                    <h3>valutazione</h3>
-                    <h4>{report.valutazione}</h4>
-                </div>
-                <div className="CardDR" onClick={() => setModalShow(true)}>
-                    <h3>correttezza logo</h3>
-                    <h4>si / no</h4>
-                </div>
-                <div className="CardDR" onClick={() => setModalShow(true)}>
-                    <h3>competitors</h3>
-                    <h4>si / no</h4>
-                </div>
-                <div className="CardDR" onClick={() => setModalShow(true)}>
-                    <h3>parole nelle foto</h3>
-                    <h4>si / no</h4>
-                </div>
-            </div>
 
-            <MyVerticallyCenteredModal
-                show={modalShow}
-                onHide={() => setModalShow(false)}
-            />
+
+                <div className="Sezione">
+                    <div className="TitoloImpo">
+                        <h3 className="Scritta">Presenza Script {report.valutazione_script == 1 ? '🟢' : '🔴'}</h3>
+                    </div>
+                    <div className="Impostazione3">
+                        {
+                            Object.entries(dict_script).map(([key, value], i) => (
+                                <div className="RigaDettagliScript">
+                                    <p key={i}><b style={{ fontSize: 16 }}>{key}</b>  :  {value}
+                                    </p>
+                                </div>
+                            ))
+
+                        }
+
+                    </div>
+                </div>
+                <div className="Sezione">
+                    <div className="TitoloImpo">
+                        <h3 className="Scritta">Valutazione Parole Chiave {report.valutazione_keywords >= 2.75 && report.valutazione_keywords <= 3 ? '🔴'
+                            : report.valutazione_keywords >= 2 && report.valutazione_keywords < 2.75 ? '🟡'
+                                : report.valutazione_keywords >= 1 && report.valutazione_keywords < 2 ? '🟢'
+                                    : ''}</h3>
+                    </div>
+                    <div className="Impostazione3">
+                        {
+                            Object.entries(dict_keywords_pagine).map(([key, value], i) => (
+                                <div className="RigaDettagliScript">
+                                    <p key={i}><b style={{ fontSize: 16 }}>{key}</b>  :  {value}
+                                    </p>
+                                </div>
+                            ))
+
+                        }
+
+                    </div>
+                </div>
+
+                <div className="Sezione">
+                    <div className="TitoloImpo">
+                        <h3 className="Scritta">Valutazione Foto {report.valutazione_foto >= 2.75 && report.valutazione_foto <= 3 ? '🔴'
+                            : report.valutazione_foto >= 2 && report.valutazione_foto < 2.75 ? '🟡'
+                                : report.valutazione_foto >= 1 && report.valutazione_foto < 2 ? '🟢'
+                                    : ''}</h3>
+                    </div>
+                    <p style={{ fontSize: 18 }}><b>{dict_correttezzalogo.foto_trovate} foto totali</b></p>
+                    <div className="Impostazione3">
+                        {
+                            Object.entries(dict_resoconto_logo).map(([key, value], i) => (
+                                <div className="RigaDettagliScript">
+                                    <p key={i}><b style={{ fontSize: 16 }}>{key}</b>  :  {value}
+                                    </p>
+                                </div>
+                            ))
+
+                        }
+
+                    </div>
+                </div>
+
+
+                <div className="Sezione">
+                    <div className="TitoloImpo">
+                        <h3 className="Scritta">Parole chiave nelle foto</h3>
+                    </div>
+                    <div className="Impostazione3">
+                        {
+                            Object.entries(dict_keywords_foto).map(([key, value], i) => (
+                                <div className="RigaDettagliScript">
+                                    <p key={i}><b style={{ fontSize: 16 }}>{key}</b>  :  {value}
+                                    </p>
+                                </div>
+                            ))
+
+                        }
+
+                    </div>
+                </div>
+                
+                
+            </div>
+            
+
+
 
         </div>
     );

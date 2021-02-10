@@ -14,6 +14,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from ImageClassificator import ImageClassificator
+from OCReader import OCReader
+from ReportFoto import ReportFoto
 
 
 class ImageProcessor:
@@ -107,23 +109,32 @@ class ImageProcessor:
                     if predizione == 'NOT LOGO':
                         counterNotLogo = counterNotLogo + 1
                     if predizione == 'competitors':
-                        counterCompetitos = counterCompetitos + 1
+                        ocr_reader = OCReader
+                        flag = ocr_reader.search_for_competitors(path=x)
+                        if flag:
+                            counterCompetitos = counterCompetitos + 1
+
 
         print(counter)
-        dict_result['logo'] = {
-            'lube&creo ERRATI': str(counterLubeCreoERRATI),
-            'lube&creo loghi ok ma proporzioni o abbinamenti NON CORRETTI': str(counterLubeCreoNi),
-            'lube&creo TUTTO OK': str(counterLubeCreoOk),
-            'lube ERRATI': str(counterLubeERRATI),
-            'lube loghi ok ma proporzioni o abbinamenti NON CORRETTI': str(counterLubeNi),
-            'lube TUTTO OK': str(counterLubeOk),
-            'creo ERRATI': str(counterCreoERRATI),
-            'creo loghi ok ma proporzioni o abbinamenti NON CORRETTI': str(counterCreoNi),
-            'creo TUTTO OK': str(counterCreoOk),
-            'competitors': str(counterCompetitos),
-            'not logo': str(counterNotLogo)
+        dict_result['logo_correctness'] = {
+            'lube&creo ERRATI': counterLubeCreoERRATI,
+            'lube&creo loghi ok ma proporzioni o abbinamenti NON CORRETTI': counterLubeCreoNi,
+            'lube&creo TUTTO OK': counterLubeCreoOk,
+            'lube ERRATI': counterLubeERRATI,
+            'lube loghi ok ma proporzioni o abbinamenti NON CORRETTI': counterLubeNi,
+            'lube TUTTO OK': counterLubeOk,
+            'creo ERRATI': counterCreoERRATI,
+            'creo loghi ok ma proporzioni o abbinamenti NON CORRETTI': counterCreoNi,
+            'creo TUTTO OK': counterCreoOk,
+            'competitors': counterCompetitos,
+            'not logo': counterNotLogo
         }
         return dict_result
+
+    def ocr_scan(self,platform):
+        ocr = OCReader()
+        dictionary_parole_dentro_immagine = ocr.read_text_two(platform)
+        return dictionary_parole_dentro_immagine
 
     def create_processors(self):
         self.vgg = VGG16(weights='imagenet', include_top=True)
@@ -131,6 +142,12 @@ class ImageProcessor:
         self.cnn = ImageClassificator()
         flag_stampa_trend_training = False  # modificare se si vuole vedere il grafico del trend
         self.cnn.create_model(flag_stampa_trend_training)
+
+    def generate_report_foto(self, platform):
+        x = self.run()
+        y = self.ocr_scan(platform)
+        report_foto = ReportFoto(x, y)
+        return report_foto
     # img_height = 180
     # img_width = 180
     # base_dir = "C:\\Users\\matti\\OneDrive\\Desktop\\vgg16_logos"

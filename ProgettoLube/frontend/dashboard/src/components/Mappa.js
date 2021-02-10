@@ -64,7 +64,7 @@ function Mappa() {
   const [latitude, setLatitude] = React.useState();
   const [longitude, setLongitude] = React.useState();
   const [viewport, setViewport] = useState({
-    width: "1000px",
+    width: "100%",
     height: "500px",
 
     latitude: 43.041040634170734,

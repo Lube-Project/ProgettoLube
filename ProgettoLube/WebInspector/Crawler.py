@@ -234,7 +234,7 @@ class Crawler:
         dict_script = self.scrape_script(lista_href)
         dict_keyword = self.scrape_keyword(lista_href)
         report_pagine = ReportPagine(lista_href, dict_script, dict_keyword)
-        self.logger.info("FINISH REPORT : " + sito)
+        #self.logger.info("FINISH REPORT PAG : " + sito)
         return report_pagine
 
     def scrape_href(self, sito):
@@ -294,16 +294,20 @@ class Crawler:
                     for script in soup.find_all('script', {"src": True}):
                         if key in script['src']:
                             self.logger.info("FOUND SCRIPT : " + script['src'] + " IN " + url)
-                            Dict[url] = script['src']
+                            urlmodified = url.replace(".","")
+                            Dict[urlmodified] = script['src']
         return Dict
 
     def scrape_keyword(self, lista_href):
         self.logger.info("LOOKING FOR KEYWORDS...")
-        Dict = {}
+        urlkeywords = {}
         page = None
         soup = None
-        #key_set = ["sconto", "sconti", "fuori tutto", "promozione", "%", "offerta", "offerte", "promozioni", "€"]
+        # key_set = ["sconto", "sconti", "fuori tutto", "promozione", "%", "offerta", "offerte", "promozioni", "€"]
         key_set = DashboardConfig.keywordsCrawler
+        resoconto = {}
+        for x in key_set:
+            resoconto[x] = 0
         for url in lista_href:
             temp = []
             try:
@@ -322,8 +326,14 @@ class Crawler:
                         for key in key_set:
                             # TODO: mettere dopo la parola anche . :
                             count = len(re.findall(r'(?<!\S)' + key + r'(?![^!;\r\n\s])', text, re.IGNORECASE))
+                            resoconto[key] = resoconto[key] + count
                             self.logger.info('\nUrl: {}\ncontains {} occurrences of word: {}'.format(url, count, key))
                             string = 'key ' + key + ' found :' + str(count) + ' times'
                             temp.append(string)
-                        Dict[url] = temp
+                        urlmodified = url.replace(".","")
+                        urlkeywords[urlmodified] = temp
+        Dict = {
+            'history':urlkeywords,
+            'resoconto':resoconto
+        }
         return Dict

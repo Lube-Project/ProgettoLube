@@ -62,7 +62,7 @@ a.Link::after {
 */
 
 .Tabella {
-  height: 55vh; 
+  height: 65vh; 
   width: 90%; 
   background-color: #fff;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -210,12 +210,12 @@ a.Link::after {
   justify-content: space-around; 
   align-items: center;
   background-color: ghostwhite;
-  /* overflow-y:scroll; */
+  overflow-y:scroll; 
 }
 .ContainerGriglia {
   /* border: 1px solid black; */
   width: 90vw;
-  height: 70vh;
+  height: 75vh;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -245,13 +245,6 @@ a.Link::after {
   width: 10px;
   height: 10px;
 }
-.TabellaFittizia {
-  height: 35vw;
-  background-color: #fff;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  margin-top: 30px;
-}
-
 /* ********************************* 
           IMPOSTAZIONI
 ********************************* */
@@ -315,4 +308,20 @@ a.Link::after {
 }
 .Descrizione {
   width: 30%;
+}
+.Impostazione3 {
+  height: 79%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-left: 20px;
+  overflow-y: scroll;
+}  
+.RigaDettagliScript {
+  display: flex;
+  padding: 6px;
+  
+
+
 }
