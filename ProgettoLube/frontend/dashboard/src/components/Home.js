@@ -98,6 +98,7 @@ function Home() {
             field: "",
             headerName: "Bottone",
             sortable: false,
+            filterable: false,
             width: 200,
             disableClickEventBubbling: true,
             renderCell: (params: CellParams) => {
@@ -146,6 +147,7 @@ function Home() {
             field: "",
             headerName: "Bottone",
             sortable: false,
+            filterable: false,
             width: 200,
             disableClickEventBubbling: true,
             renderCell: (params: CellParams) => {
@@ -192,6 +194,7 @@ function Home() {
             field: "",
             headerName: "Bottone",
             sortable: false,
+            filterable: false,
             width: 200,
             disableClickEventBubbling: true,
             renderCell: (params: CellParams) => {

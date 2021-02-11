@@ -330,20 +330,20 @@ class MyTestCase(unittest.TestCase):
         db = DBmanager()
         db.start_connection()
         lista = []
-        for z in db.collection.aggregate([
+        for z in db.collection_facebook.aggregate([
             {'$sort': {
                 'date': 1
             }},
             {'$group': {
-
-                "_id": "$sito",
+                "_id": "$nome",
                 'id': {'$last': '$_id'},
-                "sito": {'$last': '$sito'},
+                "nome": {'$last': '$nome'},
                 'date': {'$last': '$date'},
+                "social": {'$last': '$social'},
                 "report_foto": {'$last': '$report_foto'},
-                "report_pagine": {'$last': '$report_pagine'},
+                "dictionary_parolechiave_nel_post": {'$last': '$dictionary_parolechiave_nel_post'},
+                "quantita_post_neltempo": {'$last': '$quantita_post_neltempo'},
                 "valutazione_foto": {'$last': '$valutazione_foto'},
-                "valutazione_script": {'$last': '$valutazione_script'},
                 "valutazione_keywords": {'$last': '$valutazione_keywords'}
             }}
 

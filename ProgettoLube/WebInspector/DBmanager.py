@@ -397,7 +397,7 @@ class DBmanager:
         # date = x['date']
         # for x in self.collection.find({"date": date}, {"_id": 0, "date": 1, "report": 1, "name": 1, "valutazione": 1}):
         # lista.append(x)
-        for z in self.collection.aggregate([
+        for z in self.collection_facebook.aggregate([
             {'$sort': {
                 'date': 1
             }},
@@ -458,7 +458,7 @@ class DBmanager:
         # date = x['date']
         # for x in self.collection.find({"date": date}, {"_id": 0, "date": 1, "report": 1, "name": 1, "valutazione": 1}):
         # lista.append(x)
-        for z in self.collection.aggregate([
+        for z in self.collection_instagram.aggregate([
             {'$sort': {
                 'date': 1
             }},
