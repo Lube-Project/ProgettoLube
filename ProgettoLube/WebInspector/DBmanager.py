@@ -402,8 +402,7 @@ class DBmanager:
                 'date': 1
             }},
             {'$group': {
-
-                "_id": "$sito",
+                "_id": "$nome",
                 'id': {'$last': '$_id'},
                 "nome": {'$last': '$nome'},
                 'date': {'$last': '$date'},
@@ -465,7 +464,7 @@ class DBmanager:
             }},
             {'$group': {
 
-                "_id": "$sito",
+                "_id": "$nome",
                 'id': {'$last': '$_id'},
                 "nome": {'$last': '$nome'},
                 'date': {'$last': '$date'},
