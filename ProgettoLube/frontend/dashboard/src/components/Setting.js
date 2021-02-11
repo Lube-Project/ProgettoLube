@@ -131,7 +131,7 @@ function Setting() {
           <br />
           <div className="Impostazione2">
           <div className="Descrizione">
-            <p style={{fontSize:20}}><b>Lista parole chiave da cercare in un sito web :</b></p>
+            <p style={{fontSize:20}}><b>Lista parole chiave da cercare in un sito web:</b></p>
           </div>
             <div className="Scroll">
               <List>
@@ -224,7 +224,7 @@ function Setting() {
 
           <div className="Impostazione2">
           <div className="Descrizione">
-            <p style={{fontSize:20}}><b>Lista parole chiave da cercare in un profilo social :</b></p>
+            <p style={{fontSize:20}}><b>Lista parole chiave da cercare in un profilo social:</b></p>
           </div>
 
             <div className="Scroll">

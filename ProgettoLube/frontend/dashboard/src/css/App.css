@@ -68,6 +68,7 @@ a.Link::after {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   
 }
+
 .ContainerTabella {
   height: 65vh; 
   display: flex;
@@ -205,7 +206,7 @@ a.Link::after {
 .AppDettReport {
   text-align: center;
   position: relative;
-  height: 100%;
+  height: auto;
   display: inline-flex;
   flex-direction: column;
   justify-content: space-around; 
