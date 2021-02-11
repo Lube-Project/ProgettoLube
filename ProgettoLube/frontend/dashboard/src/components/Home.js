@@ -10,7 +10,8 @@ import {
   ColDef,
   ValueGetterParams,
   CellParams,
-  GridApi
+  GridApi,
+  GridToolbar
 } from "@material-ui/data-grid";
 
 import Carousel from 'react-elastic-carousel';
@@ -112,7 +113,7 @@ function Home() {
                   thisRow[f] = params.getValue(f);
                 });
 
-                let path = `/${thisRow.id}`;
+                let path = `/dettagliReport/${thisRow.id}`;
                 return history.push(path);
               };
 
@@ -120,11 +121,11 @@ function Home() {
             }
           },
           { field: 'id', headerName: 'id', width: 150, hide: true },
-          { field: 'date', headerName: 'Data', width: 150 },
-          { field: 'sito', headerName: 'Nome', width: 400 },
-          { field: 'valutazione_foto', headerName: 'Foto', width: 150 },
-          { field: 'valutazione_keywords', headerName: 'Parole chiave', width: 150 },
-          { field: 'valutazione_script', headerName: 'Script', width: 150 },
+          { field: 'date', headerName: 'Data', width: 150,type: 'date', },
+          { field: 'sito', headerName: 'Nome', width: 400, type: 'string' },
+          { field: 'valutazione_foto', headerName: 'Foto', width: 150, type: 'number', },
+          { field: 'valutazione_keywords', headerName: 'Parole chiave', width: 150,type: 'number', },
+          { field: 'valutazione_script', headerName: 'Script', width: 150,type: 'number', },
 
         ];
         setColumns(pino);
@@ -138,6 +139,7 @@ function Home() {
     axios.get(`http://localhost:5000/reportsFacebook/retrieveLastReportsFacebook`)
       .then(res => {
         const reports = res.data.lista;
+        var social = 'facebook';
         //console.log(reports);
         const pino = [
           {
@@ -159,7 +161,7 @@ function Home() {
                   thisRow[f] = params.getValue(f);
                 });
 
-                let path = `/${thisRow.id}`;
+                let path = `/dettagliReportSocial/${social}/${thisRow.id}`;
                 return history.push(path);
               };
 
@@ -167,11 +169,11 @@ function Home() {
             }
           },
           { field: 'id', headerName: 'id', width: 150, hide: true },
-          { field: 'date', headerName: 'Data', width: 150 },
-          { field: 'nome', headerName: 'Nome', width: 400 },
-          { field: 'quantita_post_neltempo', headerName: 'N. Post', width: 150 },
-          { field: 'valutazione_foto', headerName: 'Foto', width: 150 },
-          { field: 'valutazione_keywords', headerName: 'Parole chiave', width: 150 },
+          { field: 'date', headerName: 'Data', width: 150,type: 'date', },
+          { field: 'nome', headerName: 'Nome', width: 400, type: 'string' },
+          { field: 'quantita_post_neltempo', headerName: 'N. Post', width: 150,type: 'number', },
+          { field: 'valutazione_foto', headerName: 'Foto', width: 150,type: 'number', },
+          { field: 'valutazione_keywords', headerName: 'Parole chiave', width: 150,type: 'number', },
         ];
         setColumnsF(pino);
         mettiPalliniSocial(reports);
@@ -184,7 +186,7 @@ function Home() {
     axios.get(`http://localhost:5000/reportsInstagram/retrieveLastReportsInstagram`)
       .then(res => {
         const reports = res.data.lista;
-        //console.log(reports);
+        var social = 'instagram';
         const pino = [
           {
             field: "",
@@ -205,7 +207,7 @@ function Home() {
                   thisRow[f] = params.getValue(f);
                 });
 
-                let path = `/${thisRow.id}`;
+                let path = `/dettagliReportSocial/${social}/${thisRow.id}`;
                 return history.push(path);
               };
 
@@ -213,11 +215,11 @@ function Home() {
             }
           },
           { field: 'id', headerName: 'id', width: 150, hide: true },
-          { field: 'date', headerName: 'Data', width: 150 },
-          { field: 'nome', headerName: 'Nome', width: 400 },
-          { field: 'quantita_post_neltempo', headerName: 'N. Post', width: 150 },
-          { field: 'valutazione_foto', headerName: 'Foto', width: 150 },
-          { field: 'valutazione_keywords', headerName: 'Parole chiave', width: 150 },
+          { field: 'date', headerName: 'Data', width: 150,type: 'date', },
+          { field: 'nome', headerName: 'Nome', width: 400, type: 'string' },
+          { field: 'quantita_post_neltempo', headerName: 'N. Post', width: 150,type: 'number', },
+          { field: 'valutazione_foto', headerName: 'Foto', width: 150,type: 'number', },
+          { field: 'valutazione_keywords', headerName: 'Parole chiave', width: 150,type: 'number', },
         ];
         setColumnsI(pino);
         mettiPalliniSocial(reports);
@@ -738,7 +740,10 @@ function Home() {
           <br />
           <div className="ContainerTabella">
             <div className="Tabella">
-              <DataGrid rows={reports} columns={columns} />
+              <DataGrid rows={reports} columns={columns} showToolbar
+                components={{
+                  Toolbar: GridToolbar,
+                }} />
             </div>
           </div>
         </div>
@@ -748,7 +753,10 @@ function Home() {
           <br />
           <div className="ContainerTabella">
             <div className="Tabella">
-              <DataGrid rows={reportsF} columns={columnsF} />
+              <DataGrid rows={reportsF} columns={columnsF} showToolbar
+                components={{
+                  Toolbar: GridToolbar,
+                }} />
             </div>
           </div>
         </div>
@@ -757,7 +765,10 @@ function Home() {
           <br />
           <div className="ContainerTabella">
             <div className="Tabella">
-              <DataGrid rows={reportsI} columns={columnsI} />
+              <DataGrid rows={reportsI} columns={columnsI} showToolbar
+                components={{
+                  Toolbar: GridToolbar,
+                }} />
             </div>
           </div>
         </div>

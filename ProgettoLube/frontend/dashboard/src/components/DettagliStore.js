@@ -150,7 +150,7 @@ function DettagliStore(props) {
         setChoice(event.target.value);
     };
 
-    function getReportAnnuali() {
+    /*function getReportAnnuali() {
         const pino = [
             { field: 'id', headerName: 'Name', width: 400, },
             { field: 'year', headerName: 'Anno', width: 400 },
@@ -167,9 +167,9 @@ function DettagliStore(props) {
         //setGrid(true);
         return null;
 
-    }
+    }*/
 
-    function getReportMensile() {
+   /* function getReportMensile() {
         //non ha selezionato il nome dello store
         console.log(month);
         const pino = [
@@ -188,9 +188,9 @@ function DettagliStore(props) {
         return null;
 
 
-    }
+    }*/
 
-    function getReportDate() {
+    /*function getReportDate() {
         //  TODO sistemare id e nome
         const pino = [
             { field: 'id', headerName: 'Name', width: 350, },
@@ -209,276 +209,276 @@ function DettagliStore(props) {
         return null;
 
 
-    }
-    function FormAnnuale() {
-        return (
-            <div className="RicercaAnnuale">
+    }*/
+    // function FormAnnuale() {
+    //     return (
+    //         <div className="RicercaAnnuale">
 
-                {/* <div className="InputGroup"> */}
+    //             {/* <div className="InputGroup"> */}
 
-                <Row>
-                    <Col md={10}>
-                        <RangeSlider
+    //             <Row>
+    //                 <Col md={10}>
+    //                     <RangeSlider
 
-                            step={0.1}
-                            max={3}
-                            min={1}
-                            progress
-                            style={{ marginTop: 16, marginBottom: 16, width: "10vw" }}
-                            value={range}
-                            onChange={value => {
-                                if (value[0] <= value[1]) {
-                                    setRange(value);
-                                    // console.log(range)
-                                }
-                            }}
-                        />
-                    </Col>
-                    <Col md={8}>
-                        <InputGroup
-                            style={{ width: "15vw" }}
-                        >
-                            <InputNumber
-                                min={1}
-                                max={3}
-                                value={range[0]}
-                                onChange={nextValue => {
-                                    const [start, end] = range;
-                                    if (nextValue > end) {
-                                        return;
-                                    }
-                                    setRange([nextValue, end]);
-                                }}
-                            />
-                            <InputGroup.Addon>to</InputGroup.Addon>
-                            <InputNumber
-                                min={1}
-                                max={3}
-                                value={range[1]}
-                                onChange={nextValue => {
-                                    const [start, end] = range;
-                                    if (start > nextValue) {
-                                        return;
-                                    }
-                                    setRange([start, nextValue]);
-                                }}
-                            />
-                        </InputGroup>
-                    </Col>
-                </Row>
-                {/* </div> */}
-                <YearPicker
-                    defaultValue={'Seleziona anno'}
-                    start={2020}
-                    end={2050}
-                    required={true}
-                    value={year}
-                    onChange={(year) => {
-                        if (year != NaN) year = parseInt(year);
-                        setYear(year);
-                        console.log(year);
-                    }}
-                    id={'year'}
-                    name={'year'}
-                    classes={'classes'}
-                    optionClasses={'option classes'}
-                />
+    //                         step={0.1}
+    //                         max={3}
+    //                         min={1}
+    //                         progress
+    //                         style={{ marginTop: 16, marginBottom: 16, width: "10vw" }}
+    //                         value={range}
+    //                         onChange={value => {
+    //                             if (value[0] <= value[1]) {
+    //                                 setRange(value);
+    //                                 // console.log(range)
+    //                             }
+    //                         }}
+    //                     />
+    //                 </Col>
+    //                 <Col md={8}>
+    //                     <InputGroup
+    //                         style={{ width: "15vw" }}
+    //                     >
+    //                         <InputNumber
+    //                             min={1}
+    //                             max={3}
+    //                             value={range[0]}
+    //                             onChange={nextValue => {
+    //                                 const [start, end] = range;
+    //                                 if (nextValue > end) {
+    //                                     return;
+    //                                 }
+    //                                 setRange([nextValue, end]);
+    //                             }}
+    //                         />
+    //                         <InputGroup.Addon>to</InputGroup.Addon>
+    //                         <InputNumber
+    //                             min={1}
+    //                             max={3}
+    //                             value={range[1]}
+    //                             onChange={nextValue => {
+    //                                 const [start, end] = range;
+    //                                 if (start > nextValue) {
+    //                                     return;
+    //                                 }
+    //                                 setRange([start, nextValue]);
+    //                             }}
+    //                         />
+    //                     </InputGroup>
+    //                 </Col>
+    //             </Row>
+    //             {/* </div> */}
+    //             <YearPicker
+    //                 defaultValue={'Seleziona anno'}
+    //                 start={2020}
+    //                 end={2050}
+    //                 required={true}
+    //                 value={year}
+    //                 onChange={(year) => {
+    //                     if (year != NaN) year = parseInt(year);
+    //                     setYear(year);
+    //                     console.log(year);
+    //                 }}
+    //                 id={'year'}
+    //                 name={'year'}
+    //                 classes={'classes'}
+    //                 optionClasses={'option classes'}
+    //             />
 
-                <Button
-                    // onClick={fetchReportAnnuali()}
-                    onClick={() => { getReportAnnuali() }}
-                    variant="contained"
-                    color="primary"
-                    className={classes.button}
-                    endIcon={<SearchIcon />}
-                >
-                    Send
-          </Button>
+    //             <Button
+    //                 // onClick={fetchReportAnnuali()}
+    //                 onClick={() => { getReportAnnuali() }}
+    //                 variant="contained"
+    //                 color="primary"
+    //                 className={classes.button}
+    //                 endIcon={<SearchIcon />}
+    //             >
+    //                 Send
+    //       </Button>
 
-            </div>
-        )
+    //         </div>
+    //     )
 
-    }
+    // }
 
-    function FormMensile() {
-        return (
-            <div className="RicercaAnnuale">
+    // function FormMensile() {
+    //     return (
+    //         <div className="RicercaAnnuale">
 
-                <Row>
-                    <Col md={10}>
-                        <RangeSlider
+    //             <Row>
+    //                 <Col md={10}>
+    //                     <RangeSlider
 
-                            step={0.1}
-                            max={3}
-                            min={1}
-                            progress
-                            style={{ marginTop: 16, marginBottom: 16, width: "10vw" }}
-                            value={range}
-                            onChange={value => {
-                                if (value[0] <= value[1]) {
-                                    setRange(value);
-                                    // console.log(range)
-                                }
-                            }}
-                        />
-                    </Col>
-                    <Col md={8}>
-                        <InputGroup
-                            style={{ width: "15vw" }}
-                        >
-                            <InputNumber
-                                min={1}
-                                max={3}
-                                value={range[0]}
-                                onChange={nextValue => {
-                                    const [start, end] = range;
-                                    if (nextValue > end) {
-                                        return;
-                                    }
-                                    setRange([nextValue, end]);
-                                }}
-                            />
-                            <InputGroup.Addon>to</InputGroup.Addon>
-                            <InputNumber
-                                min={1}
-                                max={3}
-                                value={range[1]}
-                                onChange={nextValue => {
-                                    const [start, end] = range;
-                                    if (start > nextValue) {
-                                        return;
-                                    }
-                                    setRange([start, nextValue]);
-                                }}
-                            />
-                        </InputGroup>
-                    </Col>
-                </Row>
-                <YearPicker
-                    defaultValue={'Seleziona anno'}
-                    start={2020}
-                    end={2050}
-                    required={true}
-                    value={year}
-                    onChange={(year) => {
-                        if (year != NaN) year = parseInt(year);
-                        setYear(year);
-                        console.log(year);
-                    }}
-                    id={'year'}
-                    name={'year'}
-                    classes={'classes'}
-                    optionClasses={'option classes'}
-                />
-                <MonthPicker
-                    defaultValue={'Seleziona mese'}
-                    numeric                   // to get months as numbers
-                    short                     // default is full name
-                    caps                      // default is Titlecase
-                    endYearGiven              // mandatory if end={} is given in YearPicker
-                    year={year}    // mandatory
-                    required={true}           // default is false
-                    // disabled={true}           // default is false
-                    value={viewmonth}  // mandatory
-                    onChange={(month) => {    // mandatory
-                        if (month != NaN) var supp = parseInt(month);
-                        supp = supp + 1;
-                        setMonth(supp);
-                        setViewmonth(month);
-                        console.log('mese: ', supp);
-                    }}
-                    id={'month'}
-                    name={'month'}
-                    classes={'classes'}
-                    optionClasses={'option classes'}
-                />
-                <Button
-                    onClick={() => { getReportMensile() }}
-                    variant="contained"
-                    color="primary"
-                    className={classes.button}
-                    endIcon={<SearchIcon />}
-                >
-                    Send
-          </Button>
+    //                         step={0.1}
+    //                         max={3}
+    //                         min={1}
+    //                         progress
+    //                         style={{ marginTop: 16, marginBottom: 16, width: "10vw" }}
+    //                         value={range}
+    //                         onChange={value => {
+    //                             if (value[0] <= value[1]) {
+    //                                 setRange(value);
+    //                                 // console.log(range)
+    //                             }
+    //                         }}
+    //                     />
+    //                 </Col>
+    //                 <Col md={8}>
+    //                     <InputGroup
+    //                         style={{ width: "15vw" }}
+    //                     >
+    //                         <InputNumber
+    //                             min={1}
+    //                             max={3}
+    //                             value={range[0]}
+    //                             onChange={nextValue => {
+    //                                 const [start, end] = range;
+    //                                 if (nextValue > end) {
+    //                                     return;
+    //                                 }
+    //                                 setRange([nextValue, end]);
+    //                             }}
+    //                         />
+    //                         <InputGroup.Addon>to</InputGroup.Addon>
+    //                         <InputNumber
+    //                             min={1}
+    //                             max={3}
+    //                             value={range[1]}
+    //                             onChange={nextValue => {
+    //                                 const [start, end] = range;
+    //                                 if (start > nextValue) {
+    //                                     return;
+    //                                 }
+    //                                 setRange([start, nextValue]);
+    //                             }}
+    //                         />
+    //                     </InputGroup>
+    //                 </Col>
+    //             </Row>
+    //             <YearPicker
+    //                 defaultValue={'Seleziona anno'}
+    //                 start={2020}
+    //                 end={2050}
+    //                 required={true}
+    //                 value={year}
+    //                 onChange={(year) => {
+    //                     if (year != NaN) year = parseInt(year);
+    //                     setYear(year);
+    //                     console.log(year);
+    //                 }}
+    //                 id={'year'}
+    //                 name={'year'}
+    //                 classes={'classes'}
+    //                 optionClasses={'option classes'}
+    //             />
+    //             <MonthPicker
+    //                 defaultValue={'Seleziona mese'}
+    //                 numeric                   // to get months as numbers
+    //                 short                     // default is full name
+    //                 caps                      // default is Titlecase
+    //                 endYearGiven              // mandatory if end={} is given in YearPicker
+    //                 year={year}    // mandatory
+    //                 required={true}           // default is false
+    //                 // disabled={true}           // default is false
+    //                 value={viewmonth}  // mandatory
+    //                 onChange={(month) => {    // mandatory
+    //                     if (month != NaN) var supp = parseInt(month);
+    //                     supp = supp + 1;
+    //                     setMonth(supp);
+    //                     setViewmonth(month);
+    //                     console.log('mese: ', supp);
+    //                 }}
+    //                 id={'month'}
+    //                 name={'month'}
+    //                 classes={'classes'}
+    //                 optionClasses={'option classes'}
+    //             />
+    //             <Button
+    //                 onClick={() => { getReportMensile() }}
+    //                 variant="contained"
+    //                 color="primary"
+    //                 className={classes.button}
+    //                 endIcon={<SearchIcon />}
+    //             >
+    //                 Send
+    //       </Button>
 
-            </div>
+    //         </div>
 
-        )
+    //     )
 
-    }
+    // }
 
-    function FormGiornaliero() {
-        return (
-            <div className="RicercaAnnuale">
+    // function FormGiornaliero() {
+    //     return (
+    //         <div className="RicercaAnnuale">
 
-                <Row>
-                    <Col md={10}>
-                        <RangeSlider
+    //             <Row>
+    //                 <Col md={10}>
+    //                     <RangeSlider
 
-                            step={0.1}
-                            max={3}
-                            min={1}
-                            progress
-                            style={{ marginTop: 16, marginBottom: 16, width: "10vw" }}
-                            value={range}
-                            onChange={value => {
-                                if (value[0] <= value[1]) {
-                                    setRange(value);
-                                    // console.log(range)
-                                }
-                            }}
-                        />
-                    </Col>
-                    <Col md={8}>
-                        <InputGroup
-                            style={{ width: "15vw" }}
-                        >
-                            <InputNumber
-                                min={1}
-                                max={3}
-                                value={range[0]}
-                                onChange={nextValue => {
-                                    const [start, end] = range;
-                                    if (nextValue > end) {
-                                        return;
-                                    }
-                                    setRange([nextValue, end]);
-                                }}
-                            />
-                            <InputGroup.Addon>to</InputGroup.Addon>
-                            <InputNumber
-                                min={1}
-                                max={3}
-                                value={range[1]}
-                                onChange={nextValue => {
-                                    const [start, end] = range;
-                                    if (start > nextValue) {
-                                        return;
-                                    }
-                                    setRange([start, nextValue]);
-                                }}
-                            />
-                        </InputGroup>
-                    </Col>
-                </Row>
+    //                         step={0.1}
+    //                         max={3}
+    //                         min={1}
+    //                         progress
+    //                         style={{ marginTop: 16, marginBottom: 16, width: "10vw" }}
+    //                         value={range}
+    //                         onChange={value => {
+    //                             if (value[0] <= value[1]) {
+    //                                 setRange(value);
+    //                                 // console.log(range)
+    //                             }
+    //                         }}
+    //                     />
+    //                 </Col>
+    //                 <Col md={8}>
+    //                     <InputGroup
+    //                         style={{ width: "15vw" }}
+    //                     >
+    //                         <InputNumber
+    //                             min={1}
+    //                             max={3}
+    //                             value={range[0]}
+    //                             onChange={nextValue => {
+    //                                 const [start, end] = range;
+    //                                 if (nextValue > end) {
+    //                                     return;
+    //                                 }
+    //                                 setRange([nextValue, end]);
+    //                             }}
+    //                         />
+    //                         <InputGroup.Addon>to</InputGroup.Addon>
+    //                         <InputNumber
+    //                             min={1}
+    //                             max={3}
+    //                             value={range[1]}
+    //                             onChange={nextValue => {
+    //                                 const [start, end] = range;
+    //                                 if (start > nextValue) {
+    //                                     return;
+    //                                 }
+    //                                 setRange([start, nextValue]);
+    //                             }}
+    //                         />
+    //                     </InputGroup>
+    //                 </Col>
+    //             </Row>
 
-                <DatePicker
-                    onChange={setDate}
-                    value={date}
-                />
-                <Button
-                    onClick={() => { getReportDate() }}
-                    variant="contained"
-                    color="primary"
-                    className={classes.button}
-                    endIcon={<SearchIcon />}
-                >
-                    Send
-          </Button>
+    //             <DatePicker
+    //                 onChange={setDate}
+    //                 value={date}
+    //             />
+    //             <Button
+    //                 onClick={() => { getReportDate() }}
+    //                 variant="contained"
+    //                 color="primary"
+    //                 className={classes.button}
+    //                 endIcon={<SearchIcon />}
+    //             >
+    //                 Send
+    //       </Button>
 
-            </div>)
-    }
+    //         </div>)
+    // }
 
 
     return (
@@ -487,7 +487,7 @@ function DettagliStore(props) {
 
             <Carousel itemsToShow={1}>
 
-                <div className="Carosello1">
+                {/* <div className="Carosello1">
                     <div className={button ? 'Ricerca' : 'RicercaHidden'} >
                         {choice == 'Report annuali' ?
                             <FormAnnuale /> : choice == 'Report mensili' ?
@@ -517,7 +517,7 @@ function DettagliStore(props) {
                             <DataGrid rows={reports} columns={columns} />
                         </div>
                     </div>
-                </div>
+                </div> */}
 
                 <div className="cardsContainer">
 

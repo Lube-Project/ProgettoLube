@@ -60,27 +60,29 @@ class DBmanager:
     def retrieve_last(self):
         sup = []
         lista = []
-        date = []
-        for x in self.collection.find({}).sort([("date", -1)]).limit(1):
-            sup.append(x)
-        date = x['date']
-        # for x in self.collection.find({"date": date}, {"_id": 0, "date": 1, "report": 1, "name": 1, "valutazione": 1}):
-        # lista.append(x)
+        # date = []
+        # for x in self.collection.find({}).sort([("date", -1)]).limit(1):
+        #     sup.append(x)
+        # date = x['date']
+        # # for x in self.collection.find({"date": date}, {"_id": 0, "date": 1, "report": 1, "name": 1, "valutazione": 1}):
+        # # lista.append(x)
         for z in self.collection.aggregate([
-            {
-                "$project": {
-                    "_id": 0,
-                    "id": "$_id",
-                    "date": 1,
-                    "report_foto": 1,
-                    "report_pagine": 1,
-                    "sito": 1,
-                    "valutazione_foto": 1,
-                    "valutazione_script": 1,
-                    "valutazione_keywords": 1
-                }
-            },
-            {"$match": {"date": date}},
+            {'$sort': {
+                'date': 1
+            }},
+            {'$group': {
+
+                "_id": "$sito",
+                'id': {'$last': '$_id'},
+                "sito": {'$last': '$sito'},
+                'date': {'$last': '$date'},
+                "report_foto": {'$last': '$report_foto'},
+                "report_pagine": {'$last': '$report_pagine'},
+                "valutazione_foto": {'$last': '$valutazione_foto'},
+                "valutazione_script": {'$last': '$valutazione_script'},
+                "valutazione_keywords": {'$last': '$valutazione_keywords'}
+            }}
+
         ]):
             lista.append(z)
         return lista

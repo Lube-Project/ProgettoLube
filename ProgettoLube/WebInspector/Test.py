@@ -182,7 +182,8 @@ class MyTestCase(unittest.TestCase):
     def testttt(self):
         db_manager = DBmanager()
         db_manager.start_connection()
-        with open("C:\\Users\\matti\\git\\ProgettoLube\\ProgettoLube\\WebInspector\\test_results\\instagram\\lube-creo-store-casteldisangrio-instagram.json") as f:
+        with open(
+                "C:\\Users\\matti\\git\\ProgettoLube\\ProgettoLube\\WebInspector\\test_results\\instagram\\lube-creo-store-casteldisangrio-instagram.json") as f:
             data = json.load(f)
         report = data
         # date = datetime.datetime.now()
@@ -253,7 +254,7 @@ class MyTestCase(unittest.TestCase):
         db.start_connection()
         proc = ImageProcessor()
         socialCrawl = CrawlerSocial()
-        #target = 'https://www.instagram.com/lube_marseille_store/'
+        # target = 'https://www.instagram.com/lube_marseille_store/'
         # target = 'https://www.instagram.com/molteni_matteo/'
         target = 'https://www.instagram.com/lubecreopratolacasteldisangro/'
         report = socialCrawl.instagram_crawler(target, proc)
@@ -326,10 +327,30 @@ class MyTestCase(unittest.TestCase):
         print(fin)
 
     def test_for(self):
-        # string = "a.a.ad.bfdsbdf.besfbn.vsd"
-        string = "ssssss"
-        string = string.replace(".", "")
-        print(string)
+        db = DBmanager()
+        db.start_connection()
+        lista = []
+        for z in db.collection.aggregate([
+            {'$sort': {
+                'date': 1
+            }},
+            {'$group': {
+
+                "_id": "$sito",
+                'id': {'$last': '$_id'},
+                "sito": {'$last': '$sito'},
+                'date': {'$last': '$date'},
+                "report_foto": {'$last': '$report_foto'},
+                "report_pagine": {'$last': '$report_pagine'},
+                "valutazione_foto": {'$last': '$valutazione_foto'},
+                "valutazione_script": {'$last': '$valutazione_script'},
+                "valutazione_keywords": {'$last': '$valutazione_keywords'}
+            }}
+
+        ]):
+            lista.append(z)
+        for x in lista:
+            print(x)
 
 
 def get_image_urls(post):
