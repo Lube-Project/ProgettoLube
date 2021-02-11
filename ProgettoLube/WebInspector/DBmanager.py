@@ -392,27 +392,29 @@ class DBmanager:
         sup = []
         lista = []
         date = []
-        for x in self.collection_facebook.find({}).sort([("date", -1)]).limit(1):
-            sup.append(x)
-        date = x['date']
+        # for x in self.collection_facebook.find({}).sort([("date", -1)]).limit(1):
+        #     sup.append(x)
+        # date = x['date']
         # for x in self.collection.find({"date": date}, {"_id": 0, "date": 1, "report": 1, "name": 1, "valutazione": 1}):
         # lista.append(x)
-        for z in self.collection_facebook.aggregate([
-            {
-                "$project": {
-                    "_id": 0,
-                    "id": "$_id",
-                    "date": 1,
-                    "report_foto": 1,
-                    "dictionary_parolechiave_nel_post": 1,
-                    "social": 1,
-                    "nome": 1,
-                    "quantita_post_neltempo":1,
-                    "valutazione_foto": 1,
-                    "valutazione_keywords": 1
-                }
-            },
-            {"$match": {"date": date}},
+        for z in self.collection.aggregate([
+            {'$sort': {
+                'date': 1
+            }},
+            {'$group': {
+
+                "_id": "$sito",
+                'id': {'$last': '$_id'},
+                "nome": {'$last': '$nome'},
+                'date': {'$last': '$date'},
+                "social": {'$last': '$social'},
+                "report_foto": {'$last': '$report_foto'},
+                "dictionary_parolechiave_nel_post": {'$last': '$dictionary_parolechiave_nel_post'},
+                "quantita_post_neltempo": {'$last': '$quantita_post_neltempo'},
+                "valutazione_foto": {'$last': '$valutazione_foto'},
+                "valutazione_keywords": {'$last': '$valutazione_keywords'}
+            }}
+
         ]):
             lista.append(z)
         return lista
@@ -452,27 +454,29 @@ class DBmanager:
         sup = []
         lista = []
         date = []
-        for x in self.collection_instagram.find({}).sort([("date", -1)]).limit(1):
-            sup.append(x)
-        date = x['date']
+        # for x in self.collection_instagram.find({}).sort([("date", -1)]).limit(1):
+        #     sup.append(x)
+        # date = x['date']
         # for x in self.collection.find({"date": date}, {"_id": 0, "date": 1, "report": 1, "name": 1, "valutazione": 1}):
         # lista.append(x)
-        for z in self.collection_instagram.aggregate([
-            {
-                "$project": {
-                    "_id": 0,
-                    "id": "$_id",
-                    "nome": 1,
-                    "date": 1,
-                    "report_foto": 1,
-                    "dictionary_parolechiave_nel_post": 1,
-                    "quantita_post_neltempo": 1,
-                    "valutazione_foto": 1,
-                    "social": 1,
-                    "valutazione_keywords": 1
-                }
-            },
-            {"$match": {"date": date}},
+        for z in self.collection.aggregate([
+            {'$sort': {
+                'date': 1
+            }},
+            {'$group': {
+
+                "_id": "$sito",
+                'id': {'$last': '$_id'},
+                "nome": {'$last': '$nome'},
+                'date': {'$last': '$date'},
+                "social": {'$last': '$social'},
+                "report_foto": {'$last': '$report_foto'},
+                "dictionary_parolechiave_nel_post": {'$last': '$dictionary_parolechiave_nel_post'},
+                "quantita_post_neltempo": {'$last': '$quantita_post_neltempo'},
+                "valutazione_foto": {'$last': '$valutazione_foto'},
+                "valutazione_keywords": {'$last': '$valutazione_keywords'}
+            }}
+
         ]):
             lista.append(z)
         return lista
