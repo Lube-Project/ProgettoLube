@@ -40,7 +40,7 @@ function Setting() {
   }, []);
 
   function getCrawlerKeywords() {
-    axios.get(`http://localhost:5000/settings/getKeywordsCrawler`)
+    axios.get(`http://c1d480345a12.ngrok.io/settings/getKeywordsCrawler`)
       .then(res => {
         const data = res.data;
         console.log("KEYWORDS WEB : ", data.lista);
@@ -50,20 +50,20 @@ function Setting() {
 
   function addCrawlerKeywords(keyword) {
     if (typeof (keyword) == 'string') {
-      axios.get(`http://localhost:5000/settings/addKeywordCrawler?keyword=${keyword}`);
+      axios.get(`http://c1d480345a12.ngrok.io/settings/addKeywordCrawler?keyword=${keyword}`);
       getCrawlerKeywords();
     }
   }
 
   function deleteCrawlerKeywords(keyword) {
-    axios.get(`http://localhost:5000/settings/deleteKeywordCrawler?keyword=${keyword}`);
+    axios.get(`http://c1d480345a12.ngrok.io/settings/deleteKeywordCrawler?keyword=${keyword}`);
     getCrawlerKeywords();
 
   }
 
 
   function getCrawlerKeywordsSocial() {
-    axios.get(`http://localhost:5000/settings/getKeywordsCrawlerSocial`)
+    axios.get(`http://c1d480345a12.ngrok.io/settings/getKeywordsCrawlerSocial`)
       .then(res => {
         const data = res.data;
         console.log("KEYWORDS SOCIAL : ", data.lista);
@@ -73,19 +73,19 @@ function Setting() {
 
   function addCrawlerSocialKeywords(keyword) {
     if(typeof (keyword) == 'string'){
-      axios.get(`http://localhost:5000/settings/addKeywordCrawlerSocial?keyword=${keyword}`);
+      axios.get(`http://c1d480345a12.ngrok.io/settings/addKeywordCrawlerSocial?keyword=${keyword}`);
       getCrawlerKeywordsSocial();
     }
     
   }
 
   function deleteCrawlerSocialKeywords(keyword) {
-    axios.get(`http://localhost:5000/settings/deleteKeywordCrawlerSocial?keyword=${keyword}`);
+    axios.get(`http://c1d480345a12.ngrok.io/settings/deleteKeywordCrawlerSocial?keyword=${keyword}`);
     getCrawlerKeywordsSocial();
   }
 
   function getSocialCrawlerDays() {
-    axios.get(`http://localhost:5000/settings/getSocialActivityTimeCrawler`)
+    axios.get(`http://c1d480345a12.ngrok.io/settings/getSocialActivityTimeCrawler`)
       .then(res => {
         const data = res.data;
         console.log(data);
@@ -94,7 +94,7 @@ function Setting() {
   }
 
   function changeSocialCrawlerDays() {
-    axios.get(`http://localhost:5000/settings/modifySocialActivityTimeCrawler?days=${daysInsert}`);
+    axios.get(`http://c1d480345a12.ngrok.io/settings/modifySocialActivityTimeCrawler?days=${daysInsert}`);
     getSocialCrawlerDays();
   }
 
@@ -124,7 +124,7 @@ function Setting() {
 
         <div className="Sezione">
           <div className="TitoloImpo">
-            <h3 className="Scritta">Impostazioni Web</h3>
+            <h3 className="Scritta" style={{ fontFamily: "Times New Roman" }} >Impostazioni Web</h3>
           </div>
 
           <Divider light />
@@ -183,7 +183,7 @@ function Setting() {
 
         <div className="Sezione">
           <div className="TitoloImpo">
-            <h3 className="Scritta">Impostazioni Social</h3>
+            <h3 className="Scritta" style={{ fontFamily: "Times New Roman" }}>Impostazioni Social</h3>
           </div>
           <Divider light />
           <br />
@@ -191,7 +191,7 @@ function Setting() {
             <div className="Descrizione">
             <p style={{fontSize:20}}><b>Partendo dall'ultimo post, il numero di giorni precedenti che determinano il periodo di analisi</b></p>
             </div>
-            <h4><b>Numero giorni : </b> {days} </h4>
+            <h4 style={{ fontFamily: "Times New Roman" }} ><b>Numero giorni: </b> {days} </h4>
             <TextField
               id="outlined-number"
               label="A quanti giorni vuoi risalire"

@@ -9,6 +9,17 @@
   /* overflow-y:scroll; */
 }
 
+.AppDettagliStore {
+  text-align: center;
+  position: relative;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: space-between; */
+  background-color: ghostwhite;
+  align-items: center;
+}
+
 .AppOK {
   height: 100vh;
   display: flex;
@@ -21,6 +32,9 @@ body{
   position: unset;
 }
 
+p{
+  font-family: 'Times New Roman', Times, serif;
+}
 
  .Navbar2 {
   height: 10vh;
@@ -171,12 +185,12 @@ a.Link::after {
   margin-bottom:12%;
   overflow-y:scroll;
   height: 75vh;
-  
+  border: 1px solid black;
   flex-wrap: wrap;
   justify-content: space-around; */
   width: 90vw;
   height: 70vh;
-  /* border: 1px solid black;  */
+    
   display: flex;
   justify-content: center;
   align-items: center;
@@ -238,7 +252,6 @@ a.Link::after {
   cursor: pointer;
 }
 
-
 /* ********************************* 
           HOME
 ********************************* */
@@ -248,6 +261,7 @@ a.Link::after {
   width: 10px;
   height: 10px;
 }
+
 /* ********************************* 
           IMPOSTAZIONI
 ********************************* */
@@ -324,7 +338,9 @@ a.Link::after {
 .RigaDettagliScript {
   display: flex;
   padding: 6px;
-  
+}
 
-
+.Unicam {
+  width: 50px;
+  height: 50px;
 }

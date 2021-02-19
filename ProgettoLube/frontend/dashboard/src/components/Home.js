@@ -89,7 +89,7 @@ function Home() {
 
   /* chiamata VERA per richiedere i dati al server */
   const fetchLastReportsWeb = async () => {
-    axios.get(`http://localhost:5000/reportsWeb/retrieveLastReports`)
+    axios.get(`http://c1d480345a12.ngrok.io/reportsWeb/retrieveLastReports`)
       .then(res => {
         const reports = res.data.lista;
         //console.log(reports);
@@ -122,11 +122,11 @@ function Home() {
             }
           },
           { field: 'id', headerName: 'id', width: 150, hide: true },
-          { field: 'date', headerName: 'Data', width: 150,type: 'date', },
-          { field: 'sito', headerName: 'Nome', width: 400, type: 'string' },
-          { field: 'valutazione_foto', headerName: 'Foto', width: 150, type: 'number', },
-          { field: 'valutazione_keywords', headerName: 'Parole chiave', width: 150,type: 'number', },
-          { field: 'valutazione_script', headerName: 'Script', width: 150,type: 'number', },
+          { field: 'date', headerName: 'Data', width: 150 },
+          { field: 'sito', headerName: 'Nome', width: 350, type: 'string' },
+          { field: 'valutazione_foto', headerName: 'Foto', width: 150, filterable: false, },
+          { field: 'valutazione_keywords', headerName: 'Parole chiave', width: 150, filterable: false, },
+          { field: 'valutazione_script', headerName: 'Script', width: 150, filterable: false, },
 
         ];
         setColumns(pino);
@@ -137,7 +137,7 @@ function Home() {
   }
 
   const fetchLastReportsFacebook = async () => {
-    axios.get(`http://localhost:5000/reportsFacebook/retrieveLastReportsFacebook`)
+    axios.get(`http://c1d480345a12.ngrok.io/reportsFacebook/retrieveLastReportsFacebook`)
       .then(res => {
         const reports = res.data.lista;
         var social = 'facebook';
@@ -171,11 +171,11 @@ function Home() {
             }
           },
           { field: 'id', headerName: 'id', width: 150, hide: true },
-          { field: 'date', headerName: 'Data', width: 150,type: 'date', },
-          { field: 'nome', headerName: 'Nome', width: 400, type: 'string' },
+          { field: 'date', headerName: 'Data', width: 150 },
+          { field: 'nome', headerName: 'Nome', width: 350, type: 'string' },
           { field: 'quantita_post_neltempo', headerName: 'N. Post', width: 150,type: 'number', },
-          { field: 'valutazione_foto', headerName: 'Foto', width: 150,type: 'number', },
-          { field: 'valutazione_keywords', headerName: 'Parole chiave', width: 150,type: 'number', },
+          { field: 'valutazione_foto', headerName: 'Foto', width: 150, filterable: false, },
+          { field: 'valutazione_keywords', headerName: 'Parole chiave', width: 150, filterable: false,},
         ];
         setColumnsF(pino);
         mettiPalliniSocial(reports);
@@ -185,7 +185,7 @@ function Home() {
   }
 
   const fetchLastReportsInstagram = async () => {
-    axios.get(`http://localhost:5000/reportsInstagram/retrieveLastReportsInstagram`)
+    axios.get(`http://c1d480345a12.ngrok.io/reportsInstagram/retrieveLastReportsInstagram`)
       .then(res => {
         const reports = res.data.lista;
         var social = 'instagram';
@@ -218,11 +218,11 @@ function Home() {
             }
           },
           { field: 'id', headerName: 'id', width: 150, hide: true },
-          { field: 'date', headerName: 'Data', width: 150,type: 'date', },
-          { field: 'nome', headerName: 'Nome', width: 400, type: 'string' },
+          { field: 'date', headerName: 'Data', width: 150 },
+          { field: 'nome', headerName: 'Nome', width: 350, type: 'string' },
           { field: 'quantita_post_neltempo', headerName: 'N. Post', width: 150,type: 'number', },
-          { field: 'valutazione_foto', headerName: 'Foto', width: 150,type: 'number', },
-          { field: 'valutazione_keywords', headerName: 'Parole chiave', width: 150,type: 'number', },
+          { field: 'valutazione_foto', headerName: 'Foto', width: 150, filterable: false, },
+          { field: 'valutazione_keywords', headerName: 'Parole chiave', width: 150, filterable: false,},
         ];
         setColumnsI(pino);
         mettiPalliniSocial(reports);
@@ -232,7 +232,7 @@ function Home() {
   }
 
   const fetchResellerNames = async () => {
-    axios.get(`http://localhost:5000/resellers/retrieveResellersNames`)
+    axios.get(`http://c1d480345a12.ngrok.io/resellers/retrieveResellersNames`)
       .then(res => {
         const data = res.data;
         // console.log(data.lista);
@@ -710,7 +710,7 @@ function Home() {
       <Carousel itemsToShow={1}>
 
         <div className="CaroselloHome">
-          <h2>WEB</h2>
+          <h2 style={{ fontFamily: "Times New Roman" }} >WEB</h2>
 
           {/*<div className={button ? 'Ricerca' : 'RicercaHidden'} >
             { <h4 style={{ letterSpacing: 5 }}>SITI WEB</h4> }
@@ -752,7 +752,7 @@ function Home() {
         </div>
 
         <div className="CaroselloHome">
-          <h2>FACEBOOK</h2>
+          <h2 style={{ fontFamily: "Times New Roman" }} >FACEBOOK</h2>
           <br />
           <div className="ContainerTabella">
             <div className="Tabella">
@@ -764,7 +764,7 @@ function Home() {
           </div>
         </div>
         <div className="CaroselloHome">
-          <h2>INSTAGRAM</h2>
+          <h2 style={{ fontFamily: "Times New Roman" }} >INSTAGRAM</h2>
           <br />
           <div className="ContainerTabella">
             <div className="Tabella">
@@ -776,6 +776,7 @@ function Home() {
           </div>
         </div>
       </Carousel>
+      <br />
     </div>
   );
 }

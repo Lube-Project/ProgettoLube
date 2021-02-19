@@ -29,7 +29,7 @@ function DettagliReportSocial(props) {
         const social = props.match.params.social;
 
         if (social == 'facebook') {
-            axios.get(`http://localhost:5000/reportsFacebook/findOneFacebook?id=${id}`)
+            axios.get(`http://c1d480345a12.ngrok.io/reportsFacebook/findOneFacebook?id=${id}`)
                 .then(res => {
                     const report = res.data.lista;
                     console.log('Report', report);
@@ -40,7 +40,7 @@ function DettagliReportSocial(props) {
                     setReport(report[0]);
                 })
         } else {
-            axios.get(`http://localhost:5000/reportsInstagram/findOneInstagram?id=${id}`)
+            axios.get(`http://c1d480345a12.ngrok.io/reportsInstagram/findOneInstagram?id=${id}`)
                 .then(res => {
                     const report = res.data.lista;
                     console.log('Report', report);
@@ -55,7 +55,7 @@ function DettagliReportSocial(props) {
     }
 
     function getSocialCrawlerDays() {
-        axios.get(`http://localhost:5000/settings/getSocialActivityTimeCrawler`)
+        axios.get(`http://d7b8033fa538.ngrok.io/settings/getSocialActivityTimeCrawler`)
             .then(res => {
                 const data = res.data;
                 console.log(data);
@@ -69,16 +69,16 @@ function DettagliReportSocial(props) {
         <div className="AppDettReport">
             <br />
             <div className="Titolo">
-                <h1>{report.nome}</h1>
-                <h3>REPORT del {report.date}</h3>
-                <h3>{report.quantita_post_neltempo} post trovati in {days} gg</h3>
+                <h2 style={{ fontFamily: "Times New Roman" }} >{report.nome}</h2>
+                <h5 style={{ fontFamily: "Times New Roman" }} >REPORT del {report.date}</h5>
+                <h5 style={{ fontFamily: "Times New Roman" }} >{report.quantita_post_neltempo} post trovati in {days} gg</h5>
             </div>
 
             <div className="ContainerGriglia">
 
                 <div className="Sezione">
                     <div className="TitoloImpo">
-                        <h3 className="Scritta">Valutazione Parole Chiave {report.valutazione_keywords >= 2.75 && report.valutazione_keywords <= 3 ? '🔴'
+                        <h3 className="Scritta" style={{ fontFamily: "Times New Roman" }}>Valutazione Parole Chiave {report.valutazione_keywords >= 2.75 && report.valutazione_keywords <= 3 ? '🔴'
                             : report.valutazione_keywords >= 2 && report.valutazione_keywords < 2.75 ? '🟡'
                                 : report.valutazione_keywords >= 1 && report.valutazione_keywords < 2 ? '🟢'
                                     : ''}</h3>
@@ -99,7 +99,7 @@ function DettagliReportSocial(props) {
 
                 <div className="Sezione">
                     <div className="TitoloImpo">
-                        <h3 className="Scritta">Valutazione Foto {report.valutazione_foto >= 2.75 && report.valutazione_foto <= 3 ? '🔴'
+                        <h3 className="Scritta" style={{ fontFamily: "Times New Roman" }}>Valutazione Foto {report.valutazione_foto >= 2.75 && report.valutazione_foto <= 3 ? '🔴'
                             : report.valutazione_foto >= 2 && report.valutazione_foto < 2.75 ? '🟡'
                                 : report.valutazione_foto >= 1 && report.valutazione_foto < 2 ? '🟢'
                                     : ''}</h3>
@@ -122,7 +122,7 @@ function DettagliReportSocial(props) {
 
                 <div className="Sezione">
                     <div className="TitoloImpo">
-                        <h3 className="Scritta">Parole chiave nelle foto</h3>
+                        <h3 className="Scritta" style={{ fontFamily: "Times New Roman" }}>Parole chiave nelle foto</h3>
                     </div>
                     <div className="Impostazione3">
                         {

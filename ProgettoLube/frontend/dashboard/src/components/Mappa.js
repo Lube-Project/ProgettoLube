@@ -22,7 +22,7 @@ function Mappa() {
 
 
   function getResellersName() {
-    axios.get(`http://localhost:5000/resellers/retrieveResellersNames`)
+    axios.get(`http://c1d480345a12.ngrok.io/resellers/retrieveResellersNames`)
       .then(res => {
         const data = res.data;
         // console.log(data.lista);
@@ -31,7 +31,7 @@ function Mappa() {
 
   }
   function getResellersPosition() {
-    axios.get(`http://localhost:5000/resellers/retrieveResellersPositions`)
+    axios.get(`http://c1d480345a12.ngrok.io/resellers/retrieveResellersPositions`)
       .then(res => {
         const data = res.data.lista;
         var lista = [];
@@ -65,7 +65,7 @@ function Mappa() {
   const [longitude, setLongitude] = React.useState();
   const [viewport, setViewport] = useState({
     width: "100%",
-    height: "500px",
+    height: "520px",
 
     latitude: 43.041040634170734,
     longitude: 12.65069401829706,
@@ -76,7 +76,7 @@ function Mappa() {
 
   return (
     <div className="App">
-      <h2>MAPPA</h2>
+      <h2 style={{ fontFamily: "Times New Roman" }} >MAPPA</h2>
       <div className="Container">
         <Autocomplete
           placeholder='Seleziona Sito'
@@ -109,6 +109,8 @@ function Mappa() {
           }
         </ReactMapGL>
       </div>
+      <br />
+      <br />
     </div>
   );
 }

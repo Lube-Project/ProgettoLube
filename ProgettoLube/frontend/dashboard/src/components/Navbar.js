@@ -35,7 +35,7 @@ function Navbar() {
   
   const Title= ()=> {
   return <div className={button ? 'NavbarTitle' : 'NavbarTitleHidden'}> <Link style={{ color: '#fff', textDecoration: 'none' }} to="/" >
-  <h1 style={{ fontSize: 65, fontFamily: 'Dancing Script'}}>Dashboard</h1>
+  <h1 style={{ fontSize: 45, fontFamily: "Times New Roman", letterSpacing: 5}}>DASHBOARD</h1>
   </Link>
   </div>
   }
@@ -52,8 +52,7 @@ function Navbar() {
 
       <ul className={click ? 'nav-menu active' : 'nav-menu'}>
         <Link style={{ color: '#fff', textDecoration: 'none' }} to="/" onClick={closeMobileMenu}>
-          <li className="nav-item">
-            Home</li>
+          <li className="nav-item">Home</li>
         </Link>
         <Link style={{ color: '#fff', textDecoration: 'none' }} to="/mappa" onClick={closeMobileMenu}>
           <li className="nav-item">

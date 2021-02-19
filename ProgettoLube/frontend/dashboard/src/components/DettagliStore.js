@@ -134,7 +134,7 @@ function DettagliStore(props) {
 
 
     const fetchResellerDetails = async () => {
-        axios.get(`http://localhost:5000/resellers/retrieveResellerDetails?name=${data}`)
+        axios.get(`http://c1d480345a12.ngrok.io/resellers/retrieveResellerDetails?name=${data}`)
             .then(res => {
                 const response = res.data;
 
@@ -169,26 +169,26 @@ function DettagliStore(props) {
 
     }*/
 
-   /* function getReportMensile() {
-        //non ha selezionato il nome dello store
-        console.log(month);
-        const pino = [
-            { field: 'id', headerName: 'Name', width: 350, },
-            { field: 'year', headerName: 'Anno', width: 340 },
-            { field: 'month', headerName: 'Mese', width: 340 },
-            { field: 'valutazione', headerName: 'Valutazione', width: '100%' },
-        ];
-        axios.get(`http://localhost:5000/reports/retrieveMonthYearAverageName?year=${year}&month=${month}&name=${data}&range1=${range[0]}&range2=${range[1]}`)
-            .then(res => {
-                const reports = res.data.lista;
-                mettiPallini(reports);
-                setReports(reports);
-            });
-        setColumns(pino);
-        return null;
-
-
-    }*/
+    /* function getReportMensile() {
+         //non ha selezionato il nome dello store
+         console.log(month);
+         const pino = [
+             { field: 'id', headerName: 'Name', width: 350, },
+             { field: 'year', headerName: 'Anno', width: 340 },
+             { field: 'month', headerName: 'Mese', width: 340 },
+             { field: 'valutazione', headerName: 'Valutazione', width: '100%' },
+         ];
+         axios.get(`http://localhost:5000/reports/retrieveMonthYearAverageName?year=${year}&month=${month}&name=${data}&range1=${range[0]}&range2=${range[1]}`)
+             .then(res => {
+                 const reports = res.data.lista;
+                 mettiPallini(reports);
+                 setReports(reports);
+             });
+         setColumns(pino);
+         return null;
+ 
+ 
+     }*/
 
     /*function getReportDate() {
         //  TODO sistemare id e nome
@@ -482,12 +482,13 @@ function DettagliStore(props) {
 
 
     return (
-        <div className="App Esempio">
-            <h2>DETTAGLI {data}</h2>
+        /* <div className="App Esempio"> */
+        <div className="AppDettagliStore">
+            <h2 style={{ fontFamily: "Times New Roman" }} >DETTAGLI {data}</h2>
 
-            <Carousel itemsToShow={1}>
+            {/* <Carousel itemsToShow={1}> */}
 
-                {/* <div className="Carosello1">
+            {/* <div className="Carosello1">
                     <div className={button ? 'Ricerca' : 'RicercaHidden'} >
                         {choice == 'Report annuali' ?
                             <FormAnnuale /> : choice == 'Report mensili' ?
@@ -519,83 +520,85 @@ function DettagliStore(props) {
                     </div>
                 </div> */}
 
-                <div className="cardsContainer">
+            <div className="cardsContainer">
 
-                    <Card className={classes.root} variant="outlined" style={{ position: "relative", width: "20%", height: "80%", marginTop: 5, marginBottom: 5, marginLeft: 5, marginRight: 5 }}>
-                        <CardContent >
-                            <Typography variant="h5" component="h2">
-                                {storeDetails.TIPOLOGIA}
-                                <br /><br />
-                            </Typography>
-                            <Typography className={classes.title} color="textSecondary" gutterBottom>
-                                ID NEGOZIO: {storeDetails.IDNEGOZIO}
-                            </Typography>
-                            {/* <Typography className={classes.pos} color="textSecondary">
+                <Card className={classes.root} variant="outlined" style={{ position: "relative", width: "20%", height: "80%", marginTop: 5, marginBottom: 5, marginLeft: 5, marginRight: 5 }}>
+                    <CardContent >
+                        <Typography variant="h5" component="h2" style={{ fontFamily: "Times New Roman" }}>
+                            {storeDetails.TIPOLOGIA}
+                            <br /><br />
+                        </Typography>
+                        <Typography className={classes.title} color="textSecondary" gutterBottom style={{ fontFamily: "Times New Roman" }}>
+                            ID NEGOZIO: {storeDetails.IDNEGOZIO}
+                        </Typography>
+                        {/* <Typography className={classes.pos} color="textSecondary">
                                 adjective
         </Typography> */}
-                            <Typography variant="body2" component="p">
-                                <br /> RAGIONE SOCIALE:   {storeDetails["RAGIONE SOCIALE"]}
-                                <br /> DESAGE: {storeDetails.DESAGE}
-                                {storeDetails["BRAND LUBE"] ? <p>BRAND LUBE: {storeDetails["BRAND LUBE"]}</p> : null}
-                                {storeDetails["BRAND CREO"] ? <p>BRAND CREO: {storeDetails["BRAND CREO"]}</p> : null}
-                            </Typography>
-                        </CardContent>
+                        <Typography variant="body2" component="p" style={{ fontFamily: "Times New Roman" }}>
+                            <br /> RAGIONE SOCIALE:   {storeDetails["RAGIONE SOCIALE"]}
+                            <br /> DESAGE: {storeDetails.DESAGE}
+                            {storeDetails["BRAND LUBE"] ? <p>BRAND LUBE: {storeDetails["BRAND LUBE"]}</p> : null}
+                            {storeDetails["BRAND CREO"] ? <p>BRAND CREO: {storeDetails["BRAND CREO"]}</p> : null}
+                        </Typography>
+                    </CardContent>
 
-                    </Card>
-                    <Card className={classes.root} variant="outlined" style={{ position: "relative", width: "20%", height: "80%", marginTop: 5, marginBottom: 5, marginLeft: 5, marginRight: 5, }}>
-                        <CardContent>
+                </Card>
+                <Card className={classes.root} variant="outlined" style={{ position: "relative", width: "20%", height: "80%", marginTop: 5, marginBottom: 5, marginLeft: 5, marginRight: 5, }}>
+                    <CardContent>
 
-                            <Typography variant="h5" component="h2">
-                                {storeDetails.COMUNE}
-                                <br /><br />
-                            </Typography>
-                            <Typography className={classes.pos} color="textSecondary">
-                                {storeDetails.INDIRIZZO}
-                            </Typography>
-                            <Typography variant="body2" component="p">
-                                PROVINCIA: ({storeDetails.PROV})
+                        <Typography variant="h5" component="h2" style={{ fontFamily: "Times New Roman" }}>
+                            {storeDetails.COMUNE}
+                            <br /><br />
+                        </Typography>
+                        <Typography className={classes.pos} color="textSecondary" style={{ fontFamily: "Times New Roman" }}>
+                            {storeDetails.INDIRIZZO}
+                        </Typography>
+                        <Typography variant="body2" component="p" style={{ fontFamily: "Times New Roman" }}>
+                            PROVINCIA: ({storeDetails.PROV})
                             <br />
-                                {storeDetails.CAP}
+                            {storeDetails.CAP}
 
 
-                            </Typography>
-                        </CardContent>
+                        </Typography>
+                    </CardContent>
 
-                    </Card>
-                    <Card className={classes.root} variant="outlined" style={{ position: "relative", width: "20%", height: "80%", marginTop: 5, marginBottom: 5, marginLeft: 5, marginRight: 5, }}>
-                        <CardContent>
-                            <Typography variant="h5" component="h2">
-                                SOCIAL
+                </Card>
+                <Card className={classes.root} variant="outlined" style={{ position: "relative", width: "20%", height: "80%", marginTop: 5, marginBottom: 5, marginLeft: 5, marginRight: 5, }}>
+                    <CardContent>
+                        <Typography variant="h5" component="h2" style={{ fontFamily: "Times New Roman" }}>
+                            SOCIAL
         </Typography>
 
-                            <Typography variant="body2" component="p">
-                                <br />   {storeDetails.FB ? <SocialIcon url={storeDetails.FB} /> : null} <br />
-                                <br />   {storeDetails.ISTAGRAM ? <SocialIcon url={storeDetails.ISTAGRAM} /> : null} <br />
-                                <br /> {storeDetails.SITO ? <a href={storeDetails.SITO}><LanguageIcon style={{ fontSize: 53 }}></LanguageIcon></a> : null}
+                        <Typography variant="body2" component="p" style={{ fontFamily: "Times New Roman" }}>
+                            <br />   {storeDetails.FB ? <SocialIcon url={storeDetails.FB} /> : null} <br />
+                            <br />   {storeDetails.ISTAGRAM ? <SocialIcon url={storeDetails.ISTAGRAM} /> : null} <br />
+                            <br /> {storeDetails.SITO ? <a href={storeDetails.SITO}><LanguageIcon style={{ fontSize: 53 }}></LanguageIcon></a> : null}
 
-                            </Typography>
-                        </CardContent>
+                        </Typography>
+                    </CardContent>
 
-                    </Card>
-                    <Card className={classes.root} variant="outlined" style={{ position: "relative", width: "20%", height: "80%", marginTop: 5, marginBottom: 5, marginLeft: 5, marginRight: 5, }}>
-                        <CardContent>
+                </Card>
+                <Card className={classes.root} variant="outlined" style={{ position: "relative", width: "20%", height: "80%", marginTop: 5, marginBottom: 5, marginLeft: 5, marginRight: 5, }}>
+                    <CardContent>
 
-                            <Typography variant="h5" component="h2">
-                                CONTATTI
+                        <Typography variant="h5" component="h2" style={{ fontFamily: "Times New Roman" }}>
+                            CONTATTI
         </Typography>
-                            <Typography className={classes.pos} color="textSecondary">
-                                <br />  <SocialIcon url="http://whatsapp.com" /> <br />{storeDetails.Whatsapp}
-                            </Typography>
-                            <Typography variant="body2" component="p">
-                                <br />   <SocialIcon url="mailto:" /> <br />{storeDetails["Mail 1"]}
-                                <br /><br />  <SocialIcon url="mailto:" /> <br />{storeDetails["MAIL 2"]}
+                        <Typography className={classes.pos} color="textSecondary" style={{ fontFamily: "Times New Roman" }}>
+                            <br />  <SocialIcon url="http://whatsapp.com" /> <br />{storeDetails.Whatsapp}
+                        </Typography>
+                        <Typography variant="body2" component="p" style={{ fontFamily: "Times New Roman" }}>
+                            <br />   <SocialIcon url="mailto:" /> <br />{storeDetails["Mail 1"]}
+                            <br /><br />  <SocialIcon url="mailto:" /> <br />{storeDetails["MAIL 2"]}
 
-                            </Typography>
-                        </CardContent>
+                        </Typography>
+                    </CardContent>
 
-                    </Card>
-                </div>
-            </Carousel>
+                </Card>
+            </div>
+            {/* </Carousel> */}
+            <br />
+            <br />
         </div>
     );
 }

@@ -25,7 +25,7 @@ function Dettagli(props) {
     // chiamata fake per richiedere i dati 
     const fetchData = async () => {
         const id = props.match.params.id;
-        axios.get(`http://localhost:5000/reportsWeb/findOne?id=${id}`)
+        axios.get(`http://c1d480345a12.ngrok.io/reportsWeb/findOne?id=${id}`)
             .then(res => {
                 const report = res.data.lista;
                 console.log('Report', report);
@@ -42,8 +42,8 @@ function Dettagli(props) {
         <div className="AppDettReport">
             <br />
             <div className="Titolo">
-                <h1>{report.sito}</h1>
-                <h3>REPORT del {report.date}</h3>
+                <h2 style={{ fontFamily: "Times New Roman" }} >{report.sito}</h2>
+                <h5 style={{ fontFamily: "Times New Roman" }} >REPORT del {report.date}</h5>
             </div>
 
             <div className="ContainerGriglia">
@@ -52,7 +52,7 @@ function Dettagli(props) {
 
                 <div className="Sezione">
                     <div className="TitoloImpo">
-                        <h3 className="Scritta">Presenza Script {report.valutazione_script == 1 ? '🟢' : '🔴'}</h3>
+                        <h3 className="Scritta" style={{ fontFamily: "Times New Roman" }}>Presenza Script {report.valutazione_script == 1 ? '🟢' : '🔴'}</h3>
                     </div>
                     <div className="Impostazione3">
                         {
@@ -69,7 +69,7 @@ function Dettagli(props) {
                 </div>
                 <div className="Sezione">
                     <div className="TitoloImpo">
-                        <h3 className="Scritta">Valutazione Parole Chiave {report.valutazione_keywords >= 2.75 && report.valutazione_keywords <= 3 ? '🔴'
+                        <h3 className="Scritta" style={{ fontFamily: "Times New Roman" }}>Valutazione Parole Chiave {report.valutazione_keywords >= 2.75 && report.valutazione_keywords <= 3 ? '🔴'
                             : report.valutazione_keywords >= 2 && report.valutazione_keywords < 2.75 ? '🟡'
                                 : report.valutazione_keywords >= 1 && report.valutazione_keywords < 2 ? '🟢'
                                     : ''}</h3>
@@ -90,7 +90,7 @@ function Dettagli(props) {
 
                 <div className="Sezione">
                     <div className="TitoloImpo">
-                        <h3 className="Scritta">Valutazione Foto {report.valutazione_foto >= 2.75 && report.valutazione_foto <= 3 ? '🔴'
+                        <h3 className="Scritta" style={{ fontFamily: "Times New Roman" }}>Valutazione Foto {report.valutazione_foto >= 2.75 && report.valutazione_foto <= 3 ? '🔴'
                             : report.valutazione_foto >= 2 && report.valutazione_foto < 2.75 ? '🟡'
                                 : report.valutazione_foto >= 1 && report.valutazione_foto < 2 ? '🟢'
                                     : ''}</h3>
@@ -113,7 +113,7 @@ function Dettagli(props) {
 
                 <div className="Sezione">
                     <div className="TitoloImpo">
-                        <h3 className="Scritta">Parole chiave nelle foto</h3>
+                        <h3 className="Scritta" style={{ fontFamily: "Times New Roman" }}>Parole chiave nelle foto</h3>
                     </div>
                     <div className="Impostazione3">
                         {
