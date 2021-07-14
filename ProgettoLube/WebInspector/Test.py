@@ -183,7 +183,7 @@ class MyTestCase(unittest.TestCase):
         db_manager = DBmanager()
         db_manager.start_connection()
         with open(
-                "C:\\Users\\matti\\git\\ProgettoLube\\ProgettoLube\\WebInspector\\test_results\\instagram\\lube-creo-store-casteldisangrio-instagram.json") as f:
+                "C:\\Users\\matti\\git\\ProgettoLube\\ProgettoLube\\WebInspector\\test_results\\instagram\\lube-creo-store-napoli.json") as f:
             data = json.load(f)
         report = data
         # date = datetime.datetime.now()
@@ -243,7 +243,7 @@ class MyTestCase(unittest.TestCase):
         db = DBmanager()
         db.start_connection()
         # target = 'pro.muccia'  # 'ProLocoSerravallediChientiMC'  # 'pro.muccia' 'ProLocoSerravallediChientiMC'
-        target = 'CucineLubecreokitchenspratolapeligna'
+        target = 'LubeCreoNapoli'#'CucineLubecreokitchenspratolapeligna'
         proc = ImageProcessor()
         crawler = CrawlerSocial()
         report = crawler.facebook_crawler(target, proc)
@@ -256,7 +256,7 @@ class MyTestCase(unittest.TestCase):
         socialCrawl = CrawlerSocial()
         # target = 'https://www.instagram.com/lube_marseille_store/'
         # target = 'https://www.instagram.com/molteni_matteo/'
-        target = 'https://www.instagram.com/lubecreopratolacasteldisangro/'
+        target = 'https://www.instagram.com/cucinelubenapoli/'
         report = socialCrawl.instagram_crawler(target, proc)
         print(report.toJSON())
 
@@ -351,6 +351,14 @@ class MyTestCase(unittest.TestCase):
             lista.append(z)
         for x in lista:
             print(x)
+
+    def test_stupido(self):
+        stringa = '//lubecreostorefabriano.com/wp-content/uploads/revslider/homepage_2019/LUBE.png'
+        if stringa[0:2] == "//":
+            # urlimg = urlimg.lstrip('/')
+            print(1)
+        elif stringa[0:1] == "/":
+            print(2)
 
 
 def get_image_urls(post):

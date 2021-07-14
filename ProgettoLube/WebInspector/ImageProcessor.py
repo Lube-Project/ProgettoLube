@@ -145,8 +145,8 @@ class ImageProcessor:
 
     def generate_report_foto(self, platform):
         x = self.run()
-        y = self.ocr_scan(platform)
-        report_foto = ReportFoto(x, y)
+        #y = self.ocr_scan(platform)
+        report_foto = ReportFoto(x, None)
         return report_foto
     # img_height = 180
     # img_width = 180

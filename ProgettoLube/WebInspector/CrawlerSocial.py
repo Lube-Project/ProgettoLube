@@ -262,7 +262,7 @@ class CrawlerSocial:
             ni = 1
 
         if si == 0 and no == 0 and ni == 0:
-            valutazione_foto = None
+            valutazione_foto = 1
         if si == 1 and no == 1 and ni == 1:
             valutazione_foto = 3
 

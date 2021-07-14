@@ -25,8 +25,8 @@ class TaskExecutor:
         # Load siti from excel (LoadResources class)
         #TODO: qunado si leggerà la tabella bisogna prendere sia l'url del sito che il nome del negozio che andrà nel report
         # al posto dell'url nella variabile sito
-        lista_siti = ["https://www.lubecreostorepratolapeligna.it/", ]
-        #lista_siti = ["https://www.cucinelubenapoli.it/", ]
+        #lista_siti = ["https://www.lubecreostorepratolapeligna.it/", ]
+        lista_siti = ["https://www.lubestoresenigallia.it/", ]
         #lista_siti = ["https://lubecreomilano.it/", ]
         #lista_siti = ["https://www.cucineluberoma.it/", ]
         for sito in lista_siti:

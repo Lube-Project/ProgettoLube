@@ -123,19 +123,22 @@ class ImageClassificator:
             plt.title('Training and Validation Loss')
             plt.show()
 
-
-
     def predict(self, img_path):
         print("CLASSIFICO L'IMMAGINE : " + os.path.basename(img_path))
-        img = keras.preprocessing.image.load_img(
-            img_path, target_size=(self.img_height, self.img_width)
-        )
+        try:
+            img = keras.preprocessing.image.load_img(
+                img_path, target_size=(self.img_height, self.img_width)
+            )
+        except PIL.UnidentifiedImageError as e:
+            print("error on predicting")
+            return None
+
         img_array = keras.preprocessing.image.img_to_array(img)
         img_array = tf.expand_dims(img_array, 0)  # Create a batch
 
         predictions = self.model.predict(img_array)
         score = tf.nn.softmax(predictions[0])
-        result = os.path.basename(img_path)+" is most likely belongs to {} with a {:.2f} percent confidence.".format(
+        result = os.path.basename(img_path) + " is most likely belongs to {} with a {:.2f} percent confidence.".format(
             self.class_names[np.argmax(score)], 100 * np.max(score))
         print(result)
         return self.class_names[np.argmax(score)]

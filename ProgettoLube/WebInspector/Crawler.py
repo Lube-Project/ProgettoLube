@@ -58,12 +58,19 @@ class Crawler:
                         # counter = counter + 1
                         if image.has_attr('src') or image.has_attr('data-src'):
                             urlimg = image['src'] if image.has_attr('src') else image['data-src']
+                            #self.logger.info("URLIMG TROVATO : " + urlimg)
+                            #TODO: fare l'if se url inizia con un solo slash ovverro aggiunger root
                             if urlimg[0:2] == "//":
-                                urlimg = urlimg.lstrip('/')
-                            if urlimg[0:4] != "http" and urlimg[0:3] != "www":
+                               # urlimg = urlimg.lstrip('/')
+                                 urlimg = "https:"+urlimg
+                            elif urlimg[0:1] == "/":
+                                radice = root[:-1]
+                                urlimg = radice+urlimg
+                            if urlimg[0:4] != "http" and urlimg[0:3] != "www" and urlimg[0:4] != "https":
                                 urlimg = root + urlimg
                             if urlimg[0:3] == "www":
                                 urlimg = "http://" + urlimg
+                            #self.logger.info("URLIMG PULITO : " + urlimg)
                             # urlimg = self.elimina_parametri_url_img(urlimg) #TODO:ATTENTION
                             a = urlparse(urlimg)
                             path = os.path.join(
@@ -87,7 +94,18 @@ class Crawler:
                                     except (HTTPError, URLError) as error:
                                         logging.error('Data of %s not retrieved because %s\nURL: %s', urlimg, error,
                                                       url)
-                                        pippo = True
+                                        if error.code == 406:
+                                            try:
+                                                self.logger.info("RIPROVO CON UN ALTRO HEADER")
+                                                req = Request(
+                                                    urlimg,
+                                                    headers={'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36', 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'})
+                                                content = urlopen(req).read()
+                                            except (HTTPError, URLError) as error:
+                                                logging.error('Data of %s not retrieved because %s\nURL: %s', urlimg,
+                                                              error,
+                                                              url)
+                                                pippo = True
                                     except socket.timeout:
                                         logging.error('socket timed out - URL %s', urlimg)
                                         pippo = True
@@ -110,6 +128,8 @@ class Crawler:
                                                         self.logger.error(path)
                                                         self.logger.error("I/O error: ".format(e.errno, e.strerror))
                                                         self.logger.error(content)
+                                                    except TypeError as t:
+                                                        self.logger.error("error")
                                             except (OSError, IOError) as e:
                                                 self.logger.error('2')
                                                 self.logger.error(e.errno)
@@ -125,7 +145,6 @@ class Crawler:
                                         self.logger.error("I/O error: ".format(e.errno, e.strerror))
                                         self.logger.error(content)
         self.logger.info("THREAD " + str(index) + " HO FINITO LE FOTO DA SCARICARE")
-
 
     # Per pulire i parametri dagli url delle immagini
     def elimina_parametri_url_img(self, url):
@@ -164,11 +183,16 @@ class Crawler:
                 # browser.quit()
                 lista = []
                 links = []
-                esclusioni = ['.jpg', '.bmp', '.gif', '.jpeg', '.png', '.tiff', '.cssjs', '.mid', '.mp2', '.mp3', '.mp4',
+                esclusioni = ['.jpg', '.bmp', '.gif', '.jpeg', '.png', '.tiff', '.cssjs', '.mid', '.mp2', '.mp3',
+                              '.mp4',
                               '.wav',
                               '.avi', '.mov', '.mpeg', '.ram', '.m4v', '.pdf', '.rm', '.smil', '.wmv', '.swf', '.wma',
                               '.zip',
-                              '.rar', '.gz', '/tel:', '/mailto:', 'javascript', '.js']
+                              '.rar', '.gz', '/tel:', '/mailto:', 'javascript', '.js', 'http://pinterest.com/'
+                    , 'https://pinterest.com/', 'http://twitter.com/', 'https://twitter.com/',
+                              'https://www.facebook.com/',
+                              'http://www.facebook.com/', 'https://plus.google.com/', 'http://plus.google.com/',
+                              'https://www.linkedin.com/', 'http://www.linkedin.com/']
                 for a in soup.find_all('a', href=True):
                     # print(a)
                     href = ''
@@ -234,7 +258,7 @@ class Crawler:
         dict_script = self.scrape_script(lista_href)
         dict_keyword = self.scrape_keyword(lista_href)
         report_pagine = ReportPagine(lista_href, dict_script, dict_keyword)
-        #self.logger.info("FINISH REPORT PAG : " + sito)
+        # self.logger.info("FINISH REPORT PAG : " + sito)
         return report_pagine
 
     def scrape_href(self, sito):
@@ -294,7 +318,7 @@ class Crawler:
                     for script in soup.find_all('script', {"src": True}):
                         if key in script['src']:
                             self.logger.info("FOUND SCRIPT : " + script['src'] + " IN " + url)
-                            urlmodified = url.replace(".","")
+                            urlmodified = url.replace(".", "")
                             Dict[urlmodified] = script['src']
         return Dict
 
@@ -330,10 +354,10 @@ class Crawler:
                             self.logger.info('\nUrl: {}\ncontains {} occurrences of word: {}'.format(url, count, key))
                             string = 'key ' + key + ' found :' + str(count) + ' times'
                             temp.append(string)
-                        urlmodified = url.replace(".","")
+                        urlmodified = url.replace(".", "")
                         urlkeywords[urlmodified] = temp
         Dict = {
-            'history':urlkeywords,
-            'resoconto':resoconto
+            'history': urlkeywords,
+            'resoconto': resoconto
         }
         return Dict
